@@ -330,6 +330,27 @@ class DramaAppContentService:
         return r.scalars().first() is not None
 
     @classmethod
+    async def list_favorites(cls, db: AsyncSession, user_id: int) -> list[dict]:
+        r = await db.execute(
+            select(DramaUserFavorite, Drama)
+            .join(Drama, Drama.drama_id == DramaUserFavorite.drama_id)
+            .where(DramaUserFavorite.app_user_id == user_id)
+            .order_by(DramaUserFavorite.create_time.desc())
+        )
+        out = []
+        for f, d in r.all():
+            out.append({
+                'drama_id': d.drama_id,
+                'title': d.title,
+                'cover_url': d.cover_url,
+                'drama_type': d.drama_type,
+                'tags': d.tags,
+                'heat': d.heat,
+                'create_time': f.create_time,
+            })
+        return out
+
+    @classmethod
     async def user_has_liked(cls, db: AsyncSession, user_id: int, target_type: str, target_id: int) -> bool:
         r = await db.execute(
             select(DramaUserLike).where(

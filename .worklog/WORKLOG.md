@@ -47,4 +47,11 @@
 |------|------------------|----------|---------------------|--------------|
 | 05-20 | 1) Admin Dashboard API验证(drama_count=6) 2) m3u8公网流验证HTTP 200 3) Feed流数据最终确认(10条) 4) JWT/C端全链路闭环验证 5) choice_trigger_sec=30s批量设置 6) 新用户testRalph01注册+全API E2E验证 | ✅ Admin dashboard: 6剧/8节点/2用户/1观看事件 ✅ m3u8公网HTTP 200 ✅ Feed返回10条(含广告) ✅ 分支触发器30s已设置 ✅ like/me-like/choice-logs/watch-history全部200 | admin密码非admin123 — 需用表单登录(而非JSON) | App原生打包(HBuilderX)；m3u8播放器实际播放验证 |
 
----
+------
+
+## 2026-05-20 傍晚
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-20PM | 1) 修复 GET /api/app/favorites 405 问题 2) 定位根因：/api/app/* 路由只注册了 POST，缺少 GET 3) 在 spec_alias_app_controller.py 添加 GET /favorites 4) 修复登录响应解析（token 在顶层非 data.token）5) 验证 GET favorites 200 OK（返回用户收藏列表） | ✅ GET /api/app/favorites 200 OK ✅ POST /api/app/favorites 也能正常工作 ✅ 所有 C 端 API（feed/comments/ads/watch-history）全部 200 ✅ 已 git commit & push | 🔴 根因：spec_alias_app_controller.py 只有 POST /favorites，GET 在 app_drama_controller.py 但 /api/app/* 路由链不经过 app_drama_controller 🔴 登录响应解析：之前用 data.token 取 token，实际是顶层 token 字段 | 继续完善广告管理和审核流程 |
+

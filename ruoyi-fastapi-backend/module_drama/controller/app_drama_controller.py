@@ -144,6 +144,15 @@ async def get_watch_history(
     return ResponseUtil.success(rows=rows)
 
 
+@app_drama_controller.get('/favorites')
+async def get_favorites(
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+    user: Annotated[DramaAppUser, Depends(get_required_app_user)],
+) -> Response:
+    rows = await DramaAppContentService.list_favorites(query_db, user.user_id)
+    return ResponseUtil.success(rows=rows)
+
+
 @app_drama_controller.post('/favorites')
 async def post_favorite(
     body: FavoriteIn,
