@@ -180,6 +180,15 @@ async def spec_favorite_singular(
     return await _spec_toggle_favorite(body, query_db, user)
 
 
+@spec_app_controller.get('/favorites')
+async def spec_favorites_get(
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+    user: Annotated[DramaAppUser, Depends(get_required_app_user)],
+) -> Response:
+    rows = await DramaAppContentService.list_favorites(query_db, user.user_id)
+    return ResponseUtil.success(rows=rows)
+
+
 @spec_app_controller.post('/favorites')
 async def spec_favorites_plural(
     body: FavoriteIn,
