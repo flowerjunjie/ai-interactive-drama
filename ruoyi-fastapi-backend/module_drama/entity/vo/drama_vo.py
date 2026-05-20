@@ -137,13 +137,15 @@ class VideoChoiceSaveModel(BaseModel):
 
 
 class DramaAdSaveModel(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
     title: str
     media_type: str = Field(default='image', description='image | video')
     media_url: str | None = None
     image_url: str | None = None
     cover_url: str | None = None
     link_url: str | None = None
-    slot_type: str = 'feed'
+    slot_type: str = Field(default='feed', validation_alias='slotType')
     weight: int = 0
     start_time: datetime | None = None
     end_time: datetime | None = None
