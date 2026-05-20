@@ -46,7 +46,7 @@ class DramaAppAuthService:
         expire = datetime.now(timezone.utc) + timedelta(minutes=JwtConfig.jwt_expire_minutes)
         payload = {
             'sub': str(user_id),
-            'typ': JWT_APP_TYPE,
+            'type': JWT_APP_TYPE,
             'exp': expire,
         }
         return jwt.encode(payload, JwtConfig.jwt_secret_key, algorithm=JwtConfig.jwt_algorithm)

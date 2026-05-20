@@ -196,6 +196,10 @@ class UploadSettings:
         'mp4',
         'avi',
         'rmvb',
+        'm3u8',
+        'mov',
+        'mkv',
+        'webm',
         # pdf
         'pdf',
     ]

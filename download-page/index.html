@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI互动短剧 - 下载页</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      background: #050505;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      width: 90%;
+      max-width: 420px;
+      background: #121216;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+    }
+    .logo {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, #9a5cf6, #d946ef);
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 36px;
+    }
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .sub { color: #888; font-size: 13px; margin-bottom: 32px; }
+    .ver { color: #555; font-size: 11px; margin-bottom: 28px; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(90deg, #7e42f5, #d459ad);
+      margin-bottom: 12px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .note { color: #444; font-size: 10px; margin-top: 18px; line-height: 1.5; }
+    .features { display: flex; gap: 16px; justify-content: center; margin-bottom: 28px; }
+    .feat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .feat-icon { font-size: 20px; }
+    .feat-label { font-size: 10px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">▶</div>
+    <h1>AI 互动短剧</h1>
+    <p class="sub">沉浸式分支剧情，体验不一样的人生</p>
+    <div class="features">
+      <div class="feat"><span class="feat-icon">🔥</span><span class="feat-label">热门短剧</span></div>
+      <div class="feat"><span class="feat-icon">🎬</span><span class="feat-label">互动分支</span></div>
+      <div class="feat"><span class="feat-icon">❤️</span><span class="feat-label">收藏点赞</span></div>
+    </div>
+    <p class="ver">v1.0.0 · Android</p>
+    <a href="http://38.55.146.160:8288/" class="btn">在线观看（H5版）</a>
+    <a href="http://38.55.146.160:8188/download-page/ai-drama.apk" class="btn btn-secondary" download>下载 Android 安装包</a>
+    <p class="note">
+      H5版无需下载，直接打开即可观看<br>
+      Android 版安装后可直接离线使用<br>
+      推荐使用Chrome/Safari/Edge浏览器
+    </p>
+  </div>
+</body>
+</html>

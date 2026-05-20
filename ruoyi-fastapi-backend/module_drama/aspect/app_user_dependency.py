@@ -30,7 +30,7 @@ async def get_optional_app_user(
         payload = jwt.decode(token, JwtConfig.jwt_secret_key, algorithms=[JwtConfig.jwt_algorithm])
     except (InvalidTokenError, jwt.ExpiredSignatureError, jwt.InvalidTokenError):
         return None
-    if payload.get('typ') != JWT_APP_TYPE:
+    if payload.get('type') != JWT_APP_TYPE:
         return None
     uid = payload.get('sub')
     if not uid:

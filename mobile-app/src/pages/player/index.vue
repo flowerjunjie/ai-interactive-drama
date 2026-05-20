@@ -21,29 +21,13 @@
         mode="aspectFill"
       />
 
-      <view class="pointer-events-none absolute left-0 right-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent"></view>
       <view
-        class="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"
+        class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent pointer-events-none"
       ></view>
 
-      <!-- Nav Bar -->
-      <view class="absolute left-0 right-0 top-0 z-50 flex items-center justify-between px-4 pt-[calc(env(safe-area-inset-top)+10px)]">
-        <view class="flex h-8 w-8 items-center justify-center active:opacity-70" @click="goBack">
-          <view class="i-mdi-chevron-left text-[32px] text-white drop-shadow-md" />
-        </view>
-        <text class="max-w-[60%] truncate text-[14px] font-medium tracking-wide text-white drop-shadow-md">{{ barTitle }}</text>
-        <view class="flex items-center gap-3">
-          <view class="flex items-center justify-center rounded-full bg-white/20 px-3 py-1 backdrop-blur-md active:bg-white/30" @click="feedbackReview">
-            <text class="text-[11px] text-white">反馈</text>
-          </view>
-          <view class="i-mdi-dots-horizontal text-[24px] text-white drop-shadow-md" />
-        </view>
-      </view>
-
-      <view
-        class="absolute right-4 top-[calc(env(safe-area-inset-top)+60px)] z-50 flex h-[34px] w-[34px] items-center justify-center rounded-full bg-black/40 backdrop-blur-md active:bg-black/60"
-      >
-        <view class="i-mdi-television text-[18px] text-white" />
+      <!-- Back Button (top-left, minimal) -->
+      <view class="absolute left-2 top-[calc(env(safe-area-inset-top)+10px)] z-50 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md active:bg-black/60" @click="goBack">
+        <view class="i-mdi-chevron-left text-[28px] text-white" />
       </view>
 
       <view v-if="showBranchTip" class="absolute left-4 top-1/2 z-50 -translate-y-1/2">

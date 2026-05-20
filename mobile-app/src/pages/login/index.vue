@@ -73,8 +73,8 @@
 
         <!-- Options Row -->
         <view v-if="isLogin" class="mt-6 flex items-center justify-between">
-          <view class="flex items-center gap-2.5 active:opacity-70">
-            <view class="flex h-[18px] w-[18px] items-center justify-center rounded-full border border-white/20"></view>
+          <view class="flex items-center gap-2.5 active:opacity-70" @click="toggleRemember">
+            <view :class="rememberPwd ? 'i-mdi-checkbox-marked text-[#a855f7]' : 'i-mdi-checkbox-blank-outline text-white/30'" class="text-[18px]" />
             <text class="text-[12px] text-white/60 tracking-wider">记住密码</text>
           </view>
           <text class="text-[12px] text-white/60 tracking-wider active:opacity-70">忘记密码？</text>
@@ -131,7 +131,17 @@ const nickName = ref('')
 const phoneDecoy = ref('')
 const codeDecoy = ref('')
 const submitting = ref(false)
+const rememberPwd = ref(false)
 const userStore = useUserStore()
+
+// 记住密码：回填已保存的凭证
+const savedUser = uni.getStorageSync('saved_user_name')
+const savedPwd = uni.getStorageSync('saved_password')
+if (savedUser) userName.value = savedUser
+if (savedPwd) {
+  password.value = savedPwd
+  rememberPwd.value = true
+}
 
 function goBack() {
   uni.navigateBack()
@@ -139,6 +149,10 @@ function goBack() {
 
 function toggleMode() {
   isLogin.value = !isLogin.value
+}
+
+function toggleRemember() {
+  rememberPwd.value = !rememberPwd.value
 }
 
 async function onSubmit() {
@@ -163,8 +177,18 @@ async function onSubmit() {
       ? await userStore.login(u, p)
       : await userStore.register(u, p, nickName.value.trim() || undefined)
     if (ok) {
+      // 记住密码
+      if (rememberPwd.value) {
+        uni.setStorageSync('saved_user_name', userName.value.trim())
+        uni.setStorageSync('saved_password', password.value)
+      } else {
+        uni.removeStorageSync('saved_user_name')
+        uni.removeStorageSync('saved_password')
+      }
       uni.showToast({ title: isLogin.value ? '登录成功' : '注册并登录成功', icon: 'success' })
-      setTimeout(() => uni.navigateBack(), 400)
+      setTimeout(() => {
+        uni.reLaunch({ url: '/pages/mine/index' })
+      }, 400)
     }
   } finally {
     submitting.value = false

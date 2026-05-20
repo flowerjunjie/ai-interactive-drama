@@ -8,7 +8,7 @@
   "pages": [
     { "path": "pages/index/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/theater/index", "style": { "navigationStyle": "custom" } },
-    { "path": "pages/player/index", "style": { "navigationBarTitleText": "沉浸播放", "navigationBarBackgroundColor": "#000000" } },
+    { "path": "pages/player/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/drama-detail/index", "style": { "navigationBarTitleText": "剧目", "navigationBarBackgroundColor": "#0a0a0f" } },
     { "path": "pages/mine/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/login/index", "style": { "navigationBarTitleText": "登录", "navigationBarBackgroundColor": "#0a0a0f" } },

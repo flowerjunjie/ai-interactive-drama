@@ -43,6 +43,9 @@
     "up:uniapp": "pnpx @dcloudio/uvm@latest"
   },
   "dependencies": {
+    "@capacitor/android": "^5.7.8",
+    "@capacitor/cli": "^5.7.8",
+    "@capacitor/core": "^5.7.8",
     "@dcloudio/uni-app": "3.0.0-4080720251210001",
     "@dcloudio/uni-app-harmony": "3.0.0-4080720251210001",
     "@dcloudio/uni-app-plus": "3.0.0-4080720251210001",

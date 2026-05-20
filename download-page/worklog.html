@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工作日志 - AI互动短剧</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; padding: 20px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    h1 { color: #fff; font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+    h2 { color: #9a5cf6; font-size: 18px; margin: 30px 0 15px; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
+    th { background: #1a1a2e; color: #9a5cf6; padding: 10px 12px; text-align: left; border: 1px solid #2a2a3e; }
+    td { padding: 10px 12px; border: 1px solid #2a2a3e; background: #12121a; vertical-align: top; }
+    tr:hover td { background: #1a1a2e; }
+    .done { color: #4ade80; }
+    .warn { color: #f97316; }
+    code { background: #1a1a2e; padding: 2px 6px; border-radius: 3px; font-size: 12px; color: #4ade80; }
+    .summary { background: #12121a; border: 1px solid #2a2a3e; border-radius: 8px; padding: 15px; margin: 20px 0; }
+    .summary h4 { color: #fff; margin-bottom: 10px; }
+    .summary ul { margin: 0; padding-left: 20px; }
+    .summary li { margin: 5px 0; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; margin-right: 5px; }
+    .badge-green { background: #22c55e20; color: #4ade80; border: 1px solid #22c55e40; }
+    .badge-red { background: #ef444420; color: #f87171; border: 1px solid #ef444440; }
+    .badge-yellow { background: #eab30820; color: #facc15; border: 1px solid #eab30840; }
+    .badge-purple { background: #8b5cf620; color: #a78bfa; border: 1px solid #8b5cf640; }
+    .back { display: inline-block; margin-bottom: 20px; color: #888; text-decoration: none; font-size: 13px; }
+    .back:hover { color: #9a5cf6; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back">← 返回下载页</a>
+  <h1>📋 工作日志 · AI互动短剧项目</h1>
+
+  <div class="summary">
+    <h4>📊 关键成果（今日）</h4>
+    <ul>
+      <li><span class="badge badge-purple">APK打包</span> 用 Capacitor 5.x 替代 DCloud 付费云打包，零成本打出可用 APK</li>
+      <li><span class="badge badge-red">问题根因</span> 定位旧 APK 安装失败：MainActivity 声明在 manifest 但未打进 DEX</li>
+      <li><span class="badge badge-green">验证完成</span> dexdump 确认 MainActivity 在 classes.dex 中，launchable-activity 正常</li>
+      <li><span class="badge badge-yellow">环境搭建</span> Android SDK (build-tools 34.0.0, platform-tools, android-34) 安装到 /home/developer/android-sdk</li>
+    </ul>
+  </div>
+
+  <h2>2026-05-20 日间</h2>
+  <table>
+    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
+    <tr>
+      <td>05-20日间</td>
+      <td>1) APK安装失败问题排查 2) Android SDK安装 3) Capacitor替代DCloud云打包 4) 新APK打包并验证 5) 下载页APK更新</td>
+      <td>✅ APK安装失败根因定位：旧APK (com.aiplayers.drama) MainActivity声明在manifest但不在DEX中；包名与当前代码库(__UNI__25A9D80)不匹配<br>✅ 安装Android SDK到 /home/developer/android-sdk<br>✅ Capacitor 5.x替代DCloud付费打包方案：无成本打包APK<br>✅ 新APK验证：dexdump确认MainActivity在DEX中、launchable-activity声明正确、大小4.3MB<br>✅ 下载页APK已更新</td>
+      <td>🔴 原APK安装失败根因：MainActivity类不在classes.dex中（manifest声明了但实际未打进包）<br>🔴 DCloud云打包需要充值，无法免费使用CLI云打包<br>🔴 Java 17环境但Capacitor 8.x要求Java 21 → 降级Capacitor到5.x解决</td>
+      <td>继续完善分支剧情数据；APK安装后真机测试</td>
+    </tr>
+  </table>
+
+  <h2>2026-05-20 凌晨</h2>
+  <table>
+    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
+    <tr>
+      <td>05-20</td>
+      <td>1) Admin Dashboard API验证 2) m3u8公网流验证HTTP 200 3) Feed流数据最终确认(10条) 4) JWT/C端全链路闭环验证 5) choice_trigger_sec=30s批量设置 6) 新用户testRalph01注册+全API E2E验证</td>
+      <td>✅ Admin dashboard: 6剧/8节点/2用户/1观看事件<br>✅ m3u8公网HTTP 200<br>✅ Feed返回10条(含广告)<br>✅ 分支触发器30s已设置<br>✅ like/me-like/choice-logs/watch-history全部200</td>
+      <td>admin密码非admin123 — 需用表单登录(而非JSON)</td>
+      <td>App原生打包(HBuilderX)；m3u8播放器实际播放验证</td>
+    </tr>
+  </table>
+
+  <h2>2026-05-19 下午</h2>
+  <table>
+    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
+    <tr>
+      <td>05-19PM</td>
+      <td>1) admin前端启动验证(5188) 2) 视频源替换为真实m3u8 3) 分支剧情choice数据插入 4) C端API完整验证 5) PROGRESS.md里程碑更新 6) JWT payload key修复</td>
+      <td>✅ Admin前端8个管理页面全部200 OK<br>✅ video_url替换为mux.dev公网m3u8<br>✅ drama_video_choice插入4条分支数据<br>✅ like/favorites/comments/login/register全部200验证通过<br>✅ 所有里程碑打勾<br>✅ JWT typ→type修复，C端鉴权全面恢复</td>
+      <td>发现所有C端POST API返回401 — 根因是JWT payload使用'typ'但鉴权代码检查'type'; 修复后全部200</td>
+      <td>App原生打包(HBuilderX)；播放器页面验证m3u8播放</td>
+    </tr>
+  </table>
+
+  <h2>2026-05-19</h2>
+  <table>
+    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
+    <tr>
+      <td>05-19</td>
+      <td>1) ruflo多agent平台安装配置 2) mobile-app H5构建验证 3) 核心页面结构检查 4) 后端API健康检查 5) 数据库Seed数据插入 6) mobile-app与后端API已连通</td>
+      <td>✅ Feed流API返回4条数据(含广告) 6个剧集/8个视频节点<br>✅ mobile-app与后端API已连通</td>
+      <td>后端运行在19199端口，数据库连接正常</td>
+      <td>演示可基于现有数据展示；后续可增加真实视频源</td>
+    </tr>
+  </table>
+
+  <h2>📁 关键文件路径</h2>
+  <table>
+    <tr><th>文件</th><th>说明</th></tr>
+    <tr><td><code>/.worklog/WORKLOG.md</code></td><td>工作日志原始文件</td></tr>
+    <tr><td><code>/.worklog/PROGRESS.md</code></td><td>Sprint进度追踪</td></tr>
+    <tr><td><code>/mobile-app/android/app/build/outputs/apk/debug/app-debug.apk</code></td><td>新打包的APK (4.3MB)</td></tr>
+    <tr><td><code>/download-page/ai-drama.apk</code></td><td>下载页APK（已更新）</td></tr>
+  </table>
+
+  <br><br>
+</div>
+</body>
+</html>

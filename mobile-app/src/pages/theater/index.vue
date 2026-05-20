@@ -224,7 +224,9 @@ function loadDramas() {
   uni.request({
     url: appApi('/dramas'),
     data: {
-      drama_type: dramaType.value,
+      // comic_drama tab: no drama_type filter (shows all published)
+      // live_action tab: pass live_action filter if backend had that type
+      ...(dramaType.value === 'live_action' ? { drama_type: 'live_action' } : {}),
       ...(keyword.value.trim() ? { keyword: keyword.value.trim() } : {}),
     },
     success: (res: any) => {
