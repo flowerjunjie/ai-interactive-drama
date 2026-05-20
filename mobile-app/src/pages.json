@@ -12,7 +12,8 @@
     { "path": "pages/drama-detail/index", "style": { "navigationBarTitleText": "剧目", "navigationBarBackgroundColor": "#0a0a0f" } },
     { "path": "pages/mine/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/login/index", "style": { "navigationBarTitleText": "登录", "navigationBarBackgroundColor": "#0a0a0f" } },
-    { "path": "pages/watch-history/index", "style": { "navigationBarTitleText": "观看记录", "navigationBarBackgroundColor": "#0a0a0f" } }
+    { "path": "pages/watch-history/index", "style": { "navigationBarTitleText": "观看记录", "navigationBarBackgroundColor": "#0a0a0f" } },
+    { "path": "pages/favorites/index", "style": { "navigationBarTitleText": "我的收藏", "navigationBarBackgroundColor": "#0a0a0f" } }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "white",

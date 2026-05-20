@@ -78,7 +78,7 @@
               </view>
               <text class="text-[11px] text-white/80">历史记录</text>
             </view>
-            <view class="flex flex-col items-center gap-2 active:opacity-70">
+            <view class="flex flex-col items-center gap-2 active:opacity-70" @click="goFavorites">
               <view class="flex h-[42px] w-[42px] items-center justify-center rounded-[12px] bg-gradient-to-br from-[#60a5fa]/10 to-[#3b82f6]/5">
                 <view class="i-mdi-star text-[24px] text-[#60a5fa]" />
               </view>
@@ -240,6 +240,11 @@ function loadDashboard() {
       dash.watching_drama_count = Number(d.watching_drama_count ?? 0)
     },
   })
+}
+
+function goFavorites() {
+  if (!needLogin()) return
+  uni.navigateTo({ url: '/pages/favorites/index' })
 }
 
 function goWatchHistory() {
