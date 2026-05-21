@@ -61,7 +61,7 @@
           <view class="i-mdi-comment-processing text-[30px] text-white drop-shadow-md" />
           <text class="text-[10px] font-medium text-white drop-shadow-md">{{ formatShortCount(commentRows.length) }}</text>
         </view>
-        <view class="flex flex-col items-center gap-0.5">
+        <view class="flex flex-col items-center gap-0.5" @click="onShare">
           <view class="i-mdi-share text-[34px] text-white drop-shadow-md" />
           <text class="text-[10px] font-medium text-white drop-shadow-md">分享</text>
         </view>
@@ -81,7 +81,7 @@
               :style="{ left: progressPct + '%' }"
             ></view>
           </view>
-          <view class="i-mdi-fullscreen text-[20px] text-white drop-shadow-sm" />
+          <view class="i-mdi-fullscreen text-[20px] text-white drop-shadow-sm" @click="toggleFullscreen" />
         </view>
       </view>
     </view>
@@ -102,15 +102,15 @@
           <view
             class="ml-2 flex shrink-0 items-center justify-center rounded-full px-3.5 py-1.5 active:opacity-80"
             style="background: linear-gradient(90deg, #8b5cf6, #f97316)"
-            @click="toggleDramaFavorite"
+            @click="toggleSub"
           >
-            <text class="text-[12px] font-medium text-white">追更</text>
+            <text class="text-[12px] font-medium text-white">{{ subscribed ? '已追更' : '追更' }}</text>
           </view>
         </view>
 
         <view class="mt-2.5">
-          <text class="text-[12px] leading-relaxed text-white/60">{{ dramaDesc }}</text>
-          <text class="float-right ml-1 mt-[2px] text-[11px] text-white/40">展开 ∨</text>
+          <text class="text-[12px] leading-relaxed text-white/60" :class="{ 'line-clamp-2': !descExpanded, 'line-clamp-none': descExpanded }">{{ dramaDesc }}</text>
+          <text class="float-right ml-1 mt-[2px] text-[11px] text-white/40 active:opacity-70" @click="descExpanded = !descExpanded">{{ descExpanded ? '收起' : '展开' }} ∨</text>
         </view>
 
         <view class="mt-6">
@@ -206,6 +206,7 @@ const choicePopupRef = ref<any>(null)
 const branchTriggered = ref(false)
 const likeTotal = ref(0)
 const userLiked = ref(false)
+const subscribed = ref(false)
 const dramaMeta = ref<any>(null)
 const episodePanel = ref<any[]>([])
 const episodeTotal = ref(0)
@@ -215,6 +216,7 @@ const currentSec = ref(0)
 const durationSec = ref(1)
 const lastReportAt = ref(0)
 const showBranchTip = ref(false)
+const descExpanded = ref(false)
 
 const videoSrc = computed(() => node.value?.video_url || node.value?.videoUrl || '')
 
@@ -298,6 +300,38 @@ function triggerSec(n: any) {
 function goBack() {
   reportWatch(true)
   uni.navigateBack()
+}
+
+function toggleFullscreen() {
+  const v = document.querySelector('video')
+  if (!v) return
+  if (!document.fullscreenElement) {
+    v.requestFullscreen?.() || v.webkitRequestFullscreen?.()
+  } else {
+    document.exitFullscreen?.() || document.webkitExitFullscreen?.()
+  }
+}
+
+function onShare() {
+  const did = dramaId.value
+  if (!did) return
+  uni.share({
+    provider: 'weixin',
+    scene: 'WXSceneSession',
+    title: dramaTitle.value,
+    summary: dramaDesc.value.slice(0, 60),
+    success: () => uni.showToast({ title: '分享成功', icon: 'none' }),
+    fail: () => {
+      // fallback to system share
+      uni.share({
+        provider: '',
+        type: 0,
+        title: dramaTitle.value,
+        success: () => {},
+        fail: () => uni.showToast({ title: '分享失败', icon: 'none' }),
+      })
+    },
+  })
 }
 
 function feedbackReview() {
@@ -422,6 +456,38 @@ function loadMeLike() {
   })
 }
 
+function loadSubState() {
+  const id = dramaId.value
+  if (!id) return
+  uni.request({
+    url: appApi(`/subscriptions/${id}/new-episode`),
+    header: authHeaders({}),
+    success: (res: any) => {
+      const b = res.data as any
+      if (b.code === 200 && b.data) subscribed.value = !!b.data.subscribed
+    },
+  })
+}
+
+function toggleSub() {
+  if (!needLogin()) return
+  const id = dramaId.value
+  if (!id) return
+  uni.request({
+    url: appApi('/subscriptions'),
+    method: 'POST',
+    header: authHeaders(),
+    data: { drama_id: id, notify_enabled: true },
+    success: (res: any) => {
+      const b = res.data as any
+      if (b.code === 200) {
+        subscribed.value = !!b.data?.subscribed
+        uni.showToast({ title: subscribed.value ? '已追更' : '已取消追更', icon: 'none' })
+      }
+    },
+  })
+}
+
 function loadDramaMeta() {
   const id = dramaId.value
   if (!id) return
@@ -451,6 +517,7 @@ function loadNodeBundle() {
       loadDramaMeta()
       loadComments()
       loadMeLike()
+      loadSubState()
     },
   })
 }

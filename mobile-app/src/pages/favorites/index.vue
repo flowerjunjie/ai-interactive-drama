@@ -22,7 +22,7 @@
         <view class="min-w-0 flex-1 py-0.5">
           <text class="line-clamp-2 text-[15px] font-medium leading-snug text-white">{{ row.title || '剧目' }}</text>
           <view class="mt-1 flex items-center gap-1">
-            <text class="text-[11px] text-white/45">{{ row.drama_type || '短剧' }}</text>
+            <text class="text-[11px] text-white/45">{{ dramaTypeLabel(row.drama_type) }}</text>
             <text class="text-[11px] text-white/30">·</text>
             <text class="text-[11px] text-white/45">{{ row.heat || 0 }} 热</text>
           </view>
@@ -47,6 +47,15 @@ const placeholderCover =
 
 const rows = ref<Record<string, any>[]>([])
 const loaded = ref(false)
+
+function dramaTypeLabel(t: string | null | undefined): string {
+  const map: Record<string, string> = {
+    urban: '都市', fantasy: '玄幻', romance: '言情',
+    horror: '悬疑', comedy: '喜剧', sci_fi: '科幻',
+    live_action: '真人', comic_drama: '漫剧',
+  }
+  return map[t ?? ''] || '短剧'
+}
 
 function fetchList() {
   if (!needLogin()) {
@@ -78,7 +87,7 @@ function goDrama(row: Record<string, any>) {
     uni.showToast({ title: '数据异常', icon: 'none' })
     return
   }
-  uni.navigateTo({ url: `/pages/drama-detail/index?dramaId=${did}` })
+  uni.navigateTo({ url: `/pages/drama-detail/index?id=${did}` })
 }
 
 function goBack() {

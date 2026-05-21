@@ -16,6 +16,7 @@ from module_drama.entity.vo.drama_vo import (
     FavoriteIn,
     LikeIn,
     ReviewCreateModel,
+    SubscribeIn,
     WatchHistoryIn,
 )
 from module_drama.service.drama_app_service import DramaAppContentService
@@ -251,3 +252,32 @@ async def spec_ad_imp(ad_id: int, query_db: Annotated[AsyncSession, DBSessionDep
 async def spec_ad_click(ad_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     await DramaAppContentService.ad_click(query_db, ad_id)
     return ResponseUtil.success(msg='ok')
+
+
+@spec_app_controller.post('/subscriptions')
+async def spec_subscribe(
+    body: SubscribeIn,
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+    user: Annotated[DramaAppUser, Depends(get_required_app_user)],
+) -> Response:
+    state = await DramaAppContentService.toggle_subscribe(query_db, user.user_id, body.drama_id, body.notify_enabled)
+    return ResponseUtil.success(data=state)
+
+
+@spec_app_controller.get('/subscriptions')
+async def spec_subscriptions_get(
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+    user: Annotated[DramaAppUser, Depends(get_required_app_user)],
+) -> Response:
+    rows = await DramaAppContentService.list_subscriptions(query_db, user.user_id)
+    return ResponseUtil.success(rows=rows)
+
+
+@spec_app_controller.get('/subscriptions/{drama_id}/new-episode')
+async def spec_subscribe_check(
+    drama_id: int,
+    query_db: Annotated[AsyncSession, DBSessionDependency()],
+    user: Annotated[DramaAppUser, Depends(get_required_app_user)],
+) -> Response:
+    result = await DramaAppContentService.check_new_episodes(query_db, user.user_id, drama_id)
+    return ResponseUtil.success(data=result)

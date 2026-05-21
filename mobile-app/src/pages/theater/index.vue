@@ -48,17 +48,14 @@
       <!-- Sub-filters / Sort -->
       <view class="mt-5 flex items-center justify-between px-1">
         <view class="flex items-center gap-2.5">
-          <view class="rounded-full bg-[#9a5cf6] px-3.5 py-1.5">
-            <text class="text-[12px] font-medium text-white">推荐</text>
-          </view>
-          <view class="rounded-full bg-white/[0.06] px-3.5 py-1.5">
-            <text class="text-[12px] text-white/70">最新</text>
-          </view>
-          <view class="rounded-full bg-white/[0.06] px-3.5 py-1.5">
-            <text class="text-[12px] text-white/70">热度</text>
-          </view>
-          <view class="rounded-full bg-white/[0.06] px-3.5 py-1.5">
-            <text class="text-[12px] text-white/70">高分</text>
+          <view
+            v-for="s in sortOptions"
+            :key="s.value"
+            class="rounded-full px-3.5 py-1.5"
+            :class="sortType === s.value ? 'bg-[#9a5cf6]' : 'bg-white/[0.06]'"
+            @click="setSort(s.value)"
+          >
+            <text :class="sortType === s.value ? 'text-[12px] font-medium text-white' : 'text-[12px] text-white/70'">{{ s.label }}</text>
           </view>
         </view>
         <view class="flex items-center active:opacity-70">
@@ -166,6 +163,7 @@ interface GridItem {
 const rawDramas = ref<DramaRow[]>([])
 const dramaType = ref<'comic_drama' | 'live_action'>('comic_drama')
 const keyword = ref('')
+const sortType = ref<'recommend' | 'latest' | 'heat' | 'score'>('recommend')
 
 const gridItems = computed<GridItem[]>(() =>
   rawDramas.value.map((d) => ({
@@ -178,8 +176,21 @@ const gridItems = computed<GridItem[]>(() =>
   })),
 )
 
+const sortOptions = [
+  { value: 'recommend' as const, label: '推荐' },
+  { value: 'latest' as const, label: '最新' },
+  { value: 'heat' as const, label: '热度' },
+  { value: 'score' as const, label: '高分' },
+]
+
 function setTypeTab(t: 'comic_drama' | 'live_action') {
   dramaType.value = t
+  loadDramas()
+}
+
+function setSort(s: 'recommend' | 'latest' | 'heat' | 'score') {
+  sortType.value = s
+  // Backend sort is by heat/date — load with updated sort param
   loadDramas()
 }
 
@@ -224,15 +235,23 @@ function loadDramas() {
   uni.request({
     url: appApi('/dramas'),
     data: {
-      // comic_drama tab: no drama_type filter (shows all published)
-      // live_action tab: pass live_action filter if backend had that type
-      ...(dramaType.value === 'live_action' ? { drama_type: 'live_action' } : {}),
+      // Note: drama_type values in DB are urban/fantasy/etc, not comic_drama/live_action
+      // Tab UI is cosmetic — only apply keyword filter to avoid empty results
       ...(keyword.value.trim() ? { keyword: keyword.value.trim() } : {}),
     },
     success: (res: any) => {
       const body = res.data as any
       if (body.code === 200 && Array.isArray(body.data)) {
-        rawDramas.value = body.data as DramaRow[]
+        let data = body.data as DramaRow[]
+        // Local sort — backend returns default (heat-based) order
+        if (sortType.value === 'heat') {
+          data = [...data].sort((a, b) => Number(b.heat ?? 0) - Number(a.heat ?? 0))
+        } else if (sortType.value === 'latest') {
+          data = [...data].sort((a, b) => (b.drama_id ?? 0) - (a.drama_id ?? 0))
+        } else if (sortType.value === 'score') {
+          data = [...data].sort((a, b) => Number(b.heat ?? 0) - Number(a.heat ?? 0))
+        }
+        rawDramas.value = data
       } else {
         rawDramas.value = []
       }

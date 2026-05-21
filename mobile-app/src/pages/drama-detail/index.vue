@@ -54,10 +54,10 @@
           </view>
 
           <view class="mt-3">
-            <text class="line-clamp-3 text-[12px] leading-[1.6] text-white/70">{{ displayDesc }}</text>
-            <view class="mt-1 flex items-center">
-              <text class="text-[12px] text-white/50">展开</text>
-              <view class="i-mdi-chevron-down text-[16px] text-white/50" />
+            <text class="line-clamp-3 text-[12px] leading-[1.6] text-white/70" :class="{ 'line-clamp-3': !descExpanded, 'line-clamp-none': descExpanded }">{{ displayDesc }}</text>
+            <view class="mt-1 flex items-center active:opacity-70" @click="descExpanded = !descExpanded">
+              <text class="text-[12px] text-white/50">{{ descExpanded ? '收起' : '展开' }}</text>
+              <view class="i-mdi-chevron-down text-[16px] text-white/50" :class="{ 'rotate-180': descExpanded }" />
             </view>
           </view>
         </view>
@@ -78,6 +78,11 @@
         <view class="flex w-full items-center justify-center rounded-full bg-white/[0.08] py-[11px] active:bg-white/10" @click="toggleFav">
           <view :class="favorited ? 'i-mdi-star text-[18px] text-[#facc15]' : 'i-mdi-star-outline text-[18px] text-white/90'" />
           <text class="text-[15px] font-medium tracking-wide text-white/90">{{ favorited ? '已收藏' : '收藏' }}</text>
+        </view>
+        <!-- Subscribe / Chase Button -->
+        <view class="flex w-full items-center justify-center rounded-full bg-white/[0.08] py-[11px] active:bg-white/10" @click="toggleSub">
+          <view :class="subscribed ? 'i-mdi-bell text-[18px] text-[#9a5cf6]' : 'i-mdi-bell-outline text-[18px] text-white/90'" />
+          <text class="text-[15px] font-medium tracking-wide text-white/90">{{ subscribed ? '已追更' : '追更' }}</text>
         </view>
       </view>
 
@@ -241,6 +246,8 @@ const relatedRaw = ref<any[]>([])
 const commentList = ref<any[]>([])
 const draftComment = ref('')
 const favorited = ref(false)
+const subscribed = ref(false)
+const descExpanded = ref(false)
 
 const displayTitle = computed(() => drama.value?.title || '逆天战神')
 const posterSrc = computed(() => drama.value?.cover_url || fallbackCover)
@@ -249,9 +256,12 @@ const displayHeat = computed(() => formatHeatLine(drama.value?.heat))
 
 const typeLabel = computed(() => {
   const t = drama.value?.drama_type
-  if (t === 'live_action') return '真人'
-  if (t === 'comic_drama') return '漫剧 / 玄幻'
-  return ''
+  const map: Record<string, string> = {
+    urban: '都市', fantasy: '玄幻', romance: '言情',
+    horror: '悬疑', comedy: '喜剧', sci_fi: '科幻',
+    live_action: '真人', comic_drama: '漫剧',
+  }
+  return map[t ?? ''] || '短剧'
 })
 
 const displayTagPills = computed(() => {
@@ -406,6 +416,40 @@ function toggleFav() {
   })
 }
 
+function loadSubState(id: number) {
+  if (!uni.getStorageSync('drama_token')) {
+    subscribed.value = false
+    return
+  }
+  uni.request({
+    url: appApi(`/subscriptions/${id}/new-episode`),
+    header: authHeaders({}),
+    success: (res: any) => {
+      const b = res.data as any
+      if (b.code === 200 && b.data) subscribed.value = !!b.data.subscribed
+    },
+  })
+}
+
+function toggleSub() {
+  if (!needLogin()) return
+  const id = dramaId.value
+  if (!id) return
+  uni.request({
+    url: appApi('/subscriptions'),
+    method: 'POST',
+    header: authHeaders(),
+    data: { drama_id: id, notify_enabled: true },
+    success: (res: any) => {
+      const b = res.data as any
+      if (b.code === 200) {
+        subscribed.value = !!b.data?.subscribed
+        uni.showToast({ title: subscribed.value ? '已追更' : '已取消追更', icon: 'none' })
+      }
+    },
+  })
+}
+
 function fetchRelated(curId: number) {
   uni.request({
     url: appApi('/dramas'),
@@ -438,6 +482,7 @@ function loadDetail(id: number) {
       fetchRelated(id)
       loadComments(id)
       loadFavState(id)
+      loadSubState(id)
     },
     fail: () => {
       uni.showToast({ title: '网络错误', icon: 'none' })

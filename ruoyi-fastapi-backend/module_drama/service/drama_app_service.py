@@ -11,6 +11,7 @@ from module_drama.entity.do.drama_do import (
     DramaUserChoiceLog,
     DramaUserFavorite,
     DramaUserLike,
+    DramaUserSubscribe,
     DramaUserWatchHistory,
     DramaVideoChoice,
     DramaVideoNode,
@@ -444,3 +445,69 @@ class DramaAppContentService:
             'like_count': int(r_like.scalar() or 0),
             'watching_drama_count': int(r_chase.scalar() or 0),
         }
+
+    @classmethod
+    async def toggle_subscribe(cls, db: AsyncSession, user_id: int, drama_id: int, notify_enabled: bool = True) -> dict:
+        """追更订阅/取消订阅，返回 {subscribed: bool}"""
+        existing = await db.execute(
+            select(DramaUserSubscribe).where(
+                DramaUserSubscribe.app_user_id == user_id,
+                DramaUserSubscribe.drama_id == drama_id,
+            )
+        )
+        sub = existing.scalars().first()
+        if sub:
+            await db.delete(sub)
+            await db.commit()
+            return {'subscribed': False}
+        else:
+            new_sub = DramaUserSubscribe(app_user_id=user_id, drama_id=drama_id, notify_enabled='1' if notify_enabled else '0')
+            db.add(new_sub)
+            await db.commit()
+            return {'subscribed': True}
+
+    @classmethod
+    async def list_subscriptions(cls, db: AsyncSession, user_id: int) -> list[dict]:
+        """我的追更列表，返回剧目信息"""
+        rows = await db.execute(
+            select(DramaUserSubscribe, Drama)
+            .join(Drama, Drama.drama_id == DramaUserSubscribe.drama_id)
+            .where(DramaUserSubscribe.app_user_id == user_id, Drama.status == 'published')
+            .order_by(DramaUserSubscribe.create_time.desc())
+        )
+        return [
+            {
+                'subscribe_id': sub.subscribe_id,
+                'drama_id': d.drama_id,
+                'title': d.title,
+                'cover_url': d.cover_url,
+                'drama_type': d.drama_type,
+                'notify_enabled': sub.notify_enabled == '1',
+                'create_time': sub.create_time.isoformat() if sub.create_time else None,
+            }
+            for sub, d in rows.all()
+        ]
+
+    @classmethod
+    async def check_new_episodes(cls, db: AsyncSession, user_id: int, drama_id: int) -> dict:
+        """检查某剧的追更是否有新集更新"""
+        sub_row = await db.execute(
+            select(DramaUserSubscribe).where(
+                DramaUserSubscribe.app_user_id == user_id,
+                DramaUserSubscribe.drama_id == drama_id,
+            )
+        )
+        sub = sub_row.scalars().first()
+        if not sub:
+            return {'subscribed': False, 'has_new': False}
+        last_node_row = await db.execute(
+            select(DramaVideoNode)
+            .where(DramaVideoNode.drama_id == drama_id, cls._node_visible_app())
+            .order_by(DramaVideoNode.create_time.desc())
+            .limit(1)
+        )
+        last_node = last_node_row.scalars().first()
+        has_new = False
+        if last_node and sub.create_time and last_node.create_time and last_node.create_time > sub.create_time:
+            has_new = True
+        return {'subscribed': True, 'has_new': has_new, 'last_episode_title': last_node.title if last_node else None}

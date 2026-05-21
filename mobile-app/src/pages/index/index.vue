@@ -1,5 +1,12 @@
 <template>
   <view class="relative h-screen w-screen overflow-hidden bg-[#050505]">
+    <!-- Search Icon (Top Right) -->
+    <view class="absolute left-0 right-0 z-30 flex items-center justify-end px-4 pt-[calc(env(safe-area-inset-top)+8px)]">
+      <view class="flex h-9 w-9 items-center justify-center active:opacity-70" @click="goSearch">
+        <view class="i-mdi-magnify text-[24px] text-white" />
+      </view>
+    </view>
+
     <!-- Background Image (Click to play) -->
     <navigator :url="heroPlayPath" hover-class="none" class="absolute inset-0 z-0">
       <image :src="heroCover" class="h-full w-full object-cover" mode="aspectFill" />
@@ -262,6 +269,10 @@ function onShareTap() {
 
 function switchTab(url: string) {
   uni.reLaunch({ url })
+}
+
+function goSearch() {
+  uni.navigateTo({ url: '/pages/search/index' })
 }
 
 function applyFirstVideoRow(rows: any[]) {
