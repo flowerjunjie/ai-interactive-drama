@@ -139,6 +139,22 @@ export function listUploadFiles(query) {
   })
 }
 
+export function uploadSign(filename, contentType = 'video/mp4', dramaId = null, nodeId = null, objectKind = 'videos') {
+  return request({
+    url: '/api/admin/drama/upload/sign',
+    method: 'get',
+    params: { filename, content_type: contentType, drama_id: dramaId, node_id: nodeId, object_kind: objectKind },
+  })
+}
+
+export function uploadComplete(fileId, videoUrl = null, coverUrl = null, tosKey = null) {
+  return request({
+    url: '/api/admin/drama/upload/complete',
+    method: 'post',
+    data: { file_id: fileId, video_url: videoUrl, cover_url: coverUrl, tos_key: tosKey },
+  })
+}
+
 export function listDramaComments(query) {
   return request({
     url: '/api/admin/drama/comments',

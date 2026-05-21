@@ -224,6 +224,20 @@ class DramaUserChoiceLog(Base):
     create_time = Column(DateTime, nullable=True, default=datetime.now)
 
 
+class DramaUserSubscribe(Base):
+    __tablename__ = 'drama_user_subscribe'
+    __table_args__ = (
+        UniqueConstraint('app_user_id', 'drama_id', name='uq_subscribe_user_drama'),
+        {'comment': '追更订阅'},
+    )
+
+    subscribe_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    app_user_id = Column(BigInteger, nullable=False)
+    drama_id = Column(BigInteger, nullable=False)
+    notify_enabled = Column(CHAR(1), nullable=False, server_default='1', comment='1开启 0关闭')
+    create_time = Column(DateTime, nullable=True, default=datetime.now)
+
+
 class DramaUploadFile(Base):
     __tablename__ = 'drama_upload_file'
     __table_args__ = {'comment': '上传文件记录（TOS）'}

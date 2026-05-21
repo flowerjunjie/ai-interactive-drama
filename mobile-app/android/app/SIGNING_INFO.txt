@@ -1,0 +1,27 @@
+=== APK 签名信息 ===
+
+Keystore 文件：app/ai-drama-release.keystore
+Key Alias：ai-drama-release
+签名算法：SHA256withRSA
+密钥长度：2048 bit
+有效期：36500天（约100年）
+
+证书信息：
+  CN = AI Interactive Drama
+  OU = Dev
+  O = AI Players
+  L = Beijing
+  ST = Beijing
+  C = CN
+
+⚠️  重要：keystore 密码和 key password 请妥善保管，不要提交到代码仓库！
+
+=== 提审检查清单 ===
+□ keystore 文件备份（多人共享保管）
+□ versionCode / versionName 更新
+□ 应用隐私协议
+□ 应用权限说明
+□ 隐私政策 URL
+□ 第三方 SDK 声明
+□ 应用图标和启动页
+□ 各渠道包（华为/小米/应用宝）签名一致

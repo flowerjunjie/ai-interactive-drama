@@ -20,7 +20,7 @@
           class="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/45 px-3 py-1 backdrop-blur-md"
         >
           <text class="text-[10px] font-semibold uppercase tracking-wider text-drama-accent">{{
-            drama.drama_type || '短剧'
+            typeLabel(drama.drama_type)
           }}</text>
         </view>
       </view>
@@ -37,6 +37,16 @@
 
 <script setup lang="ts">
 const props = defineProps<{ drama: Record<string, any> }>()
+
+function typeLabel(t: string | null | undefined): string {
+  const map: Record<string, string> = {
+    urban: '都市', fantasy: '玄幻', romance: '言情',
+    horror: '悬疑', comedy: '喜剧', sci_fi: '科幻',
+    live_action: '真人', comic_drama: '漫剧',
+    costume: '古风',
+  }
+  return map[t ?? ''] || '短剧'
+}
 
 function go() {
   uni.navigateTo({ url: `/pages/drama-detail/index?id=${props.drama.drama_id}` })

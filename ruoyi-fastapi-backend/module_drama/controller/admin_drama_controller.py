@@ -156,8 +156,9 @@ async def admin_upload_files(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     page_num: int = Query(default=1, ge=1),
     page_size: int = Query(default=10, ge=1, le=100),
+    drama_id: int | None = Query(default=None),
 ) -> Response:
-    page = await DramaAdminService.upload_file_page(query_db, page_num, page_size)
+    page = await DramaAdminService.upload_file_page(query_db, page_num, page_size, drama_id)
     return ResponseUtil.success(model_content=page)
 
 

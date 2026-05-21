@@ -16,8 +16,28 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            storeFile rootProject.file('app/ai-drama-release.keystore')
+            storePassword 'AiDrama2026!'
+            keyAlias 'ai-drama-release'
+            keyPassword 'AiDrama2026!'
+        }
+        debug {
+            storeFile rootProject.file('app/ai-drama-release.keystore')
+            storePassword 'AiDrama2026!'
+            keyAlias 'ai-drama-release'
+            keyPassword 'AiDrama2026!'
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

@@ -1,5 +1,11 @@
 <template>
   <div class="app-container">
+    <el-form :inline="true" class="mt">
+      <el-form-item label="短剧ID"><el-input-number v-model="query.dramaId" :min="1" /></el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="getList">搜索</el-button>
+      </el-form-item>
+    </el-form>
     <el-table v-loading="loading" :data="list" border>
       <el-table-column label="fileId" prop="fileId" width="90" />
       <el-table-column label="bucket" prop="bucket" width="140" />
@@ -15,12 +21,13 @@
 
 <script setup>
 import { listUploadFiles } from '@/api/drama'
-import { reactive, ref } from 'vue'
+import { getCurrentInstance, reactive, ref } from 'vue'
 
+const { proxy } = getCurrentInstance()
 const loading = ref(false)
 const list = ref([])
 const total = ref(0)
-const query = reactive({ pageNum: 1, pageSize: 10 })
+const query = reactive({ pageNum: 1, pageSize: 10, dramaId: undefined })
 
 function getList() {
   loading.value = true

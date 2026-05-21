@@ -41,9 +41,32 @@
         <el-form-item label="短剧ID"><el-input-number v-model="form.dramaId" :min="1" /></el-form-item>
         <el-form-item label="父节点ID"><el-input-number v-model="form.parentNodeId" :min="1" controls-position="right" /></el-form-item>
         <el-form-item label="标题"><el-input v-model="form.title" /></el-form-item>
-        <el-form-item label="视频URL"><el-input v-model="form.videoUrl" /></el-form-item>
-        <el-form-item label="封面URL"><el-input v-model="form.coverUrl" /></el-form-item>
-        <el-form-item label="tos_key"><el-input v-model="form.tosKey" /></el-form-item>
+        <el-form-item label="视频">
+          <VideoUploader
+            v-model="form.videoUrl"
+            object-kind="videos"
+            content-type="video/mp4"
+            :accept-ext="['mp4','mov','avi','webm']"
+            :file-size="500"
+            :drama-id="form.dramaId"
+            :node-id="form.nodeId"
+            btn-label="上传视频"
+            @success="(payload) => { form.tosKey = payload.objectKey }"
+          />
+        </el-form-item>
+        <el-form-item label="封面">
+          <VideoUploader
+            v-model="form.coverUrl"
+            object-kind="covers"
+            content-type="image/jpeg"
+            :accept-ext="['jpg','jpeg','png','webp']"
+            :file-size="10"
+            :drama-id="form.dramaId"
+            :node-id="form.nodeId"
+            btn-label="上传封面"
+            @success="(payload) => { form.tosKey = payload.objectKey }"
+          />
+        </el-form-item>
         <el-form-item label="时长(秒)"><el-input-number v-model="form.durationSec" :min="0" /></el-form-item>
         <el-form-item label="集序号"><el-input-number v-model="form.episodeNo" :min="0" /></el-form-item>
         <el-form-item label="排序"><el-input-number v-model="form.sort" :min="0" /></el-form-item>
@@ -103,6 +126,7 @@ import {
   updateVideoChoice,
   updateVideoNode
 } from '@/api/drama'
+import VideoUploader from '@/components/VideoUploader/index.vue'
 import { getCurrentInstance, reactive, ref } from 'vue'
 
 const { proxy } = getCurrentInstance()

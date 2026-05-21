@@ -17,7 +17,10 @@
     <pagination v-show="total > 0" :total="total" v-model:page="query.pageNum" v-model:limit="query.pageSize" @pagination="getList" />
 
     <el-dialog title="拒绝原因" v-model="rjOpen" width="420px">
-      <el-input type="textarea" v-model="rjReason" rows="3" placeholder="可选" />
+      <div v-if="rjRow" class="mb-3 text-sm text-gray-500">
+        节点 #{{ rjRow.nodeId }} · {{ rjRow.title || '未命名' }}
+      </div>
+      <el-input type="textarea" v-model="rjReason" rows="3" placeholder="请输入拒绝原因（可选）" />
       <template #footer>
         <el-button @click="rjOpen = false">取消</el-button>
         <el-button type="danger" @click="reject">确定拒绝</el-button>

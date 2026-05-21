@@ -314,8 +314,10 @@ class DramaAdminService:
         await db.commit()
 
     @classmethod
-    async def upload_file_page(cls, db: AsyncSession, page_num: int, page_size: int):
+    async def upload_file_page(cls, db: AsyncSession, page_num: int, page_size: int, drama_id: int | None = None):
         q = select(DramaUploadFile).order_by(DramaUploadFile.create_time.desc())
+        if drama_id is not None:
+            q = q.where(DramaUploadFile.drama_id == drama_id)
         return await PageUtil.paginate(db, q, page_num, page_size, is_page=True)
 
     @classmethod

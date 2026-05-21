@@ -78,6 +78,11 @@ class FavoriteIn(BaseModel):
     drama_id: int
 
 
+class SubscribeIn(BaseModel):
+    drama_id: int
+    notify_enabled: bool = True
+
+
 class CommentCreateModel(BaseModel):
     drama_id: int
     node_id: int | None = None
