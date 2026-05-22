@@ -26,20 +26,17 @@
       </view>
 
       <!-- Tabs -->
-      <view class="mt-6 flex items-center gap-6 px-1">
-        <view class="relative flex flex-col items-center" @click="setTypeTab('comic_drama')">
-          <text :class="dramaType === 'comic_drama' ? 'text-[17px] font-medium text-white' : 'text-[16px] text-white/50'">漫剧</text>
+      <view class="mt-6 flex items-center gap-4 px-1 overflow-x-auto">
+        <view
+          v-for="tab in typeTabs"
+          :key="tab.value"
+          class="relative flex shrink-0 flex-col items-center"
+          @click="setTypeTab(tab.value)"
+        >
+          <text :class="dramaType === tab.value ? 'text-[17px] font-medium text-white' : 'text-[16px] text-white/50'">{{ tab.label }}</text>
           <view
             :class="
-              dramaType === 'comic_drama' ? 'mt-1.5 h-[3px] w-[14px] rounded-full bg-[#9a5cf6]' : 'mt-1.5 h-[3px] w-[14px] rounded-full bg-transparent'
-            "
-          ></view>
-        </view>
-        <view class="flex flex-col items-center" @click="setTypeTab('live_action')">
-          <text :class="dramaType === 'live_action' ? 'text-[17px] font-medium text-white' : 'text-[16px] text-white/50'">真人</text>
-          <view
-            :class="
-              dramaType === 'live_action' ? 'mt-1.5 h-[3px] w-[14px] rounded-full bg-[#9a5cf6]' : 'mt-1.5 h-[3px] w-[14px] rounded-full bg-transparent'
+              dramaType === tab.value ? 'mt-1.5 h-[3px] w-[14px] rounded-full bg-[#9a5cf6]' : 'mt-1.5 h-[3px] w-[14px] rounded-full bg-transparent'
             "
           ></view>
         </view>
@@ -161,20 +158,34 @@ interface GridItem {
 }
 
 const rawDramas = ref<DramaRow[]>([])
-const dramaType = ref<'comic_drama' | 'live_action'>('comic_drama')
+const dramaType = ref<'all' | 'urban' | 'costume' | 'romance' | 'fantasy' | 'sci_fi'>('all')
 const keyword = ref('')
 const sortType = ref<'recommend' | 'latest' | 'heat' | 'score'>('recommend')
 
-const gridItems = computed<GridItem[]>(() =>
-  rawDramas.value.map((d) => ({
+// Type tab labels
+const typeTabs = [
+  { value: 'all' as const, label: '全部' },
+  { value: 'urban' as const, label: '都市' },
+  { value: 'costume' as const, label: '古风' },
+  { value: 'romance' as const, label: '甜宠' },
+  { value: 'fantasy' as const, label: '玄幻' },
+  { value: 'sci_fi' as const, label: '科幻' },
+]
+
+const gridItems = computed<GridItem[]>(() => {
+  let filtered = rawDramas.value
+  if (dramaType.value !== 'all') {
+    filtered = filtered.filter(d => d.drama_type === dramaType.value)
+  }
+  return filtered.map((d) => ({
     id: d.drama_id,
     title: d.title,
     cover: d.cover_url || placeholderCover,
     tags: tagList(d),
     hot: heatShort(d.heat),
     label: labelFor(d),
-  })),
-)
+  }))
+})
 
 const sortOptions = [
   { value: 'recommend' as const, label: '推荐' },
@@ -183,20 +194,17 @@ const sortOptions = [
   { value: 'score' as const, label: '高分' },
 ]
 
-function setTypeTab(t: 'comic_drama' | 'live_action') {
+function setTypeTab(t: 'all' | 'urban' | 'costume' | 'romance' | 'fantasy' | 'sci_fi') {
   dramaType.value = t
-  loadDramas()
 }
 
 function setSort(s: 'recommend' | 'latest' | 'heat' | 'score') {
   sortType.value = s
-  // Backend sort is by heat/date — load with updated sort param
-  loadDramas()
 }
 
 function tagList(d: DramaRow): string[] {
   const raw = d.tags
-  if (!raw) return d.drama_type === 'live_action' ? ['真人', '都市'] : ['漫剧', '玄幻']
+  if (!raw) return ['短剧', '热门']
   try {
     const j = JSON.parse(raw)
     if (Array.isArray(j)) return j.map(String).slice(0, 4)
@@ -235,8 +243,6 @@ function loadDramas() {
   uni.request({
     url: appApi('/dramas'),
     data: {
-      // Note: drama_type values in DB are urban/fantasy/etc, not comic_drama/live_action
-      // Tab UI is cosmetic — only apply keyword filter to avoid empty results
       ...(keyword.value.trim() ? { keyword: keyword.value.trim() } : {}),
     },
     success: (res: any) => {

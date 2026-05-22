@@ -34,8 +34,11 @@
         <el-form-item label="标题"><el-input v-model="form.title" /></el-form-item>
         <el-form-item label="类型">
           <el-select v-model="form.dramaType">
-            <el-option label="漫剧" value="comic_drama" />
-            <el-option label="真人剧" value="live_action" />
+            <el-option label="都市" value="urban" />
+            <el-option label="古风" value="costume" />
+            <el-option label="甜宠" value="romance" />
+            <el-option label="玄幻" value="fantasy" />
+            <el-option label="科幻" value="sci_fi" />
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
@@ -72,7 +75,7 @@ const query = reactive({ pageNum: 1, pageSize: 10, title: '' })
 const form = reactive({
   dramaId: undefined,
   title: '',
-  dramaType: 'comic_drama',
+  dramaType: 'urban',
   status: 'draft',
   coverUrl: '',
   description: '',
@@ -103,7 +106,7 @@ function openForm(row) {
       sort: row.sort
     })
   } else {
-    Object.assign(form, { dramaId: undefined, title: '', dramaType: 'comic_drama', status: 'draft', coverUrl: '', description: '', tags: '', heat: 0, sort: 0 })
+    Object.assign(form, { dramaId: undefined, title: '', dramaType: 'urban', status: 'draft', coverUrl: '', description: '', tags: '', heat: 0, sort: 0 })
   }
   open.value = true
 }

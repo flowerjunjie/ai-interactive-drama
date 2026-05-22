@@ -98,7 +98,7 @@ function dramaTypeLabel(t: string | null | undefined): string {
   const map: Record<string, string> = {
     urban: '都市', fantasy: '玄幻', romance: '言情',
     horror: '悬疑', comedy: '喜剧', sci_fi: '科幻',
-    live_action: '真人', comic_drama: '漫剧',
+    costume: '古风',
   }
   return map[t ?? ''] || '短剧'
 }

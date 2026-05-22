@@ -275,3 +275,18 @@
 | 05-22AM | 1) MySQL Docker 重建（端口13306）+ socat 端口转发3306→13306 <br>2) drama_user_subscribe 表创建 <br>3) 全量测试数据插入（dramas/nodes/choices/users） <br>4) 后端启动 + sql_mode 修复 <br>5) P0 Subscription subscribed 字段验证（API 200） <br>6) APK rebuild + sync（6m15s BUILD SUCCESSFUL） | MySQL Docker 重建完成<br>socat TCP-LISTEN:3306,fork → 127.0.0.1:13306<br>drama_user_subscribe 表已创建<br>全量数据：3 dramas + 12 nodes + 6 choices + users<br>后端启动成功（19199）<br>Subscription API: toggle ON/OFF → subscribed true/false ✅<br>APK 4.4MB sync → download-page/ | 1) drama_user_subscribe 表缺失导致 500 错误 → 创建表解决<br>2) ruoyi_fastapi DB 不存在 → 重建后加载 schema<br>3) sys_menu 表 sql_mode 报错 → 修改全局 sql_mode<br>4) 旧用户 puatest 密码 hash 格式错误 → 新用户注册通过 | 1) APK 签名打包提审准备 <br>2) 生产环境 JWT_SECRET_KEY 配置文档化 |
 
 | 05-22AM2 | 1) APK 签名打包提审准备 <br>2) keystore 生成 <br>3) build.gradle signingConfig 配置 <br>4) Release APK build + sync | keystore: ai-drama-release.keystore (RSA 2048, SHA256, 36500天有效期)<br>build.gradle 已配置 signingConfig (release + debug)<br>assembleRelease BUILD SUCCESSFUL in 2m27s<br>app-release.apk 3.4MB sync → download-page/<br>签名证书：CN=AI Interactive Drama, CN=CN, 有效期至2126年 | — | APK 已签名，可以提审 |
+
+## 2026-05-22 最终交付（数据库修复 + APK签名 + 下载页更新）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-22Final | 1) MySQL数据库数据完整性检查（interactive nodes无0 choices）2) seed_data.sql文件落地（6 dramas/21 nodes/18 choices/3 ads）3) 数据库路径问题（ai_video vs ruoyi-fastapi）4) APK下载页更新（debug+release双版本）5) Git commit & push | ✅ 节点数据无炸点（interactive=1且choice_count=0 → 0条）✅ seed_data.sql: 118行，6 dramas + 21 nodes + 18 choices + 3 ads ✅ DB命名统一到ai_video（.env.dev DB_DATABASE=ai_video）✅ download-page: index.html更新，签名版release APK 3.4MB ✅ Git: 07704f4 搜索页/nginx配置/备份脚本已push ✅ 全链路：Dramas:6 / Feed:10 / APK:3.4MB / Download Page:200 ✅ | MySQL重建后数据丢失（手动INSERT未落文件）→ 创建seed_data.sql解决 | 提审准备完成 |
+
+---
+
+## 05-22 前后端联调 + 细节完善
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-22E2E | 1) theater页类型tab与DB值不一致修复 2) admin drama表单类型修复 3) mobile死代码清理（live_action/comic_drama）4) APK rebuild + sync 5) 全链路最终验证 | ✅ theater: comic_drama/live_action→实际DB值(全部/都市/古风/甜宠/玄幻/科幻)，本地过滤 ✅ admin drama form: 类型options和默认值改为urban/costume/romance/fantasy/sci_fi ✅ mobile 5处死代码清理：favorites/search/drama-detail/DramaCard/theater tagList ✅ H5 build: 编译通过 ✅ cap sync + gradle BUILD SUCCESSFUL ✅ APK(debug) 4.4MB sync → download-page/ ✅ 全链路：Feed:10 / Dramas:6 / Interactive nodes(7个各2条choices) 全部200 ✅ | theater类型tab与DB不匹配 → 之前仅修改了tab但未处理过滤逻辑；改为本地过滤后已解决 | — |
+
