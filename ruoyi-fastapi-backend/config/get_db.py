@@ -1,5 +1,6 @@
 from collections.abc import AsyncGenerator
 
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config.database import AsyncSessionLocal, Base, async_engine
@@ -20,11 +21,13 @@ async def init_create_table() -> None:
     """
     应用启动时初始化数据库连接
 
-    :return:
+    NOTE: Table creation is handled via Alembic migrations / SQL scripts.
+    Here we just verify connectivity without creating tables.
     """
     logger.info('🔎 初始化数据库连接...')
     async with async_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        # Just test connection - don't create tables (handled by migrations)
+        await conn.execute(text("SELECT 1"))
     logger.info('✅️ 数据库连接成功')
 
 
