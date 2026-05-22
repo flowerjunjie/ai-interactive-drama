@@ -126,6 +126,7 @@ function fetchResults(kw: string) {
   loaded.value = false
   uni.request({
     url: appApi('/dramas'),
+    data: { keyword: kw },
     header: authHeaders({}),
     success: (res: any) => {
       const b = res.data as any
@@ -135,13 +136,7 @@ function fetchResults(kw: string) {
         rows.value = []
         return
       }
-      const lowerKw = kw.toLowerCase()
-      rows.value = b.data.filter((d: any) => {
-        const title = (d.title || '').toLowerCase()
-        const tags = (d.tags || '').toLowerCase()
-        const dramaType = (d.drama_type || '').toLowerCase()
-        return title.includes(lowerKw) || tags.includes(lowerKw) || dramaType.includes(lowerKw)
-      })
+      rows.value = b.data
     },
     fail: () => {
       loading.value = false
