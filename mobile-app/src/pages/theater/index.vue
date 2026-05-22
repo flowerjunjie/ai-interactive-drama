@@ -19,7 +19,7 @@
           />
         </view>
         <!-- Filter -->
-        <view class="flex h-[38px] items-center rounded-full border border-white/5 bg-white/[0.05] px-4 active:bg-white/10" @click="loadDramas">
+        <view class="flex h-[38px] items-center rounded-full border border-white/5 bg-white/[0.05] px-4 active:bg-white/10" @click="showFilterSheet">
           <view class="i-mdi-filter-variant mr-1.5 text-[16px] text-white/80" />
           <text class="text-[14px] text-white/80">筛选</text>
         </view>
@@ -55,8 +55,8 @@
             <text :class="sortType === s.value ? 'text-[12px] font-medium text-white' : 'text-[12px] text-white/70'">{{ s.label }}</text>
           </view>
         </view>
-        <view class="flex items-center active:opacity-70">
-          <text class="text-[12px] text-white/70">全部标签</text>
+        <view class="flex items-center active:opacity-70" @click="clearTagFilter">
+          <text :class="selectedTag ? 'text-[12px] text-[#9a5cf6]' : 'text-[12px] text-white/70'">{{ selectedTag || '全部标签' }}</text>
           <view class="i-mdi-chevron-down ml-0.5 text-[16px] text-white/70" />
         </view>
       </view>
@@ -161,6 +161,7 @@ const rawDramas = ref<DramaRow[]>([])
 const dramaType = ref<'all' | 'urban' | 'costume' | 'romance' | 'fantasy' | 'sci_fi'>('all')
 const keyword = ref('')
 const sortType = ref<'recommend' | 'latest' | 'heat'>('recommend')
+const selectedTag = ref<string | null>(null)
 
 // Type tab labels
 const typeTabs = [
@@ -173,7 +174,14 @@ const typeTabs = [
 ]
 
 const gridItems = computed<GridItem[]>(() => {
-  return rawDramas.value.map((d) => ({
+  let items = rawDramas.value
+  if (selectedTag.value) {
+    items = items.filter(d => {
+      const tags = tagList(d)
+      return tags.some(t => t.includes(selectedTag.value!))
+    })
+  }
+  return items.map((d) => ({
     id: d.drama_id,
     title: d.title,
     cover: d.cover_url || placeholderCover,
@@ -189,13 +197,44 @@ const sortOptions = [
   { value: 'heat' as const, label: '热度' },
 ]
 
+const allTags = computed<string[]>(() => {
+  const tagSet = new Set<string>()
+  rawDramas.value.forEach(d => tagList(d).forEach(t => tagSet.add(t)))
+  return Array.from(tagSet).sort()
+})
+
+function showFilterSheet() {
+  if (allTags.value.length === 0) {
+    uni.showToast({ title: '暂无可筛选标签', icon: 'none' })
+    return
+  }
+  const items = ['全部标签', ...allTags.value]
+  uni.showActionSheet({
+    itemList: items,
+    itemColor: '#9a5cf6',
+    success: (res) => {
+      if (res.tapIndex === 0) {
+        selectedTag.value = null
+      } else {
+        selectedTag.value = items[res.tapIndex]
+      }
+    },
+  })
+}
+
+function clearTagFilter() {
+  selectedTag.value = null
+}
+
 function setTypeTab(t: 'all' | 'urban' | 'costume' | 'romance' | 'fantasy' | 'sci_fi') {
   dramaType.value = t
+  selectedTag.value = null
   loadDramas()
 }
 
 function setSort(s: 'recommend' | 'latest' | 'heat') {
   sortType.value = s
+  selectedTag.value = null
   loadDramas()
 }
 
