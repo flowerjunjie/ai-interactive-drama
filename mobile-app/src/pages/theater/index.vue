@@ -160,7 +160,7 @@ interface GridItem {
 const rawDramas = ref<DramaRow[]>([])
 const dramaType = ref<'all' | 'urban' | 'costume' | 'romance' | 'fantasy' | 'sci_fi'>('all')
 const keyword = ref('')
-const sortType = ref<'recommend' | 'latest' | 'heat' | 'score'>('recommend')
+const sortType = ref<'recommend' | 'latest' | 'heat'>('recommend')
 
 // Type tab labels
 const typeTabs = [
@@ -173,11 +173,7 @@ const typeTabs = [
 ]
 
 const gridItems = computed<GridItem[]>(() => {
-  let filtered = rawDramas.value
-  if (dramaType.value !== 'all') {
-    filtered = filtered.filter(d => d.drama_type === dramaType.value)
-  }
-  return filtered.map((d) => ({
+  return rawDramas.value.map((d) => ({
     id: d.drama_id,
     title: d.title,
     cover: d.cover_url || placeholderCover,
@@ -191,15 +187,16 @@ const sortOptions = [
   { value: 'recommend' as const, label: '推荐' },
   { value: 'latest' as const, label: '最新' },
   { value: 'heat' as const, label: '热度' },
-  { value: 'score' as const, label: '高分' },
 ]
 
 function setTypeTab(t: 'all' | 'urban' | 'costume' | 'romance' | 'fantasy' | 'sci_fi') {
   dramaType.value = t
+  loadDramas()
 }
 
-function setSort(s: 'recommend' | 'latest' | 'heat' | 'score') {
+function setSort(s: 'recommend' | 'latest' | 'heat') {
   sortType.value = s
+  loadDramas()
 }
 
 function tagList(d: DramaRow): string[] {
@@ -243,21 +240,14 @@ function loadDramas() {
   uni.request({
     url: appApi('/dramas'),
     data: {
+      ...(dramaType.value !== 'all' ? { drama_type: dramaType.value } : {}),
+      ...(sortType.value !== 'recommend' ? { sort: sortType.value } : {}),
       ...(keyword.value.trim() ? { keyword: keyword.value.trim() } : {}),
     },
     success: (res: any) => {
       const body = res.data as any
       if (body.code === 200 && Array.isArray(body.data)) {
-        let data = body.data as DramaRow[]
-        // Local sort — backend returns default (heat-based) order
-        if (sortType.value === 'heat') {
-          data = [...data].sort((a, b) => Number(b.heat ?? 0) - Number(a.heat ?? 0))
-        } else if (sortType.value === 'latest') {
-          data = [...data].sort((a, b) => (b.drama_id ?? 0) - (a.drama_id ?? 0))
-        } else if (sortType.value === 'score') {
-          data = [...data].sort((a, b) => Number(b.heat ?? 0) - Number(a.heat ?? 0))
-        }
-        rawDramas.value = data
+        rawDramas.value = body.data as DramaRow[]
       } else {
         rawDramas.value = []
       }

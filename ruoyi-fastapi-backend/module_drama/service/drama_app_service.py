@@ -122,8 +122,17 @@ class DramaAppContentService:
         db: AsyncSession,
         drama_type: str | None = None,
         keyword: str | None = None,
+        sort: str | None = None,
     ) -> list[Drama]:
-        q = select(Drama).where(Drama.status == 'published').order_by(Drama.sort.desc(), Drama.drama_id.desc())
+        q = select(Drama).where(Drama.status == 'published')
+        # Apply sort order
+        if sort == 'heat':
+            q = q.order_by(Drama.heat.desc(), Drama.drama_id.desc())
+        elif sort == 'latest':
+            q = q.order_by(Drama.create_time.desc(), Drama.drama_id.desc())
+        else:
+            # recommend (default): admin-defined sort rank
+            q = q.order_by(Drama.sort.desc(), Drama.drama_id.desc())
         if drama_type:
             q = q.where(Drama.drama_type == drama_type)
         if keyword:

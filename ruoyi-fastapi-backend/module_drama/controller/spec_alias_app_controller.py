@@ -73,8 +73,9 @@ async def spec_dramas(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     drama_type: str | None = Query(default=None),
     keyword: str | None = Query(default=None),
+    sort: str | None = Query(default=None, description='recommend|latest|heat'),
 ) -> Response:
-    rows = await DramaAppContentService.list_dramas(query_db, drama_type, keyword)
+    rows = await DramaAppContentService.list_dramas(query_db, drama_type, keyword, sort)
     return ResponseUtil.success(
         data=[
             {
