@@ -6,7 +6,9 @@
         <view class="i-mdi-chevron-left text-[28px] text-white" />
       </view>
       <text class="text-[15px] font-medium text-white">观看记录</text>
-      <view class="h-8 w-8" />
+      <view class="flex h-8 w-8 items-center justify-center active:opacity-70" @click="onShare">
+        <view class="i-mdi-share-variant text-[20px] text-white/80" />
+      </view>
     </view>
     <scroll-view scroll-y class="pb-[env(safe-area-inset-bottom)]">
       <view v-if="loaded && !rows.length" class="py-24 text-center">
@@ -87,6 +89,25 @@ function resume(row: Record<string, any>) {
 
 function goBack() {
   uni.navigateBack()
+}
+
+function onShare() {
+  uni.share({
+    provider: 'weixin',
+    scene: 'WXSceneSession',
+    title: 'AI 互动短剧 — 沉浸式分支剧情',
+    summary: '海量短剧、互动分支，体验不一样的人生',
+    success: () => uni.showToast({ title: '分享成功', icon: 'none' }),
+    fail: () => {
+      uni.share({
+        provider: '',
+        type: 0,
+        title: 'AI 互动短剧 — 沉浸式分支剧情',
+        success: () => {},
+        fail: () => {},
+      })
+    },
+  })
 }
 
 onShow(() => {
