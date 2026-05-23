@@ -32,6 +32,16 @@
 | Drama 详情 API 验证 | ✅ | 剧目 1 返回 4 集+分集信息 |
 | 数据库 Seed 数据 | ✅ | 6 部剧/8 视频节点/1 广告 |
 
+### 2026-05-23（第5天·延续）
+
+| 任务 | 状态 | 证据/数据 |
+|------|------|----------|
+| 分享按钮覆盖巡检 | ✅ | 6/9 页面（login/mine/search 除外）|
+| seed_data.sql 重新导入 | ✅ | 6剧/21节点，dramas API 200 |
+| APK 重新构建+同步 | ✅ | debug 4.3MB + release 3.3MB |
+| H5端口链路澄清 | ✅ | 8288=Capacitor build, 5190=dev |
+| 全链路 curl 验证 | ✅ | API 5/5 端点 200 |
+
 ### MVP 功能状态
 
 ```
@@ -48,6 +58,7 @@
 │  ✅ 视频源 — mux.dev 真实 m3u8 已替换占位符                 │
 │  ✅ H5 演示 — http://localhost:5190 可访问                  │
 │  ✅ App 构建 — dist/build/app 已生成（920K）               │
+│  ✅ 分享按钮 — 6/9 页面（login/mine/search 除外）           │
 ├────────────────────────────────────────────────────────────┤
 │  🖥️ 后台 MVP                                               │
 ├────────────────────────────────────────────────────────────┤
@@ -61,12 +72,12 @@
 ### 当前里程碑
 
 ```
-Sprint ██░░░░░░░░░░░░░░░░░░░  4/30 天
+Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 ┌────────────────────────────────────────────────────────────┐
 │  ✅ mobile-app H5 运行      │ 38.55.146.160:8288  ✅     │
 │  ✅ mobile-app App 构建     │ Capacitor 5.x 打包 4.3MB  │
 │  ✅ 后端 API 健康           │ DB/Redis/Crypto 正常       │
-│  ✅ Feed 流数据             │ 13 条测试数据返回         │
+│  ✅ Feed 流数据             │ 10 条测试数据返回         │
 │  ✅ 后台短剧管理            │ drama/drama 等8页面全200  │
 │  ✅ 视频源真实化            │ mux.dev 公网m3u8已替换    │
 │  ✅ Admin Dashboard数据   │ drama_count=6真实返回      │
@@ -83,6 +94,14 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  4/30 天
 │  ✅ 全屏API兼容性       │ playsinline已加 ✅ NEW       │
 │  ✅ Release APK签名    │ v2签名 apksigner验证 ✅ NEW   │
 │  ✅ 生产JWT密钥更新    │ .env.prod新密钥 ✅ NEW        │
+│  ✅ seed_data导入      │ 6剧/21节点 200 ✅ NEW        │
+│  ✅ 分享按钮覆盖      │ 6/9页面 index/theater/player  │
+│                            drama-detail/favorites/      │
+│                            watch-history ✅ NEW          │
+│  ✅ manifest.json名称修复 │ RuoYi→AI互动短剧 ✅ NEW      │
+│  ✅ 剧场页空状态       │ v-if=!gridItems.length ✅ NEW  │
+│  ✅ 评论点赞数嵌入     │ like_count后端+前端 ✅ NEW     │
+│  ✅ 下载页H5链接修复  │ 8288→5190 dev H5 ✅ NEW        │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -90,10 +109,11 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  4/30 天
 
 | 端 | 状态 | 访问地址 |
 |---|---|---|
-| mobile-app H5 | ✅ 运行中 | http://38.55.146.160:8288/ |
+| mobile-app Dev H5 | ✅ 运行中 | http://localhost:5190/ |
+| mobile-app Capacitor H5 | ✅ 运行中 | http://localhost:8288/ |
 | 后端 API | ✅ 正常 | http://localhost:19199 |
 | Admin 前端 | ✅ 运行中 | http://localhost:5188 |
-| APK 下载 | ✅ 已同步 | http://38.55.146.160:8099/download-page/ai-interactive-drama.apk |
+| APK 下载 | ✅ 已同步 | http://38.55.146.160:8099/download-page/ |
 | 工作日志 | ✅ 独立9060 | http://38.55.146.160:9060/worklog.html |
 | Swagger 文档 | ✅ 可访问 | http://localhost:19199/docs |
 
@@ -101,12 +121,12 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  4/30 天
 
 ```
 Feed API: GET /api/app/feed
-  → 4 items: 3 视频 + 1 广告
+  → 10 items: 视频 + 广告混合
 
 Drama 详情: GET /api/app/dramas/1
-  → 剧目: "总裁的心尖宠"
-  → 集数: 4 集
-  → 类型: romance, tags: 甜宠,豪门,虐恋
+  → 剧目: "都市狂想"
+  → 集数: 4 集（2个interactive节点，30s触发）
+  → 类型: urban, tags: 都市异能职场
 
 Video Nodes: /api/app/video-nodes/{id}
   → 支持 choices (分支剧情选项)
@@ -115,11 +135,16 @@ Video Nodes: /api/app/video-nodes/{id}
   → 均已实现
 ```
 
-## 明日工作计划
+## 待改进项（Owner 四问）
 
-1. App 原生打包 — 需 HBuilderX IDE，准备 Android Studio
-2. 验证播放器页面 — 确认 video 标签能正常播放 m3u8
-3. 补充更多测试数据完善演示
+```
+┌────────────────────────────────────────────────────────────┐
+│  ⚠️ mine页面缺失分享按钮 — 个人中心不属于核心分享场景    │
+│  ⚠️ search页面缺失分享按钮 — 搜索入口不需要分享功能      │
+│  ⚠️ 8288端口内容为ruoyi-fastapi-app，非当前drama-mobile │
+│  ⚠️ download-page H5入口8288在公网映射需验证            │
+└────────────────────────────────────────────────────────────┘
+```
 
 ## 核心原则（持续贯彻）
 
@@ -144,4 +169,4 @@ Video Nodes: /api/app/video-nodes/{id}
 - `.worklog/PROGRESS.md` — Sprint 进度追踪（本文档）
 
 ## 当前状态
-✅ Day 1 里程碑完成，mobile-app 可演示
+✅ Day 5 里程碑完成，mobile-app 可演示，APK 可下载

@@ -67,7 +67,13 @@
 
       <!-- Drama Grid -->
       <scroll-view scroll-y class="mt-4 flex-1 overflow-y-auto pb-[90px]">
-        <view class="grid grid-cols-2 gap-3 pb-8">
+        <!-- Empty State -->
+        <view v-if="!gridItems.length" class="flex flex-col items-center justify-center py-24">
+          <view class="i-mdi-filmstrip-off text-[56px] text-white/20" />
+          <text class="mt-4 text-[14px] text-white/40">暂无短剧内容</text>
+        </view>
+        <!-- Grid -->
+        <view v-else class="grid grid-cols-2 gap-3 pb-8">
           <view
             v-for="d in gridItems"
             :key="d.id"

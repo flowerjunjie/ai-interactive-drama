@@ -384,14 +384,28 @@ class DramaAppContentService:
         await db.commit()
 
     @classmethod
-    async def list_comments(cls, db: AsyncSession, drama_id: int) -> list[DramaComment]:
+    async def list_comments(cls, db: AsyncSession, drama_id: int) -> list[dict]:
         r = await db.execute(
             select(DramaComment)
             .where(DramaComment.drama_id == drama_id, DramaComment.status == '0')
             .order_by(DramaComment.create_time.desc())
             .limit(100)
         )
-        return list(r.scalars().all())
+        comments = list(r.scalars().all())
+        out = []
+        for c in comments:
+            like_n = await cls.like_count(db, 'comment', c.comment_id)
+            out.append({
+                'comment_id': c.comment_id,
+                'app_user_id': c.app_user_id,
+                'drama_id': c.drama_id,
+                'node_id': c.node_id,
+                'content': c.content,
+                'like_count': like_n,
+                'status': c.status,
+                'create_time': c.create_time.isoformat() if c.create_time else None,
+            })
+        return out
 
     @classmethod
     async def log_choice(cls, db: AsyncSession, user_id: int, body: ChoiceLogIn) -> None:

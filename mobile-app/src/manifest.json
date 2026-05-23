@@ -1,9 +1,9 @@
 {
-  "name": "RuoYi-FastAPI移动端",
+  "name": "AI互动短剧",
   "appid": "__UNI__25A9D80",
-  "description": "",
-  "versionName": "1.9.0",
-  "versionCode": "100",
+  "description": "AI互动短剧 — 沉浸式分支剧情体验",
+  "versionName": "1.0.1",
+  "versionCode": "101",
   "transformPx": false,
   "app-plus": {
     "usingComponents": true,
@@ -61,7 +61,7 @@
       "port": 5190,
       "https": false
     },
-    "title": "RuoYi-FastAPI-APP",
+    "title": "AI互动短剧",
     "router": {
       "mode": "hash",
       "base": "./"

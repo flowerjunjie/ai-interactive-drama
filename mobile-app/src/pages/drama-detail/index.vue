@@ -174,6 +174,10 @@
               <text class="text-[12px] font-medium text-white/60">用户{{ c.user_id }}</text>
             </view>
             <text class="mt-1 block text-[13px] leading-relaxed text-white/90">{{ c.content }}</text>
+            <view v-if="c.like_count" class="mt-1 flex items-center gap-1">
+              <view class="i-mdi-heart text-[12px] text-[#f43f5e]" />
+              <text class="text-[11px] text-white/40">{{ c.like_count }}</text>
+            </view>
           </view>
         </view>
         <view class="mt-2 flex items-center gap-2 pb-2">
