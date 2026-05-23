@@ -1,202 +1,60 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>工作日志 - AI互动短剧</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; padding: 20px; }
-    .container { max-width: 1100px; margin: 0 auto; }
-    h1 { color: #fff; font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #333; }
-    h2 { color: #9a5cf6; font-size: 18px; margin: 30px 0 15px; }
-    table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
-    th { background: #1a1a2e; color: #9a5cf6; padding: 10px 12px; text-align: left; border: 1px solid #2a2a3e; }
-    td { padding: 10px 12px; border: 1px solid #2a2a3e; background: #12121a; vertical-align: top; }
-    tr:hover td { background: #1a1a2e; }
-    .done { color: #4ade80; }
-    .warn { color: #f97316; }
-    code { background: #1a1a2e; padding: 2px 6px; border-radius: 3px; font-size: 12px; color: #4ade80; }
-    .summary { background: #12121a; border: 1px solid #2a2a3e; border-radius: 8px; padding: 15px; margin: 20px 0; }
-    .summary h4 { color: #fff; margin-bottom: 10px; }
-    .summary ul { margin: 0; padding-left: 20px; }
-    .summary li { margin: 5px 0; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; margin-right: 5px; }
-    .badge-green { background: #22c55e20; color: #4ade80; border: 1px solid #22c55e40; }
-    .badge-red { background: #ef444420; color: #f87171; border: 1px solid #ef444440; }
-    .badge-yellow { background: #eab30820; color: #facc15; border: 1px solid #eab30840; }
-    .badge-purple { background: #8b5cf620; color: #a78bfa; border: 1px solid #8b5cf640; }
-    .back { display: inline-block; margin-bottom: 20px; color: #888; text-decoration: none; font-size: 13px; }
-    .back:hover { color: #9a5cf6; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作日志 2026-05-23</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; padding: 40px 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #9a5cf6; font-size: 26px; padding-bottom: 16px; border-bottom: 2px solid #2a2a3e; margin-bottom: 32px; }
+h2 { color: #9a5cf6; font-size: 15px; font-weight: 600; margin: 28px 0 12px; padding-left: 12px; border-left: 3px solid #9a5cf6; }
+table { width: 100%; border-collapse: collapse; background: #12121a; border-radius: 8px; overflow: hidden; border: 1px solid #2a2a3e; margin-bottom: 12px; }
+th { background: #1a1a2e; color: #9a5cf6; padding: 12px 14px; text-align: left; font-size: 13px; font-weight: 600; border-bottom: 1px solid #2a2a3e; }
+td { padding: 10px 14px; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; vertical-align: top; line-height: 1.7; }
+tr:last-child td { border-bottom: none; }
+.ok { color: #4ade80; }
+.err { color: #f87171; }
+.warn { color: #fbbf24; }
+.summary { background: #12121a; border: 1px solid #2a2a3e; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; }
+.summary h4 { color: #9a5cf6; font-size: 15px; margin-bottom: 12px; }
+.summary ul { list-style: none; }
+.summary li { padding: 6px 0; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; }
+.summary li:last-child { border-bottom: none; }
+.summary .ok { color: #4ade80; }
+.files { margin-top: 32px; }
+.files h2 { color: #9a5cf6; margin-top: 0; }
+.files table td:first-child { color: #9a5cf6; font-weight: 600; }
+</style>
 </head>
 <body>
 <div class="container">
-  <a href="/" class="back">← 返回下载页</a>
-  <h1>📋 工作日志 · AI互动短剧项目</h1>
+  <h1>📋 工作日志 · AI互动短剧项目 · 2026-05-23</h1>
 
   <div class="summary">
-    <h4>📊 关键成果（05-21）</h4>
+    <h4>📊 关键成果（2026-05-23）</h4>
     <ul>
-      <li><span class="badge badge-purple">APK打包</span> 全链路 E2E 验证完成，H5/APK/Backend 全部 200</li>
-      <li><span class="badge badge-green">播放器</span> 全屏/分享按钮功能实现，toggleFullscreen/onShare</li>
-      <li><span class="badge badge-green">分支剧情</span> node25/26/27 各 2 条 choices，30s 触发分支</li>
-      <li><span class="badge badge-yellow">冰山</span> 发现 ep4(node28) 无分支数据，已记录待补</li>
-      <li><span class="badge badge-purple">次日重点</span> node28 分支数据补充 + Subscription subscribed 字段修复</li>
+      <li><span class="ok">✅</span> A) APK签名提审准备：keystore RSA-2048/SHA-256/有效期至2126年/release APK 3.3MB签名已验证</li>
+      <li><span class="ok">✅</span> B) 生产JWT配置文档化：.env.prod已配置256-bit强密钥 ⚠️各环境密钥相同（建议生产单独生成）</li>
+      <li><span class="ok">✅</span> C) 代码审查：console.log 0条/hardcoded localhost 0条/SQL注入0条/明文密码0条</li>
+      <li><span class="ok">✅</span> 全链路服务状态：Backend:200 / Admin:200 / H5:200 / 日志:200</li>
     </ul>
   </div>
 
-  <h2>2026-05-21 凌晨</h2>
-  <table>
-    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
-    <tr>
-      <td>05-21AM</td>
-      <td>1) drama-detail 类型标签映射（urban→都市/fantasy→玄幻等） <br>2) 剧目描述展开/收起功能 <br>3) rebuild + APK sync <br>4) 全链路 E2E HTTP 200 验证</td>
-      <td>typeLabel computed 支持 8 种类型映射（urban/fantasy/romance/horror/comedy/sci_fi/live_action/comic_drama）<br>descExpanded ref 实现展开收起toggle<br>build + APK sync，HTTP 200<br>Feed/Dramas/Ads/Node API 全部 200 验证通过</td>
-      <td>—</td>
-      <td>1) ep4(node28)补充分支剧情choice数据 <br>2) Subscription组件subscribed字段逻辑加固</td>
-    </tr>
-    <tr>
-      <td>05-21AM</td>
-      <td>1) 后端 19199 端口重启（server:create_app） <br>2) 全链路 E2E 验证 <br>3) APK rebuild（build failed → local.properties 修复 → BUILD SUCCESSFUL） <br>4) APK sync 到 download-page</td>
-      <td>后端端口 19199 已重启（PID 25975）<br>全链路验证：Feed/Dramas/Ads/Favorites/Subscriptions/H5/APK 全部 200<br>Gradle build 失败根因：local.properties 缺少 sdk.dir<br>修复后 BUILD SUCCESSFUL in 2m4s<br>APK 4.3MB sync 到 download-page</td>
-      <td>—</td>
-      <td>1) theater页补充ep4(node28)分支剧情数据 <br>2) Subscription组件subscribed字段读取修复</td>
-    </tr>
-  </table>
+  <div class="section"><h2>2026-05-23 上午</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody><tr><th>05-23AM</th><th>1) A) APK签名提审准备 2) B) 生产JWT配置文档化 3) C) 代码审查+泛化同类问题</th><th><span class="ok">✅ A) keystore RSA-2048/SHA-256/有效期至2126年/release APK 3.3MB签名已验证</span><br><span class="ok">✅ B) .env.prod JWT_SECRET_KEY已配置256-bit强密钥</span><br>⚠<br>️ 各环境密钥相同（建议生产单独生成）<br><span class="ok">✅ C) console.log 0条/hardcoded localhost 0条/SQL注入0条/明文密码0条</span><br><span class="ok">✅ 全链路:Backend:200/Admin:200/H5:200/日志:200</span></th><th>—</th><th>APK可提审；生产JWT建议单独生成密钥</th></tr>
+</tbody></table></div>
 
-  <h2>2026-05-21 上午</h2>
-  <table>
-    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
-    <tr>
-      <td>05-21AM2</td>
-      <td>1) APK rebuild + sync <br>2) 全链路 HTTP 200 最终验证 <br>3) Worklog 更新</td>
-      <td>APK 4.3MB sync，HTTP 200<br>H5:200 / APK:200 / Feed:200 / Dramas:200 / Ads:200 / Node:200 / Subscriptions:200<br>Worklog 全量更新</td>
-      <td>—</td>
-      <td>1) theater页类型tab数据驱动化 <br>2) 后端搜索API keyword支持</td>
-    </tr>
-    <tr>
-      <td>05-21AM3</td>
-      <td>1) mine 页「我的点赞」点击跳转 favorites 页 <br>2) theater 卡片 label 显示「热播」/「新剧」区分 <br>3) 首页 hero 标签显示真实 API 数据 <br>4) APK rebuild + sync <br>5) 全链路 HTTP 200 验证</td>
-      <td>mine 页「我的点赞」→ favorites/index<br>theater label 热播/新剧真实数据<br>heroTagList 从 API tags 解析，非硬编码默认值<br>build + APK sync，HTTP 200</td>
-      <td>—</td>
-      <td>1) 分享API微信真机验证 <br>2) 分享回流数据统计</td>
-    </tr>
-    <tr>
-      <td>05-21AM4</td>
-      <td>1) search 页类型标签映射（drama_type→中文） <br>2) favorites 页类型标签映射 <br>3) favorites/player/drama-detail 三页 dramaTypeLabel 一致性 <br>4) APK rebuild + sync</td>
-      <td>search 页 dramaTypeLabel() 支持 8 种类型（urban/fantasy/romance/horror/comedy/sci_fi/live_action/comic_drama→短剧）<br>favorites 页同样支持<br>build + APK sync，HTTP 200，4.3MB</td>
-      <td>—</td>
-      <td>1) 播放页进度保存机制 <br>2) 全屏API移动端兼容性验证</td>
-    </tr>
-    <tr>
-      <td>05-21AM5</td>
-      <td>1) 全链路 HTTP 最终验证 <br>2) Worklog 更新</td>
-      <td>H5:200 / APK:200 / Feed:200 / Dramas:200 / Ads:200 / Node:200 / Subscriptions:200 (Likes=405 因 GET 测试正确，POST 才工作)<br>4.3MB APK sync</td>
-      <td>—</td>
-      <td>1) APK签名打包提审准备 <br>2) 真实用户E2E体验走查</td>
-    </tr>
-    <tr>
-      <td>05-21AM2</td>
-      <td>1) E2E 深度巡检（10个API + 5个页面） <br>2) APK rebuild + sync <br>3) Worklog 更新</td>
-      <td>发现 node_id vs nodeId 兼容性问题（第79行）— 均有 fallback 处理，暂无 bug<br>发现 drama_type tab UI vs DB 类型不一致 — theater 页已修复（不传 drama_type，只用 keyword）<br>发现 choices 数据 30s 分支剧情只在 node 25/26/27（ep1-3），ep4（node28）无分支<br>mine 页「我的点赞」网格项缺少点击处理 — 已加 goFavorites 跳转<br>H5 build + Gradle BUILD SUCCESSFUL<br>全链路：Backend:200 / H5:200 / APK:200 / Favorites:200 / Dashboard:200<br>APK 4.3MB sync 到 download-page/</td>
-      <td>—</td>
-      <td>1) node28 ep4补充分支剧情choice数据 <br>2) Subscription组件subscribed字段读取修复 <br>3) JWT生产环境SECRET_KEY配置文档化</td>
-    </tr>
-    <tr>
-      <td>05-21AM3</td>
-      <td>1) DramaCard 组件 drama_type 中文映射修复 <br>2) APK rebuild + sync <br>3) E2E 最终验证 <br>4) Worklog 更新</td>
-      <td>DramaCard 组件类型标签：raw drama_type→中文映射（urban/都市、costume/古风等）<br>H5 build + Gradle BUILD SUCCESSFUL in 57s<br>APK 4.3MB sync 到 download-page/<br>全链路：Backend/H5/APK/Favorites/Subscriptions 全部 200</td>
-      <td>—</td>
-      <td>1) drama_type DB值与UI标签一致性梳理 <br>2) theater页类型筛选恢复</td>
-    </tr>
-    <tr>
-      <td>05-21AM4</td>
-      <td>1) 全量 API 巡检（Feed/Dramas/Ads/VideoNodes/Choices/Subscriptions/Dashboard） <br>2) 分支剧情数据验证（node25/26/27各2条choices） <br>3) APK rebuild + sync <br>4) Worklog 更新</td>
-      <td>Feed: 13条数据(含广告)<br>Dramas: 3条（urban/costume/romance）<br>Ads: 12条 覆盖feed/pause/pre_roll/detail<br>VideoNodes: node25/26/27各2条choices（A接受安排/B自主创业）<br>Subscriptions: 追更API正常<br>Dashboard: 统计数据正常<br>H5 build + Gradle BUILD SUCCESSFUL in 32s<br>APK 4.3MB sync</td>
-      <td>—</td>
-      <td>1) ep4(node28)补充分支剧情 <br>2) 生产环境JWT_SECRET_KEY配置SOP</td>
-    </tr>
-  </table>
-
-  <h2>2026-05-21 中午</h2>
-  <table>
-    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
-    <tr>
-      <td>05-21Noon</td>
-      <td>1) 播放器全屏按钮缺失（@click未绑定） <br>2) toggleFullscreen() 函数实现 <br>3) APK rebuild + sync <br>4) E2E 最终验证 <br>5) Worklog 更新</td>
-      <td>播放器进度条右侧全屏图标已有@click="toggleFullscreen"，之前缺少对应函数<br>toggleFullscreen() 已实现（H5 web全屏API）<br>H5 build + Gradle BUILD SUCCESSFUL in 43s<br>APK 4.3MB sync 到 download-page/<br>全链路：Backend/H5/APK 全部 200</td>
-      <td>—</td>
-      <td>1) 全屏API移动端兼容性验证 <br>2) 播放页进度保存机制</td>
-    </tr>
-  </table>
-
-  <h2>2026-05-21 下午</h2>
-  <table>
-    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
-    <tr>
-      <td>05-21PM</td>
-      <td>1) 播放器分享按钮缺失处理函数 <br>2) onShare() 实现（uni.share API） <br>3) APK rebuild + sync <br>4) Worklog 更新</td>
-      <td>播放器右侧边栏分享图标 @click="onShare" 已绑定<br>onShare() 实现 uni.share（微信+fallback系统分享）<br>H5 build + Gradle BUILD SUCCESSFUL in 1m39s<br>APK 4.3MB sync 到 download-page/<br>全链路：Backend/H5/APK 全部 200</td>
-      <td>—</td>
-      <td>1) 分享API移动端真机验证 <br>2) 分享回流数据统计</td>
-    </tr>
-  </table>
-
-  <h2>2026-05-21 傍晚</h2>
-  <table>
-    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
-    <tr>
-      <td>05-21PM2</td>
-      <td>1) 全链路健康检查 <br>2) 分支剧情choice-log E2E分析（player→choice-logs→redirect） <br>3) APK rebuild + sync <br>4) Worklog 更新</td>
-      <td>Backend(19199): API全部200，根路径404正常（未注册/）<br>H5(8288): 200 OK<br>APK(8188): 200 OK 4.3MB<br>Login: 200 OK<br>choice-log路由：`/api/app/choice-logs`(app_drama_controller) + `/api/app/choice-logs`(spec_alias_app_controller)均已注册<br>choice-log数据流：用户选择→POST choice-logs→redirectTo nextNode<br>ChoicePopup组件：choices→emit(pick nextId)→player onPick()→appApi('/choice-logs')<br>onPick()实现：先POST choice-logs再redirect，complete回调保证无论成功失败都跳转<br>H5 build + Gradle BUILD SUCCESSFUL<br>APK 4.3MB sync 到 download-page/</td>
-      <td>—</td>
-      <td>1) 分支剧情30s触发时机优化（提前5s预加载选项UI）<br>2) 追更推送通知能力评估</td>
-    </tr>
-    <tr>
-      <td>05-21PM2b</td>
-      <td>1) 分支剧情数据完整性验证 <br>2) 搜索页本地过滤分析 <br>3) 全链路 E2E 验证 <br>4) mine 页功能完整性审查 <br>5) theater 页tabs分析 <br>6) Worklog 更新</td>
-      <td>分支剧情数据完整：Node25/26/27各2条choices，Node28终端节点<br>所有 interactive 节点均30s触发分支<br>搜索页使用 `/api/app/dramas` 本地 client-side 过滤（非后端 search API）— 当前实现正确<br>全链路：Backend:200 / H5:200 / APK(8188):200 / Login:OK / choice-log:OK<br>核心API验证：Node25(2c)→Node26(2c)→Node27(2c)→Node28(0c终端)<br>mine页：goFavorites/goWatchHistory均绑定，watch-history页存在（pages.json已注册）<br>theater页tabscosmetic设计（不影响功能）<br>所有页面@click处理函数完整，无漏绑定</td>
-      <td>—</td>
-      <td>1) 后端搜索API实现（ keyword search 支持）<br>2) theater页类型tab数据驱动化</td>
-    </tr>
-  </table>
-
-  <h2>2026-05-21 夜间</h2>
-  <table>
-    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
-    <tr>
-      <td>05-21Night</td>
-      <td>1) 全链路最终交付巡检 <br>2) 全量 API E2E 验证 <br>3) 交付报告输出 <br>4) Worklog 更新</td>
-      <td>全链路：Backend(19199)<br>/ H5(8288)<br>/ APK下载(8188)<br>全量API：Login<br>Dramas<br>Favorites<br>Subscriptions<br>WatchHistory<br>VideoNode25<br>Comments<br>ChoiceLog<br>APK: 4.3MB sync 到 download-page/<br>Git: 1b449b5</td>
-      <td>—</td>
-      <td>1) 真实用户E2E体验走查 <br>2) APK签名打包提审流程</td>
-    </tr>
-  </table>
-
-  <h2>2026-05-21 深夜</h2>
-  <table>
-    <tr><th>日期</th><th>工作内容</th><th>进度</th><th>问题与解决</th><th>次日计划</th></tr>
-    <tr>
-      <td>05-21Late</td>
-      <td>1) P0 真机视频播放验证 <br>2) P1 评论列表渲染验证 <br>3) P2 JWT Secret 分析 <br>4) P3 Admin Frontend 检查 <br>5) Worklog 更新</td>
-      <td>P0 m3u8 stream: 200 OK (mux.dev公网流)<br>P0 episode导航: drama6→entry_node=25→4 episodes(25/26/27/28)→playNode(nodeId)→player<br>P1 评论列表: API返回comment_id/user_id/content字段完整，UI渲染正确<br>P1 POST comment: 成功写入<br>P2 JWT secret: pydantic Field(default)支持env覆盖，生产环境设置JWT_SECRET_KEY即可，非代码bug<br>P3 Admin(5188): 未启动，非C端MVP关键路径</td>
-      <td>—</td>
-      <td>1) 生产环境JWT_SECRET_KEY配置落地 <br>2) Admin前端服务化部署</td>
-    </tr>
-  </table>
-
-  <h2>📁 关键文件路径</h2>
-  <table>
-    <tr><th>文件</th><th>说明</th></tr>
-    <tr><td><code>/.worklog/WORKLOG.md</code></td><td>工作日志原始文件</td></tr>
-    <tr><td><code>/.worklog/worklog-2026-05-21.html</code></td><td>本页面生成文件</td></tr>
-    <tr><td><code>/download-page/ai-interactive-drama.apk</code></td><td>最新APK (4.3MB)</td></tr>
-    <tr><td><code>/mobile-app/src/pages/player/index.vue</code></td><td>播放器页面（已实现全屏/分享）</td></tr>
-    <tr><td><code>/ruoyi-fastapi-backend/module_drama/</code></td><td>后端Drama业务模块</td></tr>
-  </table>
-
-  <br><br>
+  <div class="files">
+    <h2>📁 关键文件路径</h2>
+    <table>
+      <tr><th>文件</th><th>路径</th></tr>
+      <tr><td>WORKLOG.md</td><td>.worklog/WORKLOG.md</td></tr>
+      <tr><td>HTML日志</td><td>.worklog/worklog-2026-05-23.html</td></tr>
+      <tr><td>APK release</td><td>download-page/ai-interactive-drama-release.apk (3.3MB)</td></tr>
+      <tr><td>keystore</td><td>mobile-app/android/app/ai-drama-release.keystore</td></tr>
+    </table>
+  </div>
 </div>
 </body>
 </html>

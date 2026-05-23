@@ -264,7 +264,16 @@ function onCommentTap() {
 }
 
 function onShareTap() {
-  uni.showToast({ title: '请使用系统分享', icon: 'none' })
+  const title = 'AI 互动短剧 — 沉浸式分支剧情，体验不一样的人生'
+  uni.share({
+    provider: '',
+    type: 0,
+    title,
+    success: () => {},
+    fail: () => {
+      /* share unavailable — silent fail */
+    },
+  })
 }
 
 function switchTab(url: string) {

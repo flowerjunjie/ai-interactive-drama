@@ -337,3 +337,12 @@
 |------|------------------|----------|---------------------|--------------|
 | 05-23AM-C | 1) APK rebuild + download-page同步 2) 全链路HTTP验证 3) 下载页工作日志入口移除 | ✅ debug APK(4.3MB) sync → download-page/ai-interactive-drama.apk ✅ release APK(3.3MB v2签名) → download-page/ai-interactive-drama-release.apk ✅ 全链路：H5(8288):200 / Admin(8188):200 / Backend(19199):200 / Worklog(9060):200 ✅ 下载页工作日志入口已移除 | — | — |
 
+
+---
+
+## 2026-05-23 上午（续3）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-23AM-D | 1) 首页分享入口修复(onShareTap → uni.share) 2) drama-detail分享按钮绑定(onShare函数) 3) APK rebuild + sync | ✅ 首页share入口：onShareTap改用uni.share，silent fail处理 ✅ drama-detail分享按钮@click="onShare"，displayTitle/Desc做分享标题/摘要 ✅ cap sync + gradle BUILD SUCCESSFUL ✅ APK 4.3MB sync → download-page/ | — | — |
+

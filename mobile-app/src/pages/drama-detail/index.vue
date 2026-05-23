@@ -6,7 +6,7 @@
         <view class="flex h-8 w-8 items-center active:opacity-70" @click="goBack">
           <view class="i-mdi-chevron-left text-[32px] text-white" />
         </view>
-        <view class="flex items-center gap-1 active:opacity-70">
+        <view class="flex items-center gap-1 active:opacity-70" @click="onShare">
           <view class="i-mdi-share-variant-outline text-[18px] text-white" />
           <text class="text-[13px] font-medium text-white">分享</text>
         </view>
@@ -342,6 +342,17 @@ function playEntry() {
 
 function openDrama(id: number) {
   uni.redirectTo({ url: `/pages/drama-detail/index?id=${id}` })
+}
+
+function onShare() {
+  uni.share({
+    provider: '',
+    type: 0,
+    title: displayTitle.value,
+    summary: displayDesc.value.slice(0, 60),
+    success: () => {},
+    fail: () => {},
+  })
 }
 
 function loadComments(id: number) {
