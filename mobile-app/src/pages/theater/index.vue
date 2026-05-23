@@ -23,6 +23,10 @@
           <view class="i-mdi-filter-variant mr-1.5 text-[16px] text-white/80" />
           <text class="text-[14px] text-white/80">筛选</text>
         </view>
+        <!-- Share -->
+        <view class="flex h-[38px] w-[38px] items-center justify-center rounded-full border border-white/5 bg-white/[0.05] active:bg-white/10" @click="onShare">
+          <view class="i-mdi-share-variant text-[18px] text-white/80" />
+        </view>
       </view>
 
       <!-- Tabs -->
@@ -293,6 +297,27 @@ function loadDramas() {
     },
     fail: () => {
       rawDramas.value = []
+    },
+  })
+}
+
+function onShare() {
+  uni.share({
+    provider: 'weixin',
+    scene: 'WXSceneSession',
+    title: 'AI 互动短剧 — 沉浸式分支剧情',
+    summary: '海量短剧、互动分支，体验不一样的人生',
+    success: () => uni.showToast({ title: '分享成功', icon: 'none' }),
+    fail: () => {
+      uni.share({
+        provider: '',
+        type: 0,
+        title: 'AI 互动短剧 — 沉浸式分支剧情',
+        success: () => {},
+        fail: () => {
+          /* system share unavailable — no toast spam */
+        },
+      })
     },
   })
 }
