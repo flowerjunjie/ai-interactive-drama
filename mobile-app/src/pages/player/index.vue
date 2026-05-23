@@ -569,8 +569,8 @@ function onLoadedMeta(e: any) {
     try {
       const ctx = uni.createVideoContext('dramaVideo')
       ctx.seekTo(savedProgressSec.value)
-    } catch {
-      /* ignore */
+    } catch (err) {
+      console.warn('[player] seekTo failed, progress restored silently:', savedProgressSec.value, err)
     }
   }
 }
