@@ -346,3 +346,12 @@
 |------|------------------|----------|---------------------|--------------|
 | 05-23AM-D | 1) 首页分享入口修复(onShareTap → uni.share) 2) drama-detail分享按钮绑定(onShare函数) 3) APK rebuild + sync | ✅ 首页share入口：onShareTap改用uni.share，silent fail处理 ✅ drama-detail分享按钮@click="onShare"，displayTitle/Desc做分享标题/摘要 ✅ cap sync + gradle BUILD SUCCESSFUL ✅ APK 4.3MB sync → download-page/ | — | — |
 
+
+---
+
+## 2026-05-23 上午
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-23AM | 1) 下载页APK URL从8188修正为8099 2) Release APK v1.0.1复制到download-page 3) 版本号bump (versionCode 2 / versionName 1.0.1) + commit 4) 播放页 seekTo catch静默失败 → 加console.warn可观测性 5) 剧场页缺失分享入口 → 新增share按钮 6) rebuild + 最新APK同步 | ✅ download-page/index.html APK链接全部修正8099，commit 67290b8 ✅ Release APK 3.3MB sync (v1.0.1) ✅ seekTo静默失败 → console.warn(savedProgressSec, err) 2dc5d10 ✅ theater页share按钮 281caa2 ✅ 最新APK(3.3MB) commit 4983244 ✅ E2E全链路 Feed/Dramas/Node/Comments 全部200 | worklog nginx root path 404但/worklog.html正常（symlink问题），不影响下载页 | 1) AppStore应用市场账号注册+上架 2) 搜索页无结果空状态优化 3) favorites页补充分享 4) watch-history历史页面社交入口 |
+
