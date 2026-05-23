@@ -392,16 +392,25 @@ class DramaAppContentService:
             .limit(100)
         )
         comments = list(r.scalars().all())
+        if not comments:
+            return []
+        # Batch-fetch like counts in a single query to avoid N+1
+        comment_ids = [c.comment_id for c in comments]
+        like_counts_r = await db.execute(
+            select(DramaUserLike.target_id, func.count())
+            .where(DramaUserLike.target_type == 'comment', DramaUserLike.target_id.in_(comment_ids))
+            .group_by(DramaUserLike.target_id)
+        )
+        like_counts_map = dict(like_counts_r.all())
         out = []
         for c in comments:
-            like_n = await cls.like_count(db, 'comment', c.comment_id)
             out.append({
                 'comment_id': c.comment_id,
                 'app_user_id': c.app_user_id,
                 'drama_id': c.drama_id,
                 'node_id': c.node_id,
                 'content': c.content,
-                'like_count': like_n,
+                'like_count': like_counts_map.get(c.comment_id, 0),
                 'status': c.status,
                 'create_time': c.create_time.isoformat() if c.create_time else None,
             })
@@ -458,8 +467,8 @@ class DramaAppContentService:
             select(func.count()).select_from(DramaUserLike).where(DramaUserLike.app_user_id == user_id)
         )
         r_chase = await db.execute(
-            select(func.count(func.distinct(DramaUserWatchHistory.drama_id))).where(
-                DramaUserWatchHistory.app_user_id == user_id
+            select(func.count(func.distinct(DramaUserSubscribe.drama_id))).where(
+                DramaUserSubscribe.app_user_id == user_id
             )
         )
         return {
