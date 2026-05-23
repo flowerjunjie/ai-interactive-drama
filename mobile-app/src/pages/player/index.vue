@@ -9,6 +9,8 @@
         :src="videoSrc"
         :controls="false"
         object-fit="cover"
+        playsinline
+        webkit-playsinline
         enable-progress-gesture
         @timeupdate="onTimeUpdate"
         @ended="onEnded"
@@ -217,6 +219,7 @@ const durationSec = ref(1)
 const lastReportAt = ref(0)
 const showBranchTip = ref(false)
 const descExpanded = ref(false)
+const savedProgressSec = ref(0)
 
 const videoSrc = computed(() => node.value?.video_url || node.value?.videoUrl || '')
 
@@ -322,13 +325,15 @@ function onShare() {
     summary: dramaDesc.value.slice(0, 60),
     success: () => uni.showToast({ title: '分享成功', icon: 'none' }),
     fail: () => {
-      // fallback to system share
+      // WeChat not configured — silently fall through to system share
       uni.share({
         provider: '',
         type: 0,
         title: dramaTitle.value,
         success: () => {},
-        fail: () => uni.showToast({ title: '分享失败', icon: 'none' }),
+        fail: () => {
+          /* system share unavailable — no toast spam */
+        },
       })
     },
   })
@@ -505,6 +510,21 @@ function loadDramaMeta() {
 
 function loadNodeBundle() {
   if (!nodeId.value) return
+  if (uni.getStorageSync('drama_token')) {
+    uni.request({
+      url: appApi('/watch-history'),
+      header: authHeaders({}),
+      success: (res: any) => {
+        const b = res.data as any
+        if (b.code === 200 && Array.isArray(b.rows)) {
+          const entry = b.rows.find(
+            (r: any) => Number(r.node_id || r.nodeId) === nodeId.value,
+          )
+          if (entry) savedProgressSec.value = Number(entry.progress_sec || 0)
+        }
+      },
+    })
+  }
   uni.request({
     url: appApi(`/video-nodes/${nodeId.value}`),
     success: (res: any) => {
@@ -545,6 +565,14 @@ function reportWatch(force = false) {
 function onLoadedMeta(e: any) {
   const d = Number(e?.detail?.duration ?? 0)
   if (d > 0) durationSec.value = d
+  if (savedProgressSec.value > 0) {
+    try {
+      const ctx = uni.createVideoContext('dramaVideo')
+      ctx.seekTo(savedProgressSec.value)
+    } catch {
+      /* ignore */
+    }
+  }
 }
 
 function onTimeUpdate(e: any) {

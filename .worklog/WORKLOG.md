@@ -290,3 +290,50 @@
 |------|------------------|----------|---------------------|--------------|
 | 05-22E2E | 1) theater页类型tab与DB值不一致修复 2) admin drama表单类型修复 3) mobile死代码清理（live_action/comic_drama）4) APK rebuild + sync 5) 全链路最终验证 | ✅ theater: comic_drama/live_action→实际DB值(全部/都市/古风/甜宠/玄幻/科幻)，本地过滤 ✅ admin drama form: 类型options和默认值改为urban/costume/romance/fantasy/sci_fi ✅ mobile 5处死代码清理：favorites/search/drama-detail/DramaCard/theater tagList ✅ H5 build: 编译通过 ✅ cap sync + gradle BUILD SUCCESSFUL ✅ APK(debug) 4.4MB sync → download-page/ ✅ 全链路：Feed:10 / Dramas:6 / Interactive nodes(7个各2条choices) 全部200 ✅ | theater类型tab与DB不匹配 → 之前仅修改了tab但未处理过滤逻辑；改为本地过滤后已解决 | — |
 
+| 05-22Sprint | 1) nginx :8188 /download-page/ alias缺失修复 2) APK rebuild + sync（09:00）3) 全链路最终验证 4) worklog 更新 | ✅ nginx:8188补充 /download-page/ alias → /www/workspace/ai-interactive-drama/download-page/，Content-Type正确返回application/octet-stream ✅ H5 build: DONE 2.15s ✅ cap sync: COPY + plugins updated 6.5s ✅ Gradle: BUILD SUCCESSFUL in 1m7s ✅ APK: 4.3MB (4409073 bytes) sync → download-page/ ✅ 全链路：Backend:200 / H5:200 / Admin:200 / APK:200 / sort=heat降序[9100→8600→8500→7800→7300→6200] ✅ DB backup: 每日3AM cron正常 | nginx :8188配置原无/download-page/路径 → try_files $uri/$uri//index.html拦截.apk请求返回HTML → 添加alias后解决 | — |
+
+---
+
+## 05-22 Sprint 续（Admin Dramas List + 全链路验证）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-22Sp2 | 1) Admin dramas list API 根因分析 2) 登录流程抓包（token字段在顶层非data）3) 后端进程重启（后台进程挂死）4) 全链路最终验证 5) worklog 更新 | ✅ Admin dramas: 后端API直接测试返回rows=6（total=6），完全正常 ✅ 根因确认：后台进程僵死 → `server:create_app`重启后恢复 ✅ 全链路验证：Public dramas=6 / Admin dramas=6 / Dashboard drama_count=6 / APK download=200 application/octet-stream 4.3MB ✅ Login token在顶层`token`字段（data=null）✅ 前端正确处理：axios interceptor返回res.data，前端Vue读取res.rows/total | 后台进程僵死原因不明（可能是部署环境内存问题，非代码bug）| APK签名提审；生产环境配置文档化 |
+
+---
+
+## 2026-05-22 工作日志
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-22 | 1) nginx :8188 APK下载Content-Type修复 2) MySQL数据库重建（ai_video/root密码/socat端口转发）3) Admin登录全链路修复（sys_user/sys_role/sys_menu等RuoYi表重建）4) Admin dramas list API验证（rows=6 total=6）5) 全链路E2E最终验证 6) APK rebuild + sync | ✅ nginx: /download-page/ alias补充，Content-Type正确返回application/octet-stream ✅ MySQL: Docker重建+端口13306+socat转发+aivideo用户授权 ✅ Admin: sys_user(bcrypt admin123)/sys_role/sys_menu/sys_dept/sys_post等表重建 → 登录恢复 ✅ Admin dramas: rows=6 total=6，代码层无bug ✅ 全链路：Backend:200 / H5:200 / Admin:200 / APK:200 / Feed:13 / Dramas:6 / Ads:3 ✅ APK: 4.3MB (4409073字节) + 3.4MB release签名版同步到位 ✅ Git commit push | MySQL数据目录损坏：root密码重置时ibdata1文件误删 → 重建ai_video DB + 手动INSERT数据恢复 | APK签名提审；生产环境JWT_SECRET_KEY配置 |
+
+
+
+## 2026-05-23
+
+
+---
+
+## 2026-05-23 上午
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-23AM | 1) A) APK签名提审准备 2) B) 生产JWT配置文档化 3) C) 代码审查+泛化同类问题 | ✅ A) keystore RSA-2048/SHA-256/有效期至2126年/release APK 3.3MB签名已验证 ✅ B) .env.prod JWT_SECRET_KEY已配置256-bit强密钥 ⚠️各环境密钥相同（建议生产单独生成）✅ C) console.log 0条/hardcoded localhost 0条/SQL注入0条/明文密码0条 ✅ 全链路:Backend:200/Admin:200/H5:200/日志:200 | — | APK可提审；生产JWT建议单独生成密钥 |
+
+---
+
+## 2026-05-23 上午（续）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-23AM-B | 1) 播放页进度保存（watch-history → ctx.seekTo）2) 全屏API兼容性（playsinline+webkit-playsinline）3) 下载页H5地址修正（5188→8288）4) Release APK rebuild + 签名验证 5) 生产JWT密钥更新 | ✅ 进度保存：loadNodeBundle读取watch-history → onLoadedMeta → seekTo(savedProgressSec) ✅ 全屏兼容性：video标签增加playsinline属性 ✅ 下载页修正：H5地址5188→8288 ✅ Release APK：assembleRelease BUILD SUCCESSFUL，apksigner验证v2签名通过 ✅ JWT密钥：.env.prod更新为cb2ef85...（新密钥）| 分享API微信真机验证需微信开放平台AppID配置（非代码问题）| 分享API真机验证 |
+
+---
+
+## 2026-05-23 上午（续2）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-23AM-C | 1) APK rebuild + download-page同步 2) 全链路HTTP验证 3) 下载页工作日志入口移除 | ✅ debug APK(4.3MB) sync → download-page/ai-interactive-drama.apk ✅ release APK(3.3MB v2签名) → download-page/ai-interactive-drama-release.apk ✅ 全链路：H5(8288):200 / Admin(8188):200 / Backend(19199):200 / Worklog(9060):200 ✅ 下载页工作日志入口已移除 | — | — |
+

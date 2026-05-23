@@ -61,7 +61,7 @@
 ### 当前里程碑
 
 ```
-Sprint ██░░░░░░░░░░░░░░░░░░░  2/30 天
+Sprint ██░░░░░░░░░░░░░░░░░░░  4/30 天
 ┌────────────────────────────────────────────────────────────┐
 │  ✅ mobile-app H5 运行      │ 38.55.146.160:8288  ✅     │
 │  ✅ mobile-app App 构建     │ Capacitor 5.x 打包 4.3MB  │
@@ -79,6 +79,10 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  2/30 天
 │  ✅ 全链路HTTP验证       │ H5/APK/日志全部200 ✅ NEW  │
 │  ✅ 分支剧情数据完善   │ drama 2/3/4/5/6 全部补齐 ✅ NEW│
 │  ✅ 全API端到端验证    │ Feed/Node/Choices/Logs全200 ✅│
+│  ✅ 播放页进度保存     │ watch-history→seekTo ✅ NEW │
+│  ✅ 全屏API兼容性       │ playsinline已加 ✅ NEW       │
+│  ✅ Release APK签名    │ v2签名 apksigner验证 ✅ NEW   │
+│  ✅ 生产JWT密钥更新    │ .env.prod新密钥 ✅ NEW        │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -89,8 +93,8 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  2/30 天
 | mobile-app H5 | ✅ 运行中 | http://38.55.146.160:8288/ |
 | 后端 API | ✅ 正常 | http://localhost:19199 |
 | Admin 前端 | ✅ 运行中 | http://localhost:5188 |
-| APK 下载 | ✅ 已同步 | http://38.55.146.160:8188/download-page/ai-drama.apk |
-| 工作日志 | ✅ 已同步 | http://38.55.146.160:8188/download-page/worklog.html |
+| APK 下载 | ✅ 已同步 | http://38.55.146.160:8099/download-page/ai-interactive-drama.apk |
+| 工作日志 | ✅ 独立9060 | http://38.55.146.160:9060/worklog.html |
 | Swagger 文档 | ✅ 可访问 | http://localhost:19199/docs |
 
 ## API 验证数据
