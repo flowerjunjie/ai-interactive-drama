@@ -105,10 +105,10 @@ class CommentCreateModel(BaseModel):
 
 
 class ChoiceLogIn(BaseModel):
-    drama_id: int
-    from_node_id: int | None = None
-    choice_id: int
-    to_node_id: int
+    drama_id: int = Field(..., gt=0)
+    from_node_id: int | None = Field(default=None, gt=0)
+    choice_id: int = Field(..., gt=0)
+    to_node_id: int = Field(..., gt=0)
 
 
 class ReviewCreateModel(BaseModel):

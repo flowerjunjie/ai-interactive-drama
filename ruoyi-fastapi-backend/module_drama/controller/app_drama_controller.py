@@ -210,6 +210,7 @@ async def get_comments_query(
 
 
 @app_drama_controller.post('/choice-logs')
+@ApiRateLimit(namespace='drama:app:choice-log', preset=ApiRateLimitPreset.USER_RESOURCE_EXECUTION)
 async def post_choice_log(
     body: ChoiceLogIn,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
