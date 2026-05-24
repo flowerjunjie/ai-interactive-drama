@@ -5,7 +5,9 @@ from typing import Annotated
 from fastapi import Depends, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
+from common.constant import ApiNamespace
 from common.router import APIRouterPro
 from module_drama.aspect.app_user_dependency import get_optional_app_user, get_required_app_user
 from module_drama.controller.app_common_payload import choices_public, node_public
@@ -34,6 +36,7 @@ async def spec_me_dashboard(
 
 
 @spec_app_controller.get('/feed')
+@ApiRateLimit(namespace='drama:app:feed', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def spec_feed(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     page_num: int = Query(default=1, ge=1),
@@ -68,6 +71,7 @@ async def spec_node_me_like(
 
 
 @spec_app_controller.get('/dramas')
+@ApiRateLimit(namespace='drama:app:dramas', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def spec_dramas(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     drama_type: str | None = Query(default=None),
@@ -95,6 +99,7 @@ async def spec_dramas(
 
 
 @spec_app_controller.get('/dramas/{drama_id}')
+@ApiRateLimit(namespace='drama:app:drama-detail', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def spec_drama_detail(drama_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     d = await DramaAppContentService.get_drama(query_db, drama_id)
     entry = await DramaAppContentService.entry_node(query_db, drama_id)

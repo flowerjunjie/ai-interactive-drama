@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import Depends, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
 from common.router import APIRouterPro
 from module_drama.aspect.app_user_dependency import get_required_app_user
@@ -23,6 +24,7 @@ app_drama_controller = APIRouterPro(prefix='/api', order_num=41, tags=['短剧-C
 
 
 @app_drama_controller.get('/feed')
+@ApiRateLimit(namespace='drama:app:feed', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def feed(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     page_num: int = Query(default=1, ge=1),
@@ -33,6 +35,7 @@ async def feed(
 
 
 @app_drama_controller.get('/dramas')
+@ApiRateLimit(namespace='drama:app:dramas', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def list_dramas(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     drama_type: str | None = Query(default=None),
