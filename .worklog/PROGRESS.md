@@ -127,6 +127,8 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  6/30 天
 │  ✅ subscriptions流控  │ USER_INTERACTIVE_HIGH_FREQ ✅ NEW  │
 │  ✅ JWT/DB密钥硬化     │ os.getenv注入+CHANGE_ME默认值 ✅ NEW │
 │  ✅ list_subscriptions分页│ page_num/page_size/total ✅ NEW  │
+│  ✅ Admin接口RateLimit │ admin drama/node写操作 USER_COMMON ✅ NEW │
+│  ✅ Admin XSS入口过滤  │ DramaSaveModel strip_html validator ✅ NEW │
 └────────────────────────────────────────────────────────────┘
 ```
 
