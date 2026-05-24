@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
 from common.router import APIRouterPro
 from common.vo import DataResponseModel, ResponseBaseModel
@@ -18,6 +19,7 @@ app_auth_controller = APIRouterPro(prefix='/api/auth', order_num=40, tags=['短�
 @app_auth_controller.post(
     '/register', summary='C端注册', response_model=DataResponseModel[AppUserBrief] | ResponseBaseModel
 )
+@ApiRateLimit(namespace='drama:auth:register', preset=ApiRateLimitPreset.ANON_AUTH_REGISTER)
 async def app_register(
     body: AppRegisterModel,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -27,6 +29,7 @@ async def app_register(
 
 
 @app_auth_controller.post('/login', summary='C端登录')
+@ApiRateLimit(namespace='drama:auth:login', preset=ApiRateLimitPreset.ANON_AUTH_LOGIN)
 async def app_login(body: AppLoginModel, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     token = await DramaAppAuthService.login(query_db, body)
     return ResponseUtil.success(
