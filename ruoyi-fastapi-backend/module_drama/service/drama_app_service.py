@@ -36,7 +36,7 @@ class DramaAppContentService:
     """C 端内容/互动"""
 
     @staticmethod
-    def _node_visible_app():
+    def _node_visible_app() -> tuple:
         return (DramaVideoNode.status == 'published') & (DramaVideoNode.review_status == 'approved')
 
     @classmethod
@@ -406,21 +406,19 @@ class DramaAppContentService:
             .group_by(DramaUserLike.target_id)
         )
         like_counts_map = dict(like_counts_r.all())
-        out = []
-        for c in comments:
-            out.append(
-                {
-                    'comment_id': c.comment_id,
-                    'app_user_id': c.app_user_id,
-                    'drama_id': c.drama_id,
-                    'node_id': c.node_id,
-                    'content': c.content,
-                    'like_count': like_counts_map.get(c.comment_id, 0),
-                    'status': c.status,
-                    'create_time': c.create_time.isoformat() if c.create_time else None,
-                }
-            )
-        return out
+        return [
+            {
+                'comment_id': c.comment_id,
+                'app_user_id': c.app_user_id,
+                'drama_id': c.drama_id,
+                'node_id': c.node_id,
+                'content': c.content,
+                'like_count': like_counts_map.get(c.comment_id, 0),
+                'status': c.status,
+                'create_time': c.create_time.isoformat() if c.create_time else None,
+            }
+            for c in comments
+        ]
 
     @classmethod
     async def log_choice(cls, db: AsyncSession, user_id: int, body: ChoiceLogIn) -> None:
