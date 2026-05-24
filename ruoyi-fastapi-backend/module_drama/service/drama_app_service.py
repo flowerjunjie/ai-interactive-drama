@@ -1,5 +1,5 @@
-from datetime import datetime
 import random
+from datetime import datetime
 
 from sqlalchemy import delete, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -52,10 +52,10 @@ class DramaAppContentService:
         )
         rows = (await db.execute(stmt)).all()
         ads = (
-            await db.execute(
-                select(DramaAd).where(DramaAd.status == '0').order_by(DramaAd.weight.desc()).limit(50)
-            )
-        ).scalars().all()
+            (await db.execute(select(DramaAd).where(DramaAd.status == '0').order_by(DramaAd.weight.desc()).limit(50)))
+            .scalars()
+            .all()
+        )
         ads_active = [a for a in ads if cls._ad_time_ok(a)]
         random.shuffle(ads_active)  # true random rotation per feed call
         items: list[dict] = []
@@ -101,9 +101,7 @@ class DramaAppContentService:
         now = datetime.now()
         if a.start_time and now < a.start_time:
             return False
-        if a.end_time and now > a.end_time:
-            return False
-        return True
+        return not (a.end_time and now > a.end_time)
 
     @classmethod
     def _ad_public_dict(cls, a: DramaAd) -> dict:
@@ -125,8 +123,12 @@ class DramaAppContentService:
         drama_type: str | None = None,
         keyword: str | None = None,
         sort: str | None = None,
-    ) -> list[Drama]:
+        page_num: int = 1,
+        page_size: int = 20,
+    ) -> tuple[list[Drama], int]:
+        """返回 (dramas, total_count)"""
         q = select(Drama).where(Drama.status == 'published')
+        count_q = select(func.count()).select_from(Drama).where(Drama.status == 'published')
         # Apply sort order
         if sort == 'heat':
             q = q.order_by(Drama.heat.desc(), Drama.drama_id.desc())
@@ -137,11 +139,17 @@ class DramaAppContentService:
             q = q.order_by(Drama.sort.desc(), Drama.drama_id.desc())
         if drama_type:
             q = q.where(Drama.drama_type == drama_type)
+            count_q = count_q.where(Drama.drama_type == drama_type)
         if keyword:
             kw = f'%{keyword.strip()}%'
             q = q.where(or_(Drama.title.like(kw), Drama.description.like(kw), Drama.tags.like(kw)))
+            count_q = count_q.where(or_(Drama.title.like(kw), Drama.description.like(kw), Drama.tags.like(kw)))
+        # total count
+        total = int((await db.execute(count_q)).scalar() or 0)
+        # paginated results
+        q = q.offset((page_num - 1) * page_size).limit(page_size)
         r = await db.execute(q)
-        return list(r.scalars().all())
+        return list(r.scalars().all()), total
 
     @classmethod
     async def list_episodes(cls, db: AsyncSession, drama_id: int) -> list[DramaVideoNode]:
@@ -343,15 +351,17 @@ class DramaAppContentService:
         )
         out = []
         for f, d in r.all():
-            out.append({
-                'drama_id': d.drama_id,
-                'title': d.title,
-                'cover_url': d.cover_url,
-                'drama_type': d.drama_type,
-                'tags': d.tags,
-                'heat': d.heat,
-                'create_time': f.create_time,
-            })
+            out.append(
+                {
+                    'drama_id': d.drama_id,
+                    'title': d.title,
+                    'cover_url': d.cover_url,
+                    'drama_type': d.drama_type,
+                    'tags': d.tags,
+                    'heat': d.heat,
+                    'create_time': f.create_time,
+                }
+            )
         return out
 
     @classmethod
@@ -398,16 +408,18 @@ class DramaAppContentService:
         like_counts_map = dict(like_counts_r.all())
         out = []
         for c in comments:
-            out.append({
-                'comment_id': c.comment_id,
-                'app_user_id': c.app_user_id,
-                'drama_id': c.drama_id,
-                'node_id': c.node_id,
-                'content': c.content,
-                'like_count': like_counts_map.get(c.comment_id, 0),
-                'status': c.status,
-                'create_time': c.create_time.isoformat() if c.create_time else None,
-            })
+            out.append(
+                {
+                    'comment_id': c.comment_id,
+                    'app_user_id': c.app_user_id,
+                    'drama_id': c.drama_id,
+                    'node_id': c.node_id,
+                    'content': c.content,
+                    'like_count': like_counts_map.get(c.comment_id, 0),
+                    'status': c.status,
+                    'create_time': c.create_time.isoformat() if c.create_time else None,
+                }
+            )
         return out
 
     @classmethod
@@ -450,9 +462,7 @@ class DramaAppContentService:
     async def user_dashboard_counts(cls, db: AsyncSession, user_id: int) -> dict:
         """我的页统计：观看记录条数、收藏数、点赞次数、追剧（观看中出现过的剧目数）"""
         r_wh = await db.execute(
-            select(func.count()).select_from(DramaUserWatchHistory).where(
-                DramaUserWatchHistory.app_user_id == user_id
-            )
+            select(func.count()).select_from(DramaUserWatchHistory).where(DramaUserWatchHistory.app_user_id == user_id)
         )
         r_fav = await db.execute(
             select(func.count()).select_from(DramaUserFavorite).where(DramaUserFavorite.app_user_id == user_id)
@@ -486,11 +496,12 @@ class DramaAppContentService:
             await db.delete(sub)
             await db.commit()
             return {'subscribed': False}
-        else:
-            new_sub = DramaUserSubscribe(app_user_id=user_id, drama_id=drama_id, notify_enabled='1' if notify_enabled else '0')
-            db.add(new_sub)
-            await db.commit()
-            return {'subscribed': True}
+        new_sub = DramaUserSubscribe(
+            app_user_id=user_id, drama_id=drama_id, notify_enabled='1' if notify_enabled else '0'
+        )
+        db.add(new_sub)
+        await db.commit()
+        return {'subscribed': True}
 
     @classmethod
     async def list_subscriptions(cls, db: AsyncSession, user_id: int) -> list[dict]:

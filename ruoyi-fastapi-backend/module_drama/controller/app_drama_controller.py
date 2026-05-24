@@ -38,10 +38,12 @@ async def list_dramas(
     drama_type: str | None = Query(default=None),
     keyword: str | None = Query(default=None),
     sort: str | None = Query(default=None, description='recommend|latest|heat'),
+    page_num: int = Query(default=1, ge=1),
+    page_size: int = Query(default=20, ge=1, le=50),
 ) -> Response:
-    rows = await DramaAppContentService.list_dramas(query_db, drama_type, keyword, sort)
+    rows, total = await DramaAppContentService.list_dramas(query_db, drama_type, keyword, sort, page_num, page_size)
     return ResponseUtil.success(
-        data=[
+        rows=[
             {
                 'drama_id': d.drama_id,
                 'title': d.title,
@@ -52,7 +54,8 @@ async def list_dramas(
                 'heat': d.heat,
             }
             for d in rows
-        ]
+        ],
+        dict_content={'total': total},
     )
 
 

@@ -34,6 +34,8 @@ class DramaPublicModel(BaseModel):
     cover_url: str | None = None
     description: str | None = None
     drama_type: str
+    tags: str | None = None
+    heat: int | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -184,3 +186,11 @@ class NodeModerationRejectModel(BaseModel):
 class PageQuery(BaseModel):
     page_num: int = Field(default=1, ge=1)
     page_size: int = Field(default=10, ge=1, le=100)
+
+
+class DramalistQuery(BaseModel):
+    drama_type: str | None = None
+    keyword: str | None = None
+    sort: str | None = Field(default=None, description='recommend|latest|heat')
+    page_num: int = Field(default=1, ge=1)
+    page_size: int = Field(default=20, ge=1, le=50)
