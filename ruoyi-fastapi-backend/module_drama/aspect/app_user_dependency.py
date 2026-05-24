@@ -1,8 +1,7 @@
 from typing import Annotated
 
 import jwt
-from fastapi import Depends
-from fastapi import params
+from fastapi import Depends, params
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt.exceptions import InvalidTokenError
 from sqlalchemy import select
@@ -37,7 +36,7 @@ async def get_optional_app_user(
         return None
     result = await query_db.execute(select(DramaAppUser).where(DramaAppUser.user_id == int(uid)))
     user = result.scalars().first()
-    if not user or user.status != '0':
+    if not user or user.status != CommonConstant.DRAMA_USER_STATUS_NORMAL:
         return None
     return user
 
