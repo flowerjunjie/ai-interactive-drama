@@ -477,8 +477,8 @@ function fetchRelated(curId: number) {
     url: appApi('/dramas'),
     success: (res: any) => {
       const body = res.data as any
-      if (body.code !== 200 || !Array.isArray(body.data)) return
-      relatedRaw.value = body.data.filter((x: any) => x.drama_id !== curId).slice(0, 8)
+      if (body.code !== 200 || !Array.isArray(body.rows)) return
+      relatedRaw.value = body.rows.filter((x: any) => x.drama_id !== curId).slice(0, 8)
     },
   })
 }
