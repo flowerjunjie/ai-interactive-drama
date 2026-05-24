@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+import os
+
 
 def add_cors_middleware(app: FastAPI) -> None:
     """
@@ -9,8 +11,9 @@ def add_cors_middleware(app: FastAPI) -> None:
     :param app: FastAPI对象
     :return:
     """
-    # 前端页面url
-    origins = ['*']
+    # 前端页面url，允许通过环境变量配置，支持逗号分隔多域
+    raw = os.getenv('CORS_ORIGINS', '*')
+    origins = [o.strip() for o in raw.split(',')] if raw != '*' else ['*']
     expose_headers = [
         'x-body-encrypted',
         'x-key-id',
@@ -21,7 +24,7 @@ def add_cors_middleware(app: FastAPI) -> None:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
-        allow_credentials=True,
+        allow_credentials=bool(origins != ['*']),
         allow_methods=['*'],
         allow_headers=['*'],
         expose_headers=expose_headers,
