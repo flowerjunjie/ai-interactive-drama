@@ -29,7 +29,9 @@ class DramaAppAuthService:
         db.add(user)
         await db.commit()
         await db.refresh(user)
-        return AppUserBrief(user_id=user.user_id, user_name=user.user_name, nick_name=user.nick_name, avatar=user.avatar)
+        return AppUserBrief(
+            user_id=user.user_id, user_name=user.user_name, nick_name=user.nick_name, avatar=user.avatar
+        )
 
     @classmethod
     async def login(cls, db: AsyncSession, body: AppLoginModel) -> str:
@@ -37,7 +39,7 @@ class DramaAppAuthService:
         user = r.scalars().first()
         if not user or not PwdUtil.verify_password(body.password, user.password):
             raise ServiceException(data='', message='用户名或密码错误')
-        if user.status != '0':
+        if user.status != CommonConstant.DRAMA_USER_STATUS_NORMAL:
             raise ServiceException(data='', message='账号已停用')
         return cls._encode_token(user.user_id)
 

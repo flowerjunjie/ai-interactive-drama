@@ -37,6 +37,8 @@ class DramaAdminService:
     _NR = CommonConstant.DRAMA_NODE_REVIEW_REJECTED
     _RVP = CommonConstant.DRAMA_REVIEW_STATUS_PENDING
     _UPP = CommonConstant.DRAMA_UPLOAD_STATUS_PENDING
+    _CHN = CommonConstant.DRAMA_COMMENT_STATUS_HIDDEN
+    _NC0 = CommonConstant.DRAMA_COMMENT_STATUS_NORMAL
 
     @classmethod
     async def dashboard(cls, db: AsyncSession) -> dict:
@@ -345,7 +347,7 @@ class DramaAdminService:
         row = r.scalars().first()
         if not row:
             raise ServiceException(data='', message='评论不存在')
-        row.status = '1' if hidden else '0'
+        row.status = cls._CHN if hidden else cls._NC0
         await db.commit()
 
     @classmethod
