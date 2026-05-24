@@ -295,8 +295,8 @@ function loadDramas() {
     },
     success: (res: any) => {
       const body = res.data as any
-      if (body.code === 200 && Array.isArray(body.data)) {
-        rawDramas.value = body.data as DramaRow[]
+      if (body.code === 200 && Array.isArray(body.rows)) {
+        rawDramas.value = body.rows as DramaRow[]
       } else {
         rawDramas.value = []
       }
