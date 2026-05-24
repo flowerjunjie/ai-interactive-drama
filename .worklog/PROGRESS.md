@@ -115,6 +115,9 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ spec_alias重复import │ 删除duplicate import ✅ NEW          │
 │  ✅ C端auth限速    │ login→ANON_AUTH_LOGIN ✅ NEW           │
 │  ✅ register限速   │ register→ANON_AUTH_REGISTER ✅ NEW   │
+│  ✅ search增强     │ category tabs + live search + b.rows ✅ NEW │
+│  ✅ 追更小红点     │ player+drama-detail hasNewEpisode ✅ NEW │
+│  ✅ 剧场页b.data修复│ rows=[] 统一响应封装 ✅ NEW          │
 └────────────────────────────────────────────────────────────┘
 ```
 
