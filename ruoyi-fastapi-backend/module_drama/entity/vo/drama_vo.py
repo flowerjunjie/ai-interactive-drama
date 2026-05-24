@@ -170,6 +170,11 @@ class VideoChoiceSaveModel(BaseModel):
     next_node_id: int
     sort: int = 0
 
+    @field_validator('label')
+    @classmethod
+    def _sanitize(cls, v: str | None) -> str | None:
+        return _strip_html(v)
+
 
 class DramaAdSaveModel(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
