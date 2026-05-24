@@ -5,7 +5,7 @@ import sys
 from typing import Literal
 
 from dotenv import load_dotenv
-from pydantic import computed_field
+from pydantic import computed_field, model_validator
 from pydantic_settings import BaseSettings
 
 
@@ -41,6 +41,15 @@ class JwtSettings(BaseSettings):
     jwt_expire_minutes: int = 1440
     jwt_redis_expire_minutes: int = 30
 
+    @model_validator(mode='after')
+    def _validate_jwt_secret(self) -> 'JwtSettings':
+        if self.jwt_secret_key == 'CHANGE_ME_IN_PRODUCTION':
+            raise ValueError(
+                'JWT secret key not configured. Set JWT_SECRET_KEY environment variable '
+                'to a secure random value (minimum 32 characters).'
+            )
+        return self
+
 
 class DataBaseSettings(BaseSettings):
     """
@@ -65,6 +74,15 @@ class DataBaseSettings(BaseSettings):
         if self.db_type == 'postgresql':
             return 'postgres'
         return self.db_type
+
+    @model_validator(mode='after')
+    def _validate_db_password(self) -> 'DataBaseSettings':
+        if self.db_password == 'CHANGE_ME':
+            raise ValueError(
+                'Database password not configured. Set DB_PASSWORD environment variable '
+                'to the actual database password.'
+            )
+        return self
 
 
 class RedisSettings(BaseSettings):
