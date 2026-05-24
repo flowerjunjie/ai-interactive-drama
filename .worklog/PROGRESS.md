@@ -111,6 +111,10 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ ads response统一     │ data=→rows= 封装一致 ✅ NEW    │
 │  ✅ admin review list default │ DRAMA_REVIEW_STATUS_PENDING ✅ NEW │
 │  ✅ Magic strings清零    │ module_drama service/controller/aspect ✅ NEW │
+│  ✅ check_new_episodes并发 │ asyncio.gather 并行查询 ✅ NEW     │
+│  ✅ spec_alias重复import │ 删除duplicate import ✅ NEW          │
+│  ✅ C端auth限速    │ login→ANON_AUTH_LOGIN ✅ NEW           │
+│  ✅ register限速   │ register→ANON_AUTH_REGISTER ✅ NEW   │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -194,4 +198,7 @@ Video Nodes: /api/app/video-nodes/{id}
 ✅ user_dashboard_counts：union_all 单次 DB round-trip
 ✅ ads response envelope：rows= 列表封装统一
 ✅ admin review list：Query default → CommonConstant
+✅ check_new_episodes并发：asyncio.gather 并行查询
+✅ spec_alias重复import：已删除 duplicate import line
+✅ C端auth限速：login → ANON_AUTH_LOGIN, register → ANON_AUTH_REGISTER
 ⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
