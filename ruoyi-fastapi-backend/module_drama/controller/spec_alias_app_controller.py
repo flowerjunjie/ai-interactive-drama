@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
-from common.constant import ApiNamespace
 from common.router import APIRouterPro
 from module_drama.aspect.app_user_dependency import get_optional_app_user, get_required_app_user
 from module_drama.controller.app_common_payload import choices_public, node_public
