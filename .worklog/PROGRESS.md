@@ -104,9 +104,10 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ 下载页H5链接修复  │ 8288→5190 dev H5 ✅ NEW        │
 │  ✅ APK rebuild验证  │ SHA256一致(4.3MB) ✅ NEW       │
 │  ✅ 后端重启验证     │ pagination total=6 ✅ NEW      │
-│  ✅ C端限速注解补齐  │ feed/dramas/drama-detail ✅ NEW │
+│  ✅ C端限速注解补齐  │ feed/dramas/drama-detail/ads ✅ NEW │
 │  ✅ Magic strings集中 │ CommonConstant常量替换 ✅ NEW │
 │  ✅ Magic strings全链路 │ admin+app service全覆盖 ✅ NEW│
+│  ✅ user_dashboard优化   │ union_all单次查询 ✅ NEW    │
 │  ✅ ads response统一     │ data=→rows= 封装一致 ✅ NEW    │
 └────────────────────────────────────────────────────────────┘
 ```
