@@ -8,6 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from common.aspect.db_seesion import DBSessionDependency
+from common.constant import CommonConstant
 from config.env import JwtConfig
 from exceptions.exception import AuthException
 from module_drama.entity.do.drama_do import DramaAppUser

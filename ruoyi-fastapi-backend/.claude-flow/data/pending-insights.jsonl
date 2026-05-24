@@ -85,3 +85,7 @@
 {"type":"edit","file":"/www/workspace/ai-interactive-drama/ruoyi-fastapi-backend/module_drama/controller/admin_drama_controller.py","timestamp":1779612130617,"sessionId":null}
 {"type":"edit","file":"/www/workspace/ai-interactive-drama/.worklog/PROGRESS.md","timestamp":1779612604334,"sessionId":null}
 {"type":"edit","file":"/www/workspace/ai-interactive-drama/.worklog/PROGRESS.md","timestamp":1779612611597,"sessionId":null}
+{"type":"edit","file":"/www/workspace/ai-interactive-drama/ruoyi-fastapi-backend/module_drama/service/drama_app_service.py","timestamp":1779612862001,"sessionId":null}
+{"type":"edit","file":"/www/workspace/ai-interactive-drama/ruoyi-fastapi-backend/module_drama/service/app_auth_service.py","timestamp":1779617005816,"sessionId":null}
+{"type":"edit","file":"/www/workspace/ai-interactive-drama/ruoyi-fastapi-backend/module_drama/aspect/app_user_dependency.py","timestamp":1779617007709,"sessionId":null}
+{"type":"edit","file":"/www/workspace/ai-interactive-drama/ruoyi-fastapi-backend/module_drama/service/drama_app_service.py","timestamp":1779627043897,"sessionId":null}

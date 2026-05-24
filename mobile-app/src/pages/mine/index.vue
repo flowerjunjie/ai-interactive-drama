@@ -269,7 +269,7 @@ function loadDashboard() {
 function loadSubscriptions() {
   if (!user.token) return
   uni.request({
-    url: appApi('/app/subscriptions'),
+    url: appApi('/subscriptions'),
     header: authHeaders(),
     success: (res: any) => {
       const b = res.data as any

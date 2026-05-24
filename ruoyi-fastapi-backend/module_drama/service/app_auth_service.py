@@ -4,6 +4,7 @@ import jwt
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.constant import CommonConstant
 from config.env import JwtConfig
 from exceptions.exception import ServiceException
 from module_drama.aspect.app_user_dependency import JWT_APP_TYPE

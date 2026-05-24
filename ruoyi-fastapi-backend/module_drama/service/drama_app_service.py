@@ -531,20 +531,22 @@ class DramaAppContentService:
     async def check_new_episodes(cls, db: AsyncSession, user_id: int, drama_id: int) -> dict:
         """检查某剧的追更是否有新集更新"""
         import asyncio
-        sub_future = db.execute(
-            select(DramaUserSubscribe).where(
-                DramaUserSubscribe.app_user_id == user_id,
-                DramaUserSubscribe.drama_id == drama_id,
-            )
+        sub_result, node_result = await asyncio.gather(
+            db.execute(
+                select(DramaUserSubscribe).where(
+                    DramaUserSubscribe.app_user_id == user_id,
+                    DramaUserSubscribe.drama_id == drama_id,
+                )
+            ),
+            db.execute(
+                select(DramaVideoNode)
+                .where(DramaVideoNode.drama_id == drama_id, cls._node_visible_app())
+                .order_by(DramaVideoNode.create_time.desc())
+                .limit(1)
+            ),
         )
-        node_future = db.execute(
-            select(DramaVideoNode)
-            .where(DramaVideoNode.drama_id == drama_id, cls._node_visible_app())
-            .order_by(DramaVideoNode.create_time.desc())
-            .limit(1)
-        )
-        results = await asyncio.gather(sub_future, node_future)
-        sub_row, last_node_row = results
+        sub_row = sub_result
+        last_node_row = node_result
         sub = sub_row.scalars().first()
         if not sub:
             return {'subscribed': False, 'has_new': False}
