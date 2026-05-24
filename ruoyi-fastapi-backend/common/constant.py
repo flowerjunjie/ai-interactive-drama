@@ -31,6 +31,15 @@ class CommonConstant:
     NO = 'N'
     DEPT_NORMAL = '0'
     DEPT_DISABLE = '1'
+    # Drama entity status constants
+    DRAMA_STATUS_PUBLISHED = 'published'
+    DRAMA_STATUS_DRAFT = 'draft'
+    DRAMA_NODE_STATUS_PUBLISHED = 'published'
+    DRAMA_NODE_REVIEW_APPROVED = 'approved'
+    DRAMA_AD_STATUS_ACTIVE = '0'
+    DRAMA_COMMENT_STATUS_NORMAL = '0'
+    DRAMA_SUBSCRIBE_NOTIFY_ENABLED = '1'
+    DRAMA_SUBSCRIBE_NOTIFY_DISABLED = '0'
     UNIQUE = True
     NOT_UNIQUE = False
 

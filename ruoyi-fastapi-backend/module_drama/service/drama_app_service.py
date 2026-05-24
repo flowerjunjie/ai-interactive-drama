@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy import delete, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.constant import CommonConstant
 from exceptions.exception import ServiceException
 from module_drama.entity.do.drama_do import (
     Drama,
@@ -28,6 +29,13 @@ from module_drama.entity.vo.drama_vo import (
 )
 
 
+_D = CommonConstant.DRAMA_STATUS_PUBLISHED
+_NP = CommonConstant.DRAMA_NODE_STATUS_PUBLISHED
+_NA = CommonConstant.DRAMA_NODE_REVIEW_APPROVED
+_AD0 = CommonConstant.DRAMA_AD_STATUS_ACTIVE
+_C0 = CommonConstant.DRAMA_COMMENT_STATUS_NORMAL
+
+
 def _effective_ad_media(ad: DramaAd) -> str | None:
     return ad.media_url or ad.image_url
 
@@ -37,7 +45,7 @@ class DramaAppContentService:
 
     @staticmethod
     def _node_visible_app() -> tuple:
-        return (DramaVideoNode.status == 'published') & (DramaVideoNode.review_status == 'approved')
+        return (DramaVideoNode.status == _NP) & (DramaVideoNode.review_status == _NA)
 
     @classmethod
     async def feed(cls, db: AsyncSession, page_num: int, page_size: int) -> list[dict]:
@@ -45,14 +53,14 @@ class DramaAppContentService:
         stmt = (
             select(DramaVideoNode, Drama)
             .join(Drama, Drama.drama_id == DramaVideoNode.drama_id)
-            .where(Drama.status == 'published', cls._node_visible_app())
+            .where(Drama.status == _D, cls._node_visible_app())
             .order_by(DramaVideoNode.create_time.desc())
             .offset((page_num - 1) * page_size)
             .limit(page_size)
         )
         rows = (await db.execute(stmt)).all()
         ads = (
-            (await db.execute(select(DramaAd).where(DramaAd.status == '0').order_by(DramaAd.weight.desc()).limit(50)))
+            (await db.execute(select(DramaAd).where(DramaAd.status == _AD0).order_by(DramaAd.weight.desc()).limit(50)))
             .scalars()
             .all()
         )
@@ -127,8 +135,8 @@ class DramaAppContentService:
         page_size: int = 20,
     ) -> tuple[list[Drama], int]:
         """返回 (dramas, total_count)"""
-        q = select(Drama).where(Drama.status == 'published')
-        count_q = select(func.count()).select_from(Drama).where(Drama.status == 'published')
+        q = select(Drama).where(Drama.status == _D)
+        count_q = select(func.count()).select_from(Drama).where(Drama.status == _D)
         # Apply sort order
         if sort == 'heat':
             q = q.order_by(Drama.heat.desc(), Drama.drama_id.desc())
@@ -157,8 +165,8 @@ class DramaAppContentService:
             select(DramaVideoNode)
             .where(
                 DramaVideoNode.drama_id == drama_id,
-                DramaVideoNode.status == 'published',
-                DramaVideoNode.review_status == 'approved',
+                DramaVideoNode.status == _NP,
+                DramaVideoNode.review_status == _NA,
             )
             .order_by(
                 DramaVideoNode.episode_no.is_(None),
@@ -173,7 +181,7 @@ class DramaAppContentService:
     async def get_drama(cls, db: AsyncSession, drama_id: int) -> Drama:
         r = await db.execute(select(Drama).where(Drama.drama_id == drama_id))
         d = r.scalars().first()
-        if not d or d.status != 'published':
+        if not d or d.status != _D:
             raise ServiceException(data='', message='短剧不存在或未发布')
         return d
 
@@ -199,7 +207,7 @@ class DramaAppContentService:
     async def get_node(cls, db: AsyncSession, node_id: int) -> DramaVideoNode:
         r = await db.execute(select(DramaVideoNode).where(DramaVideoNode.node_id == node_id))
         n = r.scalars().first()
-        if not n or n.status != 'published' or n.review_status != 'approved':
+        if not n or n.status != _NP or n.review_status != _NA:
             raise ServiceException(data='', message='节点不存在或未上架')
         return n
 
@@ -215,7 +223,7 @@ class DramaAppContentService:
     @classmethod
     async def list_ads(cls, db: AsyncSession, slot: str | None) -> list[DramaAd]:
         now = datetime.now()
-        q = select(DramaAd).where(DramaAd.status == '0')
+        q = select(DramaAd).where(DramaAd.status == _AD0)
         if slot:
             q = q.where(DramaAd.slot_type == slot)
         q = q.where(or_(DramaAd.start_time.is_(None), DramaAd.start_time <= now))
@@ -391,7 +399,7 @@ class DramaAppContentService:
     async def list_comments(cls, db: AsyncSession, drama_id: int) -> list[dict]:
         r = await db.execute(
             select(DramaComment)
-            .where(DramaComment.drama_id == drama_id, DramaComment.status == '0')
+            .where(DramaComment.drama_id == drama_id, DramaComment.status == _C0)
             .order_by(DramaComment.create_time.desc())
             .limit(100)
         )
@@ -495,8 +503,9 @@ class DramaAppContentService:
             await db.commit()
             return {'subscribed': False}
         new_sub = DramaUserSubscribe(
-            app_user_id=user_id, drama_id=drama_id, notify_enabled='1' if notify_enabled else '0'
-        )
+                app_user_id=user_id, drama_id=drama_id,
+                notify_enabled=CommonConstant.DRAMA_SUBSCRIBE_NOTIFY_ENABLED if notify_enabled else CommonConstant.DRAMA_SUBSCRIBE_NOTIFY_DISABLED
+            )
         db.add(new_sub)
         await db.commit()
         return {'subscribed': True}
@@ -517,7 +526,7 @@ class DramaAppContentService:
                 'title': d.title,
                 'cover_url': d.cover_url,
                 'drama_type': d.drama_type,
-                'notify_enabled': sub.notify_enabled == '1',
+                'notify_enabled': sub.notify_enabled == CommonConstant.DRAMA_SUBSCRIBE_NOTIFY_ENABLED,
                 'create_time': sub.create_time.isoformat() if sub.create_time else None,
             }
             for sub, d in rows.all()
