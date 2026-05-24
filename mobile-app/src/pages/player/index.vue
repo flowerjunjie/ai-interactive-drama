@@ -102,10 +102,12 @@
             </view>
           </view>
           <view
-            class="ml-2 flex shrink-0 items-center justify-center rounded-full px-3.5 py-1.5 active:opacity-80"
+            class="ml-2 flex shrink-0 items-center justify-center rounded-full px-3.5 py-1.5 active:opacity-80 relative"
             style="background: linear-gradient(90deg, #8b5cf6, #f97316)"
             @click="toggleSub"
           >
+            <view v-if="subscribed && hasNewEpisode" class="absolute -top-[3px] -right-[3px] h-2.5 w-2.5 rounded-full bg-[#ff2442] shadow-[0_0_6px_rgba(255,36,66,0.8)] animate-ping" />
+            <view v-if="subscribed && hasNewEpisode" class="absolute -top-[3px] -right-[3px] h-2.5 w-2.5 rounded-full bg-[#ff2442]" />
             <text class="text-[12px] font-medium text-white">{{ subscribed ? '已追更' : '追更' }}</text>
           </view>
         </view>
@@ -209,6 +211,7 @@ const branchTriggered = ref(false)
 const likeTotal = ref(0)
 const userLiked = ref(false)
 const subscribed = ref(false)
+const hasNewEpisode = ref(false)
 const dramaMeta = ref<any>(null)
 const episodePanel = ref<any[]>([])
 const episodeTotal = ref(0)
@@ -469,7 +472,10 @@ function loadSubState() {
     header: authHeaders({}),
     success: (res: any) => {
       const b = res.data as any
-      if (b.code === 200 && b.data) subscribed.value = !!b.data.subscribed
+      if (b.code === 200 && b.data) {
+        subscribed.value = !!b.data.subscribed
+        hasNewEpisode.value = !!b.data.has_new
+      }
     },
   })
 }

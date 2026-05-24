@@ -80,7 +80,9 @@
           <text class="text-[15px] font-medium tracking-wide text-white/90">{{ favorited ? '已收藏' : '收藏' }}</text>
         </view>
         <!-- Subscribe / Chase Button -->
-        <view class="flex w-full items-center justify-center rounded-full bg-white/[0.08] py-[11px] active:bg-white/10" @click="toggleSub">
+        <view class="relative flex w-full items-center justify-center rounded-full bg-white/[0.08] py-[11px] active:bg-white/10" @click="toggleSub">
+          <view v-if="subscribed && hasNewEpisode" class="absolute -top-[4px] -right-[4px] h-3 w-3 rounded-full bg-[#ff2442] shadow-[0_0_8px_rgba(255,36,66,0.8)] animate-ping" />
+          <view v-if="subscribed && hasNewEpisode" class="absolute -top-[4px] -right-[4px] h-3 w-3 rounded-full bg-[#ff2442]" />
           <view :class="subscribed ? 'i-mdi-bell text-[18px] text-[#9a5cf6]' : 'i-mdi-bell-outline text-[18px] text-white/90'" />
           <text class="text-[15px] font-medium tracking-wide text-white/90">{{ subscribed ? '已追更' : '追更' }}</text>
         </view>
@@ -251,6 +253,7 @@ const commentList = ref<any[]>([])
 const draftComment = ref('')
 const favorited = ref(false)
 const subscribed = ref(false)
+const hasNewEpisode = ref(false)
 const descExpanded = ref(false)
 
 const displayTitle = computed(() => drama.value?.title || '逆天战神')
@@ -434,6 +437,7 @@ function toggleFav() {
 function loadSubState(id: number) {
   if (!uni.getStorageSync('drama_token')) {
     subscribed.value = false
+    hasNewEpisode.value = false
     return
   }
   uni.request({
@@ -441,7 +445,10 @@ function loadSubState(id: number) {
     header: authHeaders({}),
     success: (res: any) => {
       const b = res.data as any
-      if (b.code === 200 && b.data) subscribed.value = !!b.data.subscribed
+      if (b.code === 200 && b.data) {
+        subscribed.value = !!b.data.subscribed
+        hasNewEpisode.value = !!b.data.has_new
+      }
     },
   })
 }
