@@ -47,12 +47,8 @@ class Drama(Base):
     title = Column(String(200), nullable=False, comment='标题')
     cover_url = Column(String(1024), nullable=True, comment='封面')
     description = Column(Text, nullable=True, comment='简介')
-    drama_type = Column(
-        String(32), nullable=False, server_default='comic_drama', comment='comic_drama / live_action'
-    )
-    status = Column(
-        String(32), nullable=False, server_default='draft', comment='draft / published / offline'
-    )
+    drama_type = Column(String(32), nullable=False, server_default='comic_drama', comment='comic_drama / live_action')
+    status = Column(String(32), nullable=False, server_default='draft', comment='draft / published / offline')
     sort = Column(Integer, nullable=False, server_default='0', comment='排序')
     create_by = Column(String(64), nullable=True, server_default="''", comment='创建者')
     create_time = Column(DateTime, nullable=True, default=datetime.now, comment='创建时间')
@@ -123,9 +119,7 @@ class DramaVideoReview(Base):
     node_id = Column(BigInteger, nullable=True)
     rating = Column(Integer, nullable=True, comment='1-5')
     content = Column(Text, nullable=True)
-    status = Column(
-        String(32), nullable=False, server_default='pending', comment='pending / approved / rejected'
-    )
+    status = Column(String(32), nullable=False, server_default='pending', comment='pending / approved / rejected')
     admin_remark = Column(String(500), nullable=True)
     create_time = Column(DateTime, nullable=True, default=datetime.now)
     audit_time = Column(DateTime, nullable=True)

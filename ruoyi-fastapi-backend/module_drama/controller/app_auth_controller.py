@@ -30,7 +30,8 @@ async def app_register(
 async def app_login(body: AppLoginModel, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     token = await DramaAppAuthService.login(query_db, body)
     return ResponseUtil.success(
-        msg='登录成功', dict_content={'token': token, 'tokenType': 'Bearer'}  # camelCase for uni-app
+        msg='登录成功',
+        dict_content={'token': token, 'tokenType': 'Bearer'},  # camelCase for uni-app
     )
 
 

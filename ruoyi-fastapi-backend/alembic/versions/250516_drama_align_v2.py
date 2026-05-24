@@ -13,7 +13,6 @@ import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects.mysql import CHAR
 
-
 revision: str = '250516_drama_align'
 down_revision: str | None = '250515_drama'
 branch_labels: str | Sequence[str] | None = None
@@ -164,10 +163,7 @@ def upgrade() -> None:
 
     if _has_column(bind, 'drama_ad', 'media_url') and _has_column(bind, 'drama_ad', 'image_url'):
         op.execute(
-            sa.text(
-                'UPDATE drama_ad SET media_url = image_url '
-                'WHERE media_url IS NULL AND image_url IS NOT NULL'
-            )
+            sa.text('UPDATE drama_ad SET media_url = image_url WHERE media_url IS NULL AND image_url IS NOT NULL')
         )
 
 

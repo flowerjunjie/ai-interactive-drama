@@ -1017,7 +1017,8 @@ async def get_ip_location(oper_ip: str) -> str:
     except Exception as e:
         oper_location = '未知'
         import logging
-        logging.warning("get_oper_location failed: %s", e)
+
+        logging.warning('get_oper_location failed: %s', e)
     return oper_location
 
 

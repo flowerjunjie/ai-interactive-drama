@@ -49,11 +49,20 @@ async def spec_admin_upload_sign_post(
         cu.user.user_name if cu.user else 'admin',
     )
     return ResponseUtil.success(
-        data={'uploadUrl': url, 'upload_url': url, 'objectKey': key, 'object_key': key, 'bucket': TosConfig.volcengine_tos_bucket, 'fileId': fid}
+        data={
+            'uploadUrl': url,
+            'upload_url': url,
+            'objectKey': key,
+            'object_key': key,
+            'bucket': TosConfig.volcengine_tos_bucket,
+            'fileId': fid,
+        }
     )
 
 
-@spec_admin_alias_controller.post('/upload/complete', dependencies=[UserInterfaceAuthDependency('sdrama:upload:complete')])
+@spec_admin_alias_controller.post(
+    '/upload/complete', dependencies=[UserInterfaceAuthDependency('sdrama:upload:complete')]
+)
 async def spec_admin_upload_complete_post(
     body: UploadCompleteIn,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
