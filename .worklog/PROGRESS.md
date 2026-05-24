@@ -169,4 +169,13 @@ Video Nodes: /api/app/video-nodes/{id}
 - `.worklog/PROGRESS.md` — Sprint 进度追踪（本文档）
 
 ## 当前状态
-✅ Day 5 里程碑完成，mobile-app 可演示，APK 可下载
+✅ Sprint 6 完整交付（2026-05-24）
+✅ MySQL 勒索攻击恢复，ai_video 从备份恢复
+✅ 全链路 8/8 端点绿色
+✅ 安全修复：login页密码明文存储移除
+✅ 质量修复：player页硬编码内容移除，mine页API fail callback补齐
+✅ 性能优化：db_pool_size 50→20，DB索引补齐，entry_node/feed优化
+✅ 审计报告落地：.security/ .performance/ .codereview/ .infrastructure/
+✅ APK rebuild sync（4.3MB）
+✅ Git: 4 commits (5be16d8/9cec376/07783a9/a1ff528)
+⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
