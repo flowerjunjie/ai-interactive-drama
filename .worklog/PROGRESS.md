@@ -199,6 +199,7 @@ Video Nodes: /api/app/video-nodes/{id}
 ✅ ads response envelope：rows= 列表封装统一
 ✅ admin review list：Query default → CommonConstant
 ✅ check_new_episodes并发：asyncio.gather 并行查询
-✅ spec_alias重复import：已删除 duplicate import line
+✅ spec_alias重复import：已删除 duplicate import line + unused ApiNamespace
 ✅ C端auth限速：login → ANON_AUTH_LOGIN, register → ANON_AUTH_REGISTER
+✅ unused import清理：spec_alias ApiNamespace 移除
 ⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
