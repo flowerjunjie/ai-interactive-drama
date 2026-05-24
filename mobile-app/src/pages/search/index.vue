@@ -18,8 +18,23 @@
       <text class="text-[14px] text-white/70 active:opacity-70" @click="goBack">取消</text>
     </view>
 
+    <!-- Type Filter Tabs -->
+    <view class="flex gap-2 px-4 pb-3 bg-[#050505] overflow-x-auto">
+      <view
+        v-for="tab in typeTabs"
+        :key="tab.value"
+        class="shrink-0 rounded-full px-4 py-1.5 text-[12px] active:opacity-70"
+        :class="activeTab === tab.value
+          ? 'bg-[#9a5cf6] text-white'
+          : 'bg-white/[0.08] text-white/60'"
+        @click="onTabClick(tab.value)"
+      >
+        {{ tab.label }}
+      </view>
+    </view>
+
     <!-- Search Results -->
-    <scroll-view scroll-y class="h-[calc(100vh-80px)] pb-[env(safe-area-inset-bottom)]">
+    <scroll-view scroll-y class="h-[calc(100vh-140px)] pb-[env(safe-area-inset-bottom)]">
       <!-- Empty state -->
       <view v-if="!keyword" class="py-16 text-center">
         <view class="i-mdi-magnify text-[48px] text-white/20" />
@@ -91,8 +106,26 @@ const keyword = ref('')
 const rows = ref<Record<string, any>[]>([])
 const loaded = ref(false)
 const loading = ref(false)
+const activeTab = ref('')
 
 const recentSearches = ref<string[]>([])
+
+const typeTabs = [
+  { label: '全部', value: '' },
+  { label: '都市', value: 'urban' },
+  { label: '玄幻', value: 'fantasy' },
+  { label: '言情', value: 'romance' },
+  { label: '悬疑', value: 'horror' },
+  { label: '喜剧', value: 'comedy' },
+  { label: '科幻', value: 'sci_fi' },
+  { label: '古风', value: 'costume' },
+]
+
+function onTabClick(tab: string) {
+  activeTab.value = tab
+  const kw = keyword.value.trim()
+  if (kw || tab) fetchResults(kw)
+}
 
 function dramaTypeLabel(t: string | null | undefined): string {
   const map: Record<string, string> = {
@@ -107,13 +140,15 @@ function onInput() {
   if (!keyword.value.trim()) {
     rows.value = []
     loaded.value = false
+  } else {
+    fetchResults(keyword.value.trim())
   }
 }
 
 function onSearch() {
   const kw = keyword.value.trim()
-  if (!kw) return
-  if (!recentSearches.value.includes(kw)) {
+  if (!kw && !activeTab.value) return
+  if (kw && !recentSearches.value.includes(kw)) {
     recentSearches.value.unshift(kw)
     if (recentSearches.value.length > 10) recentSearches.value.pop()
     uni.setStorageSync('recent_searches', recentSearches.value)
@@ -126,17 +161,17 @@ function fetchResults(kw: string) {
   loaded.value = false
   uni.request({
     url: appApi('/dramas'),
-    data: { keyword: kw },
+    data: { keyword: kw, drama_type: activeTab.value || undefined },
     header: authHeaders({}),
     success: (res: any) => {
       const b = res.data as any
       loading.value = false
       loaded.value = true
-      if (b.code !== 200 || !Array.isArray(b.data)) {
+      if (b.code !== 200 || !Array.isArray(b.rows)) {
         rows.value = []
         return
       }
-      rows.value = b.data
+      rows.value = b.rows
     },
     fail: () => {
       loading.value = false

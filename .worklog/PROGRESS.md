@@ -208,4 +208,5 @@ Video Nodes: /api/app/video-nodes/{id}
 ✅ asyncio.gather重构：check_new_episodes 查询结构优化
 ✅ Git LFS追踪：.gitattributes track "*.apk" → commit 67e394d
 ✅ 前端audit完成：magic strings/duplicate maps/unused ref 均已扫过
+✅ 搜索增强：分类标签tabs + 实时搜索 + b.rows修复
 ⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
