@@ -1,4 +1,5 @@
 from datetime import datetime
+import random
 
 from sqlalchemy import delete, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -56,6 +57,7 @@ class DramaAppContentService:
             )
         ).scalars().all()
         ads_active = [a for a in ads if cls._ad_time_ok(a)]
+        random.shuffle(ads_active)  # true random rotation per feed call
         items: list[dict] = []
         ad_idx = 0
         for i, (n, d) in enumerate(rows):
@@ -170,20 +172,12 @@ class DramaAppContentService:
     @classmethod
     async def entry_node(cls, db: AsyncSession, drama_id: int) -> DramaVideoNode | None:
         vis = cls._node_visible_app()
+        # Single query: prioritize is_entry='1', then fallback to episode_no/sort ordering
         r = await db.execute(
-            select(DramaVideoNode).where(
-                DramaVideoNode.drama_id == drama_id,
-                DramaVideoNode.is_entry == '1',
-                vis,
-            )
-        )
-        node = r.scalars().first()
-        if node:
-            return node
-        r2 = await db.execute(
             select(DramaVideoNode)
             .where(DramaVideoNode.drama_id == drama_id, vis)
             .order_by(
+                (DramaVideoNode.is_entry == '1').desc(),  # entry node first
                 DramaVideoNode.episode_no.is_(None),
                 DramaVideoNode.episode_no,
                 DramaVideoNode.sort,
@@ -191,7 +185,7 @@ class DramaAppContentService:
             )
             .limit(1)
         )
-        return r2.scalars().first()
+        return r.scalars().first()
 
     @classmethod
     async def get_node(cls, db: AsyncSession, node_id: int) -> DramaVideoNode:
