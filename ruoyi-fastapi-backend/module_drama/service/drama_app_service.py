@@ -505,15 +505,23 @@ class DramaAppContentService:
         return {'subscribed': True}
 
     @classmethod
-    async def list_subscriptions(cls, db: AsyncSession, user_id: int) -> list[dict]:
-        """我的追更列表，返回剧目信息"""
+    async def list_subscriptions(cls, db: AsyncSession, user_id: int, page_num: int = 1, page_size: int = 20) -> tuple[list[dict], int]:
+        """我的追更列表，返回(剧目列表, 总数)"""
+        count_q = (
+            select(func.count())
+            .select_from(DramaUserSubscribe)
+            .where(DramaUserSubscribe.app_user_id == user_id)
+        )
+        total = int((await db.execute(count_q)).scalar() or 0)
         rows = await db.execute(
             select(DramaUserSubscribe, Drama)
             .join(Drama, Drama.drama_id == DramaUserSubscribe.drama_id)
             .where(DramaUserSubscribe.app_user_id == user_id, Drama.status == _D)
             .order_by(DramaUserSubscribe.create_time.desc())
+            .offset((page_num - 1) * page_size)
+            .limit(page_size)
         )
-        return [
+        items = [
             {
                 'subscribe_id': sub.subscribe_id,
                 'drama_id': d.drama_id,
@@ -525,6 +533,7 @@ class DramaAppContentService:
             }
             for sub, d in rows.all()
         ]
+        return items, total
 
     @classmethod
     async def check_new_episodes(cls, db: AsyncSession, user_id: int, drama_id: int) -> dict:

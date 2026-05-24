@@ -265,6 +265,7 @@ async def spec_ad_click(ad_id: int, query_db: Annotated[AsyncSession, DBSessionD
 
 
 @spec_app_controller.post('/subscriptions')
+@ApiRateLimit(namespace='drama:app:subscription', preset=ApiRateLimitPreset.USER_INTERACTIVE_HIGH_FREQ)
 async def spec_subscribe(
     body: SubscribeIn,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -275,15 +276,19 @@ async def spec_subscribe(
 
 
 @spec_app_controller.get('/subscriptions')
+@ApiRateLimit(namespace='drama:app:subscription', preset=ApiRateLimitPreset.USER_INTERACTIVE_HIGH_FREQ)
 async def spec_subscriptions_get(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     user: Annotated[DramaAppUser, Depends(get_required_app_user)],
+    page_num: int = Query(default=1, ge=1),
+    page_size: int = Query(default=20, ge=1, le=50),
 ) -> Response:
-    rows = await DramaAppContentService.list_subscriptions(query_db, user.user_id)
-    return ResponseUtil.success(rows=rows)
+    rows, total = await DramaAppContentService.list_subscriptions(query_db, user.user_id, page_num, page_size)
+    return ResponseUtil.success(rows=rows, dict_content={'total': total})
 
 
 @spec_app_controller.get('/subscriptions/{drama_id}/new-episode')
+@ApiRateLimit(namespace='drama:app:subscription', preset=ApiRateLimitPreset.USER_INTERACTIVE_HIGH_FREQ)
 async def spec_subscribe_check(
     drama_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
