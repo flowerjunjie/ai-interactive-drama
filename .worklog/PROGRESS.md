@@ -129,6 +129,9 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  6/30 天
 │  ✅ list_subscriptions分页│ page_num/page_size/total ✅ NEW  │
 │  ✅ Admin接口RateLimit │ admin drama/node写操作 USER_COMMON ✅ NEW │
 │  ✅ Admin XSS入口过滤  │ DramaSaveModel strip_html validator ✅ NEW │
+│  ✅ Comment XSS过滤   │ CommentCreateModel content validator ✅ NEW │
+│  ✅ Ad XSS过滤       │ DramaAdSaveModel全字段 validator ✅ NEW      │
+│  ✅ Review XSS过滤   │ ReviewCreateModel content validator ✅ NEW  │
 └────────────────────────────────────────────────────────────┘
 ```
 
