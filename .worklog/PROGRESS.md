@@ -109,6 +109,8 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ Magic strings全链路 │ admin+app service全覆盖 ✅ NEW│
 │  ✅ user_dashboard优化   │ union_all单次查询 ✅ NEW    │
 │  ✅ ads response统一     │ data=→rows= 封装一致 ✅ NEW    │
+│  ✅ admin review list default │ DRAMA_REVIEW_STATUS_PENDING ✅ NEW │
+│  ✅ Magic strings清零    │ module_drama service/controller/aspect ✅ NEW │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -184,8 +186,12 @@ Video Nodes: /api/app/video-nodes/{id}
 ✅ 性能优化：db_pool_size 50→20，DB索引补齐，entry_node/feed优化
 ✅ 审计报告落地：.security/ .performance/ .codereview/ .infrastructure/
 ✅ APK rebuild sync（4.3MB）
-✅ Git: 7 commits (5be16d8→08fb9b6)
+✅ Git: 15 commits (5be16d8→5c96ee7)
 ✅ 剧场页分页：total+rows 返回，page_num/page_size 参数
 ✅ 索引覆盖：drama(idx_status_sort/heat/create) + drama_ad(idx_status_weight)
 ✅ PyMySQL冗余驱动移除（asyncmy全链路覆盖）
+✅ Magic strings全链路清零：module_drama service/controller/aspect 层 0 magic strings
+✅ user_dashboard_counts：union_all 单次 DB round-trip
+✅ ads response envelope：rows= 列表封装统一
+✅ admin review list：Query default → CommonConstant
 ⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
