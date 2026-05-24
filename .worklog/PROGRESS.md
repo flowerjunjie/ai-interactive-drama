@@ -124,6 +124,9 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  6/30 天
 │  ✅ drama_detail并行查询│ asyncio.gather 3→1 RTT ✅ NEW     │
 │  ✅ list_comments安全修复│ 移除app_user_id泄露 ✅ NEW         │
 │  ✅ toggleSub fail分支  │ player+drama-detail网络提示 ✅ NEW │
+│  ✅ subscriptions流控  │ USER_INTERACTIVE_HIGH_FREQ ✅ NEW  │
+│  ✅ JWT/DB密钥硬化     │ os.getenv注入+CHANGE_ME默认值 ✅ NEW │
+│  ✅ list_subscriptions分页│ page_num/page_size/total ✅ NEW  │
 └────────────────────────────────────────────────────────────┘
 ```
 
