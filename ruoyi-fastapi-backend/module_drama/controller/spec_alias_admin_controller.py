@@ -5,10 +5,12 @@ from typing import Annotated
 from fastapi import Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.annotation.log_annotation import Log
 from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
 from common.aspect.interface_auth import UserInterfaceAuthDependency
 from common.aspect.pre_auth import CurrentUserDependency, PreAuthDependency
+from common.enums import BusinessType
 from common.router import APIRouterPro
 from config.env import TosConfig
 from module_admin.entity.vo.user_vo import CurrentUserModel
@@ -108,6 +110,7 @@ async def spec_reviews_pending(
     '/reviews/{node_id}/approve',
     dependencies=[UserInterfaceAuthDependency('sdrama:node:edit')],
 )
+@Log(title='视频审核', business_type=BusinessType.DELETE)
 async def spec_review_approve(node_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     await DramaAdminService.node_moderation_approve(query_db, node_id)
     return ResponseUtil.success(msg='已通过')
@@ -117,6 +120,7 @@ async def spec_review_approve(node_id: int, query_db: Annotated[AsyncSession, DB
     '/reviews/{node_id}/reject',
     dependencies=[UserInterfaceAuthDependency('sdrama:node:edit')],
 )
+@Log(title='视频审核', business_type=BusinessType.DELETE)
 async def spec_review_reject(
     node_id: int,
     body: NodeModerationRejectModel,

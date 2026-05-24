@@ -3,11 +3,13 @@ from typing import Annotated
 from fastapi import Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.annotation.log_annotation import Log
 from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
 from common.aspect.interface_auth import UserInterfaceAuthDependency
 from common.aspect.pre_auth import CurrentUserDependency, PreAuthDependency
 from common.constant import CommonConstant
+from common.enums import BusinessType
 from common.router import APIRouterPro
 from config.env import TosConfig
 from module_admin.entity.vo.user_vo import CurrentUserModel
@@ -54,6 +56,7 @@ async def admin_drama_list(
 
 @admin_drama_controller.post('/dramas', dependencies=[UserInterfaceAuthDependency('sdrama:drama:add')])
 @ApiRateLimit(namespace='drama:admin:drama', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
+@Log(title='短剧管理', business_type=BusinessType.INSERT)
 async def admin_drama_add(
     body: DramaSaveModel,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -65,6 +68,7 @@ async def admin_drama_add(
 
 @admin_drama_controller.put('/dramas/{drama_id}', dependencies=[UserInterfaceAuthDependency('sdrama:drama:edit')])
 @ApiRateLimit(namespace='drama:admin:drama', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
+@Log(title='短剧管理', business_type=BusinessType.UPDATE)
 async def admin_drama_edit(
     drama_id: int,
     body: DramaSaveModel,
@@ -76,6 +80,7 @@ async def admin_drama_edit(
 
 
 @admin_drama_controller.delete('/dramas/{drama_id}', dependencies=[UserInterfaceAuthDependency('sdrama:drama:remove')])
+@Log(title='短剧管理', business_type=BusinessType.DELETE)
 async def admin_drama_del(
     drama_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -99,6 +104,7 @@ async def admin_node_list(
 
 @admin_drama_controller.post('/video-nodes', dependencies=[UserInterfaceAuthDependency('sdrama:node:add')])
 @ApiRateLimit(namespace='drama:admin:node', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
+@Log(title='视频节点', business_type=BusinessType.INSERT)
 async def admin_node_add(
     body: VideoNodeSaveModel,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -109,6 +115,7 @@ async def admin_node_add(
 
 @admin_drama_controller.put('/video-nodes/{node_id}', dependencies=[UserInterfaceAuthDependency('sdrama:node:edit')])
 @ApiRateLimit(namespace='drama:admin:node', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
+@Log(title='视频节点', business_type=BusinessType.UPDATE)
 async def admin_node_edit(
     node_id: int,
     body: VideoNodeSaveModel,
@@ -121,6 +128,7 @@ async def admin_node_edit(
 @admin_drama_controller.delete(
     '/video-nodes/{node_id}', dependencies=[UserInterfaceAuthDependency('sdrama:node:remove')]
 )
+@Log(title='视频节点', business_type=BusinessType.DELETE)
 async def admin_node_del(
     node_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -133,6 +141,7 @@ async def admin_node_del(
     '/video-nodes/{node_id}/moderation/approve',
     dependencies=[UserInterfaceAuthDependency('sdrama:node:edit')],
 )
+@Log(title='视频审核', business_type=BusinessType.DELETE)
 async def admin_node_moderation_approve(
     node_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]
 ) -> Response:
@@ -144,6 +153,7 @@ async def admin_node_moderation_approve(
     '/video-nodes/{node_id}/moderation/reject',
     dependencies=[UserInterfaceAuthDependency('sdrama:node:edit')],
 )
+@Log(title='视频审核', business_type=BusinessType.DELETE)
 async def admin_node_moderation_reject(
     node_id: int,
     body: NodeModerationRejectModel,
@@ -190,6 +200,7 @@ async def admin_comments(
 @admin_drama_controller.delete(
     '/comments/{comment_id}', dependencies=[UserInterfaceAuthDependency('sdrama:drama:list')]
 )
+@Log(title='评论管理', business_type=BusinessType.DELETE)
 async def admin_comment_delete(comment_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     await DramaAdminService.comment_delete(query_db, comment_id)
     return ResponseUtil.success(msg='已删除')
@@ -198,6 +209,7 @@ async def admin_comment_delete(comment_id: int, query_db: Annotated[AsyncSession
 @admin_drama_controller.put(
     '/comments/{comment_id}/hide', dependencies=[UserInterfaceAuthDependency('sdrama:drama:list')]
 )
+@Log(title='评论管理', business_type=BusinessType.UPDATE)
 async def admin_comment_hide(
     comment_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -246,6 +258,7 @@ async def admin_choice_list(node_id: int, query_db: Annotated[AsyncSession, DBSe
 
 
 @admin_drama_controller.post('/video-choices', dependencies=[UserInterfaceAuthDependency('sdrama:choice:add')])
+@Log(title='选项管理', business_type=BusinessType.INSERT)
 async def admin_choice_add(
     body: VideoChoiceSaveModel,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -257,6 +270,7 @@ async def admin_choice_add(
 @admin_drama_controller.put(
     '/video-choices/{choice_id}', dependencies=[UserInterfaceAuthDependency('sdrama:choice:edit')]
 )
+@Log(title='选项管理', business_type=BusinessType.UPDATE)
 async def admin_choice_edit(
     choice_id: int,
     body: VideoChoiceSaveModel,
@@ -269,6 +283,7 @@ async def admin_choice_edit(
 @admin_drama_controller.delete(
     '/video-choices/{choice_id}', dependencies=[UserInterfaceAuthDependency('sdrama:choice:remove')]
 )
+@Log(title='选项管理', business_type=BusinessType.DELETE)
 async def admin_choice_del(
     choice_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -292,6 +307,7 @@ async def admin_review_list(
 @admin_drama_controller.put(
     '/video-reviews/{review_id}/audit', dependencies=[UserInterfaceAuthDependency('sdrama:review:audit')]
 )
+@Log(title='评论审核', business_type=BusinessType.UPDATE)
 async def admin_review_audit(
     review_id: int,
     body: ReviewAuditModel,
@@ -313,6 +329,7 @@ async def admin_ad_list(
 
 
 @admin_drama_controller.post('/ads', dependencies=[UserInterfaceAuthDependency('sdrama:ad:add')])
+@Log(title='广告管理', business_type=BusinessType.INSERT)
 async def admin_ad_add(
     body: DramaAdSaveModel,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -322,6 +339,7 @@ async def admin_ad_add(
 
 
 @admin_drama_controller.put('/ads/{ad_id}', dependencies=[UserInterfaceAuthDependency('sdrama:ad:edit')])
+@Log(title='广告管理', business_type=BusinessType.UPDATE)
 async def admin_ad_edit(
     ad_id: int,
     body: DramaAdSaveModel,
@@ -332,6 +350,7 @@ async def admin_ad_edit(
 
 
 @admin_drama_controller.delete('/ads/{ad_id}', dependencies=[UserInterfaceAuthDependency('sdrama:ad:remove')])
+@Log(title='广告管理', business_type=BusinessType.DELETE)
 async def admin_ad_del(
     ad_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
