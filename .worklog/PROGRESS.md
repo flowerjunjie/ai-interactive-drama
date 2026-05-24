@@ -105,6 +105,7 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ APK rebuild验证  │ SHA256一致(4.3MB) ✅ NEW       │
 │  ✅ 后端重启验证     │ pagination total=6 ✅ NEW      │
 │  ✅ C端限速注解补齐  │ feed/dramas/drama-detail ✅ NEW │
+│  ✅ Magic strings集中 │ CommonConstant常量替换 ✅ NEW │
 └────────────────────────────────────────────────────────────┘
 ```
 
