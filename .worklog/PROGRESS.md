@@ -132,6 +132,8 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  6/30 天
 │  ✅ Comment XSS过滤   │ CommentCreateModel content validator ✅ NEW │
 │  ✅ Ad XSS过滤       │ DramaAdSaveModel全字段 validator ✅ NEW      │
 │  ✅ Review XSS过滤   │ ReviewCreateModel content validator ✅ NEW  │
+│  ✅ Choice XSS过滤   │ VideoChoiceSaveModel.label validator ✅ NEW │
+│  ✅ JWT/DB fail-fast  │ model_validator raise on CHANGE_ME ✅ NEW │
 └────────────────────────────────────────────────────────────┘
 ```
 
