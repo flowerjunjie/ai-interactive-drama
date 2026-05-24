@@ -74,9 +74,9 @@ class FeedItemModel(BaseModel):
 
 
 class WatchHistoryIn(BaseModel):
-    drama_id: int
-    node_id: int | None = None
-    progress_sec: int = 0
+    drama_id: int = Field(..., gt=0)
+    node_id: int | None = Field(default=None, ge=0)
+    progress_sec: int = Field(default=0, ge=0)
 
 
 class LikeIn(BaseModel):

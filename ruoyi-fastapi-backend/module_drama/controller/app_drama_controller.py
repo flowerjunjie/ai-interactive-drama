@@ -241,12 +241,14 @@ async def list_ads(
 
 
 @app_drama_controller.post('/ads/{ad_id}/impression')
+@ApiRateLimit(namespace='drama:app:ad-action', preset=ApiRateLimitPreset.USER_RESOURCE_EXECUTION)
 async def ad_impression(ad_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     await DramaAppContentService.ad_impression(query_db, ad_id)
     return ResponseUtil.success(msg='ok')
 
 
 @app_drama_controller.post('/ads/{ad_id}/click')
+@ApiRateLimit(namespace='drama:app:ad-action', preset=ApiRateLimitPreset.USER_RESOURCE_EXECUTION)
 async def ad_click(ad_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     await DramaAppContentService.ad_click(query_db, ad_id)
     return ResponseUtil.success(msg='ok')
