@@ -120,6 +120,7 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ 剧场页b.data修复│ rows=[] 统一响应封装 ✅ NEW          │
 │  ✅ 骨架屏+loading │ theater页 6格pulse骨架 ✅ NEW          │
 │  ✅ 分享文案增强   │ theater+index统一文案 ✅ NEW           │
+│  ✅ drama-detail相关推荐│ fetchRelated b.rows ✅ NEW         │
 └────────────────────────────────────────────────────────────┘
 ```
 
