@@ -451,7 +451,7 @@ class DramaAppContentService:
                 node_id=body.node_id,
                 rating=body.rating,
                 content=body.content,
-                status='pending',
+                status=CommonConstant.DRAMA_REVIEW_STATUS_PENDING,
             )
         )
         await db.commit()

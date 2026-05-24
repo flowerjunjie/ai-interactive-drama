@@ -43,6 +43,9 @@ class CommonConstant:
     DRAMA_NODE_IS_ENTRY_YES = '1'
     DRAMA_NODE_IS_ENTRY_NO = '0'
     DRAMA_REVIEW_STATUS_PENDING = 'pending'
+    DRAMA_REVIEW_STATUS_APPROVED = 'approved'
+    DRAMA_UPLOAD_STATUS_PENDING = 'pending'
+    DRAMA_UPLOAD_STATUS_COMPLETE = 'complete'
     UNIQUE = True
     NOT_UNIQUE = False
 

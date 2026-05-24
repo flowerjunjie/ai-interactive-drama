@@ -35,6 +35,7 @@ class DramaAdminService:
     _PAD = CommonConstant.DRAMA_AD_STATUS_ACTIVE
     _NA = CommonConstant.DRAMA_NODE_REVIEW_APPROVED
     _RVP = CommonConstant.DRAMA_REVIEW_STATUS_PENDING
+    _UPP = CommonConstant.DRAMA_UPLOAD_STATUS_PENDING
 
     @classmethod
     async def dashboard(cls, db: AsyncSession) -> dict:
@@ -256,7 +257,7 @@ class DramaAdminService:
             mime_type=mime,
             drama_id=drama_id,
             node_id=node_id,
-            status='pending',
+            status=cls._UPP,
             create_by=create_by,
         )
         db.add(row)
@@ -292,7 +293,7 @@ class DramaAdminService:
                     node.cover_url = cover_url
                 if tos_key:
                     node.tos_key = tos_key
-                node.review_status = 'pending'
+                node.review_status = cls._RVP
                 node.reject_reason = None
         await db.commit()
 
