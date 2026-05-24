@@ -231,7 +231,7 @@ async def list_ads(
     slot: str | None = Query(default=None),
 ) -> Response:
     rows = await DramaAppContentService.list_ads(query_db, slot)
-    return ResponseUtil.success(data=[DramaAppContentService._ad_public_dict(a) for a in rows])
+    return ResponseUtil.success(rows=[DramaAppContentService._ad_public_dict(a) for a in rows])
 
 
 @app_drama_controller.post('/ads/{ad_id}/impression')
