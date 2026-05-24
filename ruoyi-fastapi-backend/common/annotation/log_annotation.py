@@ -1016,7 +1016,8 @@ async def get_ip_location(oper_ip: str) -> str:
                         oper_location = f'{prov}-{city}'
     except Exception as e:
         oper_location = '未知'
-        print(e)
+        import logging
+        logging.warning("get_oper_location failed: %s", e)
     return oper_location
 
 

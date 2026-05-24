@@ -49,6 +49,27 @@
           </view>
         </view>
 
+        <!-- Subscription List (shown when logged in + has subscriptions) -->
+        <view v-if="user.token && subscriptions.length > 0" class="mt-6">
+          <view class="flex items-center justify-between mb-3">
+            <text class="text-[15px] font-bold text-white">我的追更</text>
+            <text class="text-[12px] text-white/40">近{{ subscriptions.length }}部</text>
+          </view>
+          <scroll-view scroll-x class="flex gap-3">
+            <view
+              v-for="sub in subscriptions"
+              :key="sub.subscribe_id"
+              @click="goDrama(sub.drama_id)"
+              class="flex-shrink-0 w-[120px] active:opacity-80"
+            >
+              <view class="h-[160px] w-[120px] rounded-[12px] overflow-hidden bg-[#1a1a2e]">
+                <image :src="sub.cover_url" mode="aspectFill" class="h-full w-full" />
+              </view>
+              <text class="mt-2 text-[11px] text-white/80 line-clamp-1">{{ sub.title }}</text>
+            </view>
+          </scroll-view>
+        </view>
+
         <!-- Login Banner -->
         <view v-if="!user.token" @click="goLogin" class="mt-6 flex items-center justify-between rounded-[16px] p-4 shadow-lg active:opacity-90" style="background: linear-gradient(135deg, #302619, #1c150c);">
           <view class="flex items-center gap-3">
@@ -134,21 +155,21 @@
               </view>
               <view class="i-mdi-chevron-right text-[20px] text-white/30" />
             </view>
-            <view class="flex items-center justify-between active:opacity-70">
+            <view class="flex items-center justify-between active:opacity-70" @click="goPrivacy">
               <view class="flex items-center gap-2.5">
                 <view class="i-mdi-shield-check-outline text-[20px] text-white/70" />
                 <text class="text-[13px] text-white/80">隐私政策</text>
               </view>
               <view class="i-mdi-chevron-right text-[20px] text-white/30" />
             </view>
-            <view class="flex items-center justify-between active:opacity-70">
+            <view class="flex items-center justify-between active:opacity-70" @click="goAgreement">
               <view class="flex items-center gap-2.5">
                 <view class="i-mdi-file-document-outline text-[20px] text-white/70" />
                 <text class="text-[13px] text-white/80">用户协议</text>
               </view>
               <view class="i-mdi-chevron-right text-[20px] text-white/30" />
             </view>
-            <view class="flex items-center justify-between active:opacity-70">
+            <view class="flex items-center justify-between active:opacity-70" @click="goAbout">
               <view class="flex items-center gap-2.5">
                 <view class="i-mdi-information-outline text-[20px] text-white/70" />
                 <text class="text-[13px] text-white/80">关于我们</text>
@@ -202,6 +223,8 @@ const dash = reactive({
   watching_drama_count: 0,
 })
 
+const subscriptions = reactive<any[]>([])
+
 const displayName = computed(() => user.profile?.nick_name || user.profile?.user_name || '剧迷小丸子')
 const displayId = computed(() => String(user.profile?.user_id ?? '—'))
 const avatarSrc = computed(() => user.profile?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix')
@@ -239,6 +262,21 @@ function loadDashboard() {
       dash.like_count = Number(d.like_count ?? 0)
       dash.watching_drama_count = Number(d.watching_drama_count ?? 0)
     },
+    fail: () => { /* non-blocking: dashboard is non-critical */ },
+  })
+}
+
+function loadSubscriptions() {
+  if (!user.token) return
+  uni.request({
+    url: appApi('/app/subscriptions'),
+    header: authHeaders(),
+    success: (res: any) => {
+      const b = res.data as any
+      if (b.code !== 200 || !b.rows) return
+      subscriptions.splice(0, subscriptions.length, ...b.rows)
+    },
+    fail: () => { /* non-blocking: subscription list is non-critical */ },
   })
 }
 
@@ -256,9 +294,26 @@ function switchTab(url: string) {
   uni.reLaunch({ url })
 }
 
+function goPrivacy() {
+  uni.navigateTo({ url: '/pages/privacy/index' })
+}
+
+function goAgreement() {
+  uni.navigateTo({ url: '/pages/privacy/agreement' })
+}
+
+function goAbout() {
+  uni.navigateTo({ url: '/pages/privacy/about' })
+}
+
+function goDrama(dramaId: number) {
+  uni.navigateTo({ url: `/pages/drama-detail/index?id=${dramaId}` })
+}
+
 onShow(() => {
   user.fetchMe()
   loadDashboard()
+  loadSubscriptions()
 })
 </script>
 

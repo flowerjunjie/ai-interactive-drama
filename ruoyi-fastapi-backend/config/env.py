@@ -55,7 +55,7 @@ class DataBaseSettings(BaseSettings):
     db_database: str = 'ruoyi-fastapi'
     db_echo: bool = True
     db_max_overflow: int = 10
-    db_pool_size: int = 50
+    db_pool_size: int = 20  # 合理值：单worker uvicorn，50太大会耗尽MySQL连接
     db_pool_recycle: int = 3600
     db_pool_timeout: int = 30
 

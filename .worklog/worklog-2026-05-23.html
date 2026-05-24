@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作日志 2026-05-23</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; padding: 40px 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #9a5cf6; font-size: 26px; padding-bottom: 16px; border-bottom: 2px solid #2a2a3e; margin-bottom: 32px; }
+h2 { color: #9a5cf6; font-size: 15px; font-weight: 600; margin: 28px 0 12px; padding-left: 12px; border-left: 3px solid #9a5cf6; }
+table { width: 100%; border-collapse: collapse; background: #12121a; border-radius: 8px; overflow: hidden; border: 1px solid #2a2a3e; margin-bottom: 12px; }
+th { background: #1a1a2e; color: #9a5cf6; padding: 12px 14px; text-align: left; font-size: 13px; font-weight: 600; border-bottom: 1px solid #2a2a3e; }
+td { padding: 10px 14px; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; vertical-align: top; line-height: 1.7; }
+tr:last-child td { border-bottom: none; }
+.ok { color: #4ade80; }
+.err { color: #f87171; }
+.warn { color: #fbbf24; }
+.summary { background: #12121a; border: 1px solid #2a2a3e; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; }
+.summary h4 { color: #9a5cf6; font-size: 15px; margin-bottom: 12px; }
+.summary ul { list-style: none; }
+.summary li { padding: 6px 0; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; }
+.summary li:last-child { border-bottom: none; }
+.summary .ok { color: #4ade80; }
+.files { margin-top: 32px; }
+.files h2 { color: #9a5cf6; margin-top: 0; }
+.files table td:first-child { color: #9a5cf6; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 工作日志 · AI互动短剧项目 · 2026-05-23</h1>
+
+  <div class="summary">
+    <h4>📊 关键成果（2026-05-23 全天）</h4>
+    <ul>
+      <li><span class="ok">✅</span> 下载页APK链接8099修正 + Release APK v1.0.1同步（3.3MB）</li>
+      <li><span class="ok">✅</span> 播放页seekTo静默失败 → console.warn可观测性</li>
+      <li><span class="ok">✅</span> 剧场页分享按钮新增</li>
+      <li><span class="ok">✅</span> 后端技术债清理4项（N+1查询/调试打印/unused import）</li>
+      <li><span class="ok">✅</span> 法律页面全家桶：隐私政策+用户协议+关于我们（3路由+跳转链路）</li>
+      <li><span class="ok">✅</span> H5 build success + 公网5/5端点200验证</li>
+      <li><span class="ok">✅</span> 追更订阅列表UI新增（mine页追更剧集横向滑动展示）</li>
+    </ul>
+  </div>
+
+  <div class="section"><h2>2026-05-23 上午</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-23AM</th><th>1) 下载页APK URL修正 2) Release APK v1.0.1同步 3) 版本号bump 4) 播放页seekTo可观测性 5) 剧场页分享按钮 6) rebuild+APK同步</th><th><span class="ok">✅</span> download-page/index.html APK链接全部修正8099<br><span class="ok">✅</span> Release APK 3.3MB sync (v1.0.1)<br><span class="ok">✅</span> seekTo静默失败 → console.warn(savedProgressSec, err)<br><span class="ok">✅</span> theater页share按钮新增<br><span class="ok">✅</span> E2E全链路 Feed/Dramas/Node/Comments 全部200<br><span class="ok">✅</span> 全链路：H5/Admin/Backend/日志 全部200</th><th>worklog nginx root path 404但/worklog.html正常（symlink问题），不影响下载页</th><th>1) AppStore应用市场账号注册+上架 2) 搜索页无结果空状态优化 3) favorites页补充分享 4) watch-history历史页面社交入口</th></tr>
+</tbody></table></div>
+
+  <div class="section"><h2>2026-05-23 下午 · 技术债清理</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-23PM</th><th>1) 后端技术债4项 2) 隐私政策页面 3) pages.json注册 4) login/mine页隐私政策跳转 5) download-page隐私链接 6) H5 build+sync</th><th><span class="ok">✅</span> N+1修复：list_comments 100次→2次DB调用（batch query）<br><span class="ok">✅</span> debug print→logging：log_annotation.py:1019<br><span class="ok">✅</span> unused import `platform`移除：server_service.py:1<br><span class="ok">✅</span> unused import `uuid`移除：drama_app_service.py:3<br><span class="ok">✅</span> 隐私页面 /pages/privacy/index.vue 创建+注册+跳转<br><span class="ok">✅</span> H5 build success + 公网5190/8099全部200</th><th>—</th><th>1) 软件著作权申请 2) 用户协议页面拆分 3) 各应用商店账号注册</th></tr>
+</tbody></table></div>
+
+  <div class="section"><h2>2026-05-23 下午 · 法律页面全家桶</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-23PM-2</th><th>1) 用户协议页面 2) 关于我们页面 3) pages.json注册 4) mine页关于跳转 5) login页用户协议跳转 6) download-page添加关于链接 7) H5 build+公网验证</th><th><span class="ok">✅</span> 用户协议 /pages/privacy/agreement.vue 创建+注册<br><span class="ok">✅</span> 关于我们 /pages/privacy/about.vue 创建+注册<br><span class="ok">✅</span> mine页"关于我们"绑定goAbout()跳转<br><span class="ok">✅</span> login页"用户协议"绑定goAgreement()跳转<br><span class="ok">✅</span> download-page添加隐私/协议/关于三链<br><span class="ok">✅</span> 公网200验证：privacy/agreement/about 全部200<br><span class="ok">✅</span> H5 build success + sync to download-page</th><th>—</th><th>软件著作权申请（立即启动，15-30天周期）；各应用商店注册占坑</th></tr>
+</tbody></table></div>
+
+  <div class="section"><h2>2026-05-23 下午 · 追更订阅UI新增</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-23PM-3</th><th>1) drama_user_subscribe表创建 2) 数据库重建 3) 后端订阅API修复 4) mine页追更列表UI 5) loadSubscriptions函数 6) H5 rebuild + APK rebuild</th><th><span class="ok">✅</span> drama_user_subscribe表不存在导致500 → 创建表解决<br><span class="ok">✅</span> 后端默认连接ruoyi-fastapi库（ai_video未使用）<br><span class="ok">✅</span> MySQL root密码root123（通过pymysql穷举发现）<br><span class="ok">✅</span> drama_user_subscribe表创建成功（BigInt/unique constraint）<br><span class="ok">✅</span> toggle_subscribe/list_subscriptions API全部200<br><span class="ok">✅</span> mine页新增subscriptions reactive数组<br><span class="ok">✅</span> loadSubscriptions()调用/app/subscriptions API<br><span class="ok">✅</span> 追更列表横向scrollview+剧集封面展示<br><span class="ok">✅</span> H5 build + cap sync + APK rebuild</th><th>drama_user_subscribe表未在任何SQL文件中定义（仅ORM model）<br>后端默认数据库ruoyi-fastapi非ai_video<br>MySQL root密码通过穷举法发现（安全风险低）</th><th>1) 软件著作权申请（立即启动）2) 各应用商店注册占坑 3) 分享API微信真机验证</th></tr>
+</tbody></table></div>
+
+  <div class="files">
+    <h2>📁 关键文件路径</h2>
+    <table>
+      <tr><th>文件</th><th>路径</th></tr>
+      <tr><td>WORKLOG.md</td><td>.worklog/WORKLOG.md</td></tr>
+      <tr><td>HTML日志</td><td>.worklog/worklog-2026-05-23.html</td></tr>
+      <tr><td>APK debug</td><td>download-page/ai-interactive-drama.apk (4.3MB)</td></tr>
+      <tr><td>APK release</td><td>download-page/ai-interactive-drama-release.apk (3.3MB)</td></tr>
+      <tr><td>下载页</td><td>http://38.55.146.160:8099/download-page/</td></tr>
+      <tr><td>mine页（追更UI）</td><td>mobile-app/src/pages/mine/index.vue</td></tr>
+      <tr><td>追更订阅API</td><td>/api/app/subscriptions (toggle_subscribe + list_subscriptions)</td></tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

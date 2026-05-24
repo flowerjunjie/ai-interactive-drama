@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作日志 2026-05-21</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f1117; color: #c9d1d9; font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; line-height: 1.7; padding: 24px 16px; font-size: 14px; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { color: #79c0ff; }
+
+  .header { max-width: 1400px; margin: 0 auto 28px; border-bottom: 1px solid #21262d; padding-bottom: 16px; }
+  .header h1 { font-size: 22px; color: #58a6ff; margin-bottom: 6px; }
+
+  .log-table-wrap { max-width: 1400px; margin: 0 auto 40px; overflow-x: auto; }
+  .log-table { width: 100%; border-collapse: collapse; background: #161b22; border-radius: 8px; overflow: hidden; border: 1px solid #30363d; table-layout: fixed; }
+  .log-table th { background: #1c2128; color: #8b949e; font-size: 12px; font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid #30363d; white-space: nowrap; }
+  .log-table td { padding: 12px 14px; font-size: 13px; color: #c9d1d9; border-bottom: 1px solid #21262d; vertical-align: top; line-height: 1.6; }
+  .log-table tr:last-child td { border-bottom: none; }
+  .log-table tr:hover td { background: #1c2128; }
+
+  .col-date { width: 90px; white-space: nowrap; color: #f0883e; font-weight: 600; }
+  .col-work { width: 38%; }
+  .col-progress { width: 26%; }
+  .col-problem { width: 22%; }
+  .col-next { width: 14%; }
+
+  .task-num { color: #58a6ff; font-weight: 600; margin-right: 4px; }
+  .ok { color: #3fb950; }
+  .warn { color: #d29922; }
+  .error { color: #f85149; }
+
+  .section-header { background: #1c2128; color: #58a6ff; font-size: 14px; font-weight: 600; padding: 10px 16px; border-bottom: 1px solid #30363d; }
+  .section-header td { color: #58a6ff; }
+
+  .footer { max-width: 1400px; margin: 40px auto 0; text-align: center; color: #484f58; font-size: 12px; border-top: 1px solid #21262d; padding-top: 16px; }
+  .footer a { color: #484f58; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📋 工作日志 2026-05-21</h1>
+</div>
+
+<div class="log-table-wrap">
+<table class="log-table">
+  <thead>
+    <tr>
+      <th class="col-date">时间</th>
+      <th class="col-work">工作内容</th>
+      <th class="col-progress">进度</th>
+      <th class="col-problem">问题与解决</th>
+      <th class="col-next">次日计划</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr class="section-header">
+      <td colspan="5">2026-05-21</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM</td>
+      <td class="col-work"><span class="task-num">1.</span> drama-detail 类型标签映射（urban→都市/fantasy→玄幻等）<br><span class="task-num">2.</span> 剧目描述展开/收起功能<br><span class="task-num">3.</span> rebuild + APK sync<br><span class="task-num">4.</span> 全链路 E2E HTTP 200 验证<br></td>
+      <td class="col-progress"><span class="ok">✅</span> typeLabel computed 支持 8 种类型映射（urban/fantasy/romance/horror/comedy/sci_fi/live_action/comic_drama）<br><span class="ok">✅</span> descExpanded ref 实现展开收起toggle<br><span class="ok">✅</span> build + APK sync，HTTP 200<br><span class="ok">✅</span> Feed/Dramas/Ads/Node API 全部 200 验证通过<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM2</td>
+      <td class="col-work"><span class="task-num">1.</span> APK rebuild + sync<br><span class="task-num">2.</span> 全链路 HTTP 200 最终验证<br><span class="task-num">3.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> APK 4.3MB sync，HTTP 200<br><span class="ok">✅</span> H5:200 / APK:200 / Feed:200 / Dramas:200 / Ads:200 / Node:200 / Subscriptions:200<br><span class="ok">✅</span> Worklog 全量更新<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM3</td>
+      <td class="col-work"><span class="task-num">1.</span> mine 页「我的点赞」点击跳转 favorites 页<br><span class="task-num">2.</span> theater 卡片 label 显示「热播」/「新剧」区分<br><span class="task-num">3.</span> 首页 hero 标签显示真实 API 数据<br><span class="task-num">4.</span> APK rebuild + sync<br><span class="task-num">5.</span> 全链路 HTTP 200 验证<br></td>
+      <td class="col-progress"><span class="ok">✅</span> mine 页「我的点赞」→ favorites/index<br><span class="ok">✅</span> theater label 热播/新剧真实数据<br><span class="ok">✅</span> heroTagList 从 API tags 解析，非硬编码默认值<br><span class="ok">✅</span> build + APK sync，HTTP 200<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM4</td>
+      <td class="col-work"><span class="task-num">1.</span> search 页类型标签映射（drama_type→中文）<br><span class="task-num">2.</span> favorites 页类型标签映射<br><span class="task-num">3.</span> favorites/player/drama-detail 三页 dramaTypeLabel 一致性<br><span class="task-num">4.</span> APK rebuild + sync<br></td>
+      <td class="col-progress"><span class="ok">✅</span> search 页 dramaTypeLabel() 支持 8 种类型（urban/fantasy/romance/horror/comedy/sci_fi/live_action/comic_drama→短剧）<br><span class="ok">✅</span> favorites 页同样支持<br><span class="ok">✅</span> build + APK sync，HTTP 200，4.3MB<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM5</td>
+      <td class="col-work"><span class="task-num">1.</span> 全链路 HTTP 最终验证<br><span class="task-num">2.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> H5:200 / APK:200 / Feed:200 / Dramas:200 / Ads:200 / Node:200 / Subscriptions:200 (Likes=405 因 GET 测试正确，POST 才工作)<br><span class="ok">✅</span> 4.3MB APK sync<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM</td>
+      <td class="col-work"><span class="task-num">1.</span> 后端 19199 端口重启（server:create_app）<br><span class="task-num">2.</span> 全链路 E2E 验证<br><span class="task-num">3.</span> APK rebuild（build failed → local.properties 修复 → BUILD SUCCESSFUL）<br><span class="task-num">4.</span> APK sync 到 download-page<br></td>
+      <td class="col-progress"><span class="ok">✅</span> 后端端口 19199 已重启（PID 25975）<br><span class="ok">✅</span> 全链路验证：Feed/Dramas/Ads/Favorites/Subscriptions/H5/APK 全部 200<br><span class="ok">✅</span> Gradle build 失败根因：local.properties 缺少 sdk.dir<br><span class="ok">✅</span> 修复后 BUILD SUCCESSFUL in 2m4s<br><span class="ok">✅</span> APK 4.3MB sync 到 download-page<br></td>
+      <td class="col-problem">BUILD FAILED — local.properties 缺少 sdk.dir=/home/developer/android-sdk，已添加并验证通过</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM2</td>
+      <td class="col-work"><span class="task-num">1.</span> E2E 深度巡检（10个API + 5个页面）<br><span class="task-num">2.</span> APK rebuild + sync<br><span class="task-num">3.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> 发现 node_id vs nodeId 兼容性问题（第79行）— 均有 fallback 处理，暂无 bug<br><span class="ok">✅</span> 发现 drama_type tab UI vs DB 类型不一致 — theater 页已修复（不传 drama_type，只用 keyword）<br><span class="ok">✅</span> 发现 choices 数据 30s 分支剧情只在 node 25/26/27（ep1-3），ep4（node28）无分支<br><span class="ok">✅</span> mine 页「我的点赞」网格项缺少点击处理 — 已加 goFavorites 跳转<br><span class="ok">✅</span> H5 build + Gradle BUILD SUCCESSFUL<br><span class="ok">✅</span> 全链路：Backend:200 / H5:200 / APK:200 / Favorites:200 / Dashboard:200<br><span class="ok">✅</span> APK 4.3MB sync 到 download-page/<br></td>
+      <td class="col-problem">theater 页 drama_type tab 值（comic_drama/live_action）与 DB 值（urban/costume/romance）不一致 — 已确认不传该参数，只用 keyword，本地排序</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM3</td>
+      <td class="col-work"><span class="task-num">1.</span> DramaCard 组件 drama_type 中文映射修复<br><span class="task-num">2.</span> APK rebuild + sync<br><span class="task-num">3.</span> E2E 最终验证<br><span class="task-num">4.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> DramaCard 组件类型标签：raw drama_type→中文映射（urban/都市、costume/古风等）<br><span class="ok">✅</span> H5 build + Gradle BUILD SUCCESSFUL in 57s<br><span class="ok">✅</span> APK 4.3MB sync 到 download-page/<br><span class="ok">✅</span> 全链路：Backend/H5/APK/Favorites/Subscriptions 全部 200<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21AM4</td>
+      <td class="col-work"><span class="task-num">1.</span> 全量 API 巡检（Feed/Dramas/Ads/VideoNodes/Choices/Subscriptions/Dashboard）<br><span class="task-num">2.</span> 分支剧情数据验证（node25/26/27各2条choices）<br><span class="task-num">3.</span> APK rebuild + sync<br><span class="task-num">4.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> Feed: 13条数据(含广告)<br><span class="ok">✅</span> Dramas: 3条（urban/costume/romance）<br><span class="ok">✅</span> Ads: 12条 覆盖feed/pause/pre_roll/detail<br><span class="ok">✅</span> VideoNodes: node25/26/27各2条choices（A接受安排/B自主创业）<br><span class="ok">✅</span> Subscriptions: 追更API正常<br><span class="ok">✅</span> Dashboard: 统计数据正常<br><span class="ok">✅</span> H5 build + Gradle BUILD SUCCESSFUL in 32s<br><span class="ok">✅</span> APK 4.3MB sync<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21Noon</td>
+      <td class="col-work"><span class="task-num">1.</span> 播放器全屏按钮缺失（@click未绑定）<br><span class="task-num">2.</span> toggleFullscreen() 函数实现<br><span class="task-num">3.</span> APK rebuild + sync<br><span class="task-num">4.</span> E2E 最终验证<br><span class="task-num">5.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> 播放器进度条右侧全屏图标已有@click="toggleFullscreen"，之前缺少对应函数<br><span class="ok">✅</span> toggleFullscreen() 已实现（H5 web全屏API）<br><span class="ok">✅</span> H5 build + Gradle BUILD SUCCESSFUL in 43s<br><span class="ok">✅</span> APK 4.3MB sync 到 download-page/<br><span class="ok">✅</span> 全链路：Backend/H5/APK 全部 200<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21PM</td>
+      <td class="col-work"><span class="task-num">1.</span> 播放器分享按钮缺失处理函数<br><span class="task-num">2.</span> onShare() 实现（uni.share API）<br><span class="task-num">3.</span> APK rebuild + sync<br><span class="task-num">4.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> 播放器右侧边栏分享图标 @click="onShare" 已绑定<br><span class="ok">✅</span> onShare() 实现 uni.share（微信+fallback系统分享）<br><span class="ok">✅</span> H5 build + Gradle BUILD SUCCESSFUL in 1m39s<br><span class="ok">✅</span> APK 4.3MB sync 到 download-page/<br><span class="ok">✅</span> 全链路：Backend/H5/APK 全部 200<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21PM2</td>
+      <td class="col-work"><span class="task-num">1.</span> 全链路健康检查<br><span class="task-num">2.</span> 分支剧情choice-log E2E分析（player→choice-logs→redirect）<br><span class="task-num">3.</span> APK rebuild + sync<br><span class="task-num">4.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> Backend(19199): API全部200，根路径404正常（未注册/）<br><span class="ok">✅</span> H5(8288): 200 OK<br><span class="ok">✅</span> APK(8188): 200 OK 4.3MB<br><span class="ok">✅</span> Login: 200 OK<br><span class="ok">✅</span> choice-log路由：`/api/app/choice-logs`(app_drama_controller) + `/api/app/choice-logs`(spec_alias_app_controller)均已注册<br><span class="ok">✅</span> choice-log数据流：用户选择→POST choice-logs→redirectTo nextNode<br><span class="ok">✅</span> ChoicePopup组件：choices→emit(pick nextId)→player onPick()→appApi('/choice-logs')<br><span class="ok">✅</span> onPick()实现：先POST choice-logs再redirect，complete回调保证无论成功失败都跳转<br><span class="ok">✅</span> H5 build + Gradle BUILD SUCCESSFUL<br><span class="ok">✅</span> APK 4.3MB sync 到 download-page/<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21PM2b</td>
+      <td class="col-work"><span class="task-num">1.</span> 分支剧情数据完整性验证<br><span class="task-num">2.</span> 搜索页本地过滤分析<br><span class="task-num">3.</span> 全链路 E2E 验证<br><span class="task-num">4.</span> mine 页功能完整性审查<br><span class="task-num">5.</span> theater 页tabs分析<br><span class="task-num">6.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> 分支剧情数据完整：Node25/26/27各2条choices，Node28终端节点<br><span class="ok">✅</span> 所有 interactive 节点均30s触发分支<br><span class="ok">✅</span> 搜索页使用 `/api/app/dramas` 本地 client-side 过滤（非后端 search API）— 当前实现正确<br><span class="ok">✅</span> 全链路：Backend:200 / H5:200 / APK(8188):200 / Login:OK / choice-log:OK<br><span class="ok">✅</span> 核心API验证：Node25(2c)→Node26(2c)→Node27(2c)→Node28(0c终端)<br><span class="ok">✅</span> mine页：goFavorites/goWatchHistory均绑定，watch-history页存在（pages.json已注册）<br><span class="ok">✅</span> theater页tabscosmetic设计（不影响功能）<br><span class="ok">✅</span> 所有页面@click处理函数完整，无漏绑定<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21Night</td>
+      <td class="col-work"><span class="task-num">1.</span> 全链路最终交付巡检<br><span class="task-num">2.</span> 全量 API E2E 验证<br><span class="task-num">3.</span> 交付报告输出<br><span class="task-num">4.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> 全链路：Backend(19199)<br><span class="ok">✅</span> / H5(8288)<br><span class="ok">✅</span> / APK下载(8188)<br><span class="ok">✅</span> 全量API：Login<br><span class="ok">✅</span> Dramas<br><span class="ok">✅</span> Favorites<br><span class="ok">✅</span> Subscriptions<br><span class="ok">✅</span> WatchHistory<br><span class="ok">✅</span> VideoNode25<br><span class="ok">✅</span> Comments<br><span class="ok">✅</span> ChoiceLog<br><span class="ok">✅</span> APK: 4.3MB sync 到 download-page/<br><span class="ok">✅</span> Git: 1b449b5<br></td>
+      <td class="col-problem">—</td>
+      <td class="col-next">—</td>
+    </tr>
+    <tr>
+      <td class="col-date">05-21Late</td>
+      <td class="col-work"><span class="task-num">1.</span> P0 真机视频播放验证<br><span class="task-num">2.</span> P1 评论列表渲染验证<br><span class="task-num">3.</span> P2 JWT Secret 分析<br><span class="task-num">4.</span> P3 Admin Frontend 检查<br><span class="task-num">5.</span> Worklog 更新<br></td>
+      <td class="col-progress"><span class="ok">✅</span> P0 m3u8 stream: 200 OK (mux.dev公网流)<br><span class="ok">✅</span> P0 episode导航: drama6→entry_node=25→4 episodes(25/26/27/28)→playNode(nodeId)→player<br><span class="ok">✅</span> P1 评论列表: API返回comment_id/user_id/content字段完整，UI渲染正确<br><span class="ok">✅</span> P1 POST comment: 成功写入<br><span class="ok">✅</span> P2 JWT secret: pydantic Field(default)支持env覆盖，生产环境设置JWT_SECRET_KEY即可，非代码bug<br><span class="ok">✅</span> P3 Admin(5188): 未启动，非C端MVP关键路径<br></td>
+      <td class="col-problem">P2 生产部署时设置JWT_SECRET_KEY环境变量</td>
+      <td class="col-next">—</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="footer">
+  AI 互动短剧平台 · 工作日志<br>
+  <a href="http://38.55.146.160:9060/worklog.html">深色技术版</a> ·
+  <a href="http://38.55.146.160/h5/">移动端 H5</a> ·
+  <a href="http://38.55.146.160/">管理后台</a> ·
+  <a href="http://38.55.146.160/download/">APK 下载</a>
+</div>
+
+</body>
+</html>

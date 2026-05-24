@@ -27,7 +27,7 @@
       <!-- Register Header -->
       <view v-else class="mb-8 mt-2 flex flex-col items-center">
         <text class="text-[24px] font-bold tracking-widest text-white">注册账号</text>
-        <text class="mt-3.5 text-[11px] tracking-wider text-white/50">注册即表示同意《用户协议》和《隐私政策》</text>
+        <text class="mt-3.5 text-[11px] tracking-wider text-white/50">注册即表示同意《<text class="text-[#9a5cf6]" @tap="goAgreement">用户协议</text>》和《<text class="text-[#9a5cf6]" @tap="goPrivacy">隐私政策</text>》</text>
       </view>
 
       <!-- Form Box -->
@@ -81,7 +81,7 @@
         </view>
         <view v-else class="mt-6 flex items-center gap-2.5 active:opacity-70">
           <view class="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border border-white/20"></view>
-          <text class="text-[11px] text-white/60 tracking-wider">我已阅读并同意《用户协议》和《隐私政策》</text>
+          <text class="text-[11px] text-white/60 tracking-wider">我已阅读并同意《<text class="text-[#9a5cf6]" @tap="goAgreement">用户协议</text>》和《<text class="text-[#9a5cf6]" @tap="goPrivacy">隐私政策</text>》</text>
         </view>
 
         <!-- Submit Button -->
@@ -134,17 +134,20 @@ const submitting = ref(false)
 const rememberPwd = ref(false)
 const userStore = useUserStore()
 
-// 记住密码：回填已保存的凭证
+// 记住密码：仅回填用户名（密码明文存储有XSS风险，不再保存）
 const savedUser = uni.getStorageSync('saved_user_name')
-const savedPwd = uni.getStorageSync('saved_password')
 if (savedUser) userName.value = savedUser
-if (savedPwd) {
-  password.value = savedPwd
-  rememberPwd.value = true
-}
 
 function goBack() {
   uni.navigateBack()
+}
+
+function goPrivacy() {
+  uni.navigateTo({ url: '/pages/privacy/index' })
+}
+
+function goAgreement() {
+  uni.navigateTo({ url: '/pages/privacy/agreement' })
 }
 
 function toggleMode() {
@@ -177,10 +180,10 @@ async function onSubmit() {
       ? await userStore.login(u, p)
       : await userStore.register(u, p, nickName.value.trim() || undefined)
     if (ok) {
-      // 记住密码
+      // 记住密码：仅保存用户名（密码不能存明文，XSS落地后可被窃取）
       if (rememberPwd.value) {
         uni.setStorageSync('saved_user_name', userName.value.trim())
-        uni.setStorageSync('saved_password', password.value)
+        uni.removeStorageSync('saved_password')
       } else {
         uni.removeStorageSync('saved_user_name')
         uni.removeStorageSync('saved_password')

@@ -1,0 +1,14 @@
+{
+  "id": "session-1779519780472",
+  "startedAt": "2026-05-23T07:03:00.472Z",
+  "cwd": "/www/workspace/ai-interactive-drama/ruoyi-fastapi-backend",
+  "context": {},
+  "metrics": {
+    "edits": 0,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "endedAt": "2026-05-23T12:07:46.429Z",
+  "duration": 18285958
+}

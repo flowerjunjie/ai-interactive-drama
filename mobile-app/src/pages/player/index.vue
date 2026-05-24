@@ -225,11 +225,11 @@ const videoSrc = computed(() => node.value?.video_url || node.value?.videoUrl ||
 
 const dramaId = computed(() => Number(node.value?.drama_id ?? 0))
 
-const dramaTitle = computed(() => dramaMeta.value?.title || '逆天战神')
-const dramaDesc = computed(() => dramaMeta.value?.description || '少年林辰，遭家族背叛，血脉被夺，绝境之下觉醒上古战神血脉！')
+const dramaTitle = computed(() => dramaMeta.value?.title || '短剧')
+const dramaDesc = computed(() => dramaMeta.value?.description || '暂无剧情简介')
 const heatLine = computed(() => {
   const h = dramaMeta.value?.heat
-  if (h == null) return '986.5万热度'
+  if (h == null) return '0热度'
   const n = Number(h)
   return n >= 10000 ? `${(n / 10000).toFixed(1)}万热度` : `${n}热度`
 })
@@ -237,7 +237,7 @@ const favHint = computed(() => Number(dramaMeta.value?.heat ?? 124000))
 
 const tagPills = computed(() => {
   const raw = dramaMeta.value?.tags
-  if (!raw) return ['逆袭', '战神', '玄幻']
+  if (!raw) return ['热门']
   const s = String(raw)
   try {
     const j = JSON.parse(s)

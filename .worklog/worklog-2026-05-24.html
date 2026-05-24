@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作日志 2026-05-24</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; padding: 40px 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #9a5cf6; font-size: 26px; padding-bottom: 16px; border-bottom: 2px solid #2a2a3e; margin-bottom: 32px; }
+h2 { color: #9a5cf6; font-size: 15px; font-weight: 600; margin: 28px 0 12px; padding-left: 12px; border-left: 3px solid #9a5cf6; }
+table { width: 100%; border-collapse: collapse; background: #12121a; border-radius: 8px; overflow: hidden; border: 1px solid #2a2a3e; margin-bottom: 12px; }
+th { background: #1a1a2e; color: #9a5cf6; padding: 12px 14px; text-align: left; font-size: 13px; font-weight: 600; border-bottom: 1px solid #2a2a3e; }
+td { padding: 10px 14px; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; vertical-align: top; line-height: 1.7; }
+tr:last-child td { border-bottom: none; }
+.ok { color: #4ade80; }
+.err { color: #f87171; }
+.warn { color: #fbbf24; }
+.summary { background: #12121a; border: 1px solid #2a2a3e; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; }
+.summary h4 { color: #9a5cf6; font-size: 15px; margin-bottom: 12px; }
+.summary ul { list-style: none; }
+.summary li { padding: 6px 0; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; }
+.summary li:last-child { border-bottom: none; }
+.summary .ok { color: #4ade80; }
+.files { margin-top: 32px; }
+.files h2 { color: #9a5cf6; margin-top: 0; }
+.files table td:first-child { color: #9a5cf6; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 工作日志 · AI互动短剧项目 · 2026-05-24</h1>
+
+  <div class="summary">
+    <h4>📊 Sprint 6 Day 2 Morning</h4>
+    <ul>
+      <li><span class="ok">✅</span> MySQL 勒索攻击恢复：ai_video 从 03:00 备份恢复，ruoyi-fastapi 被覆盖（勒索表）</li>
+      <li><span class="ok">✅</span> drama_user_subscribe 表重建（表定义缺失，仅 ORM model）</li>
+      <li><span class="ok">✅</span> Backend 重启 + DB 切换到 ai_video（DB_DATABASE=ai_video DB_PASSWORD=root123）</li>
+      <li><span class="ok">✅</span> 全链路 8/8 端点绿色（Backend/H5/APK/Release/Privacy/Agreement/About/Subscriptions）</li>
+      <li><span class="ok">✅</span> favorites/watch-history/share-button 已有分享函数（无需额外开发）</li>
+      <li><span class="ok">✅</span> 搜索页空状态已有（"未找到相关短剧"）</li>
+      <li><span class="ok">✅</span> Dashboard watching_drama_count Bug修复（watch_history表→drama_user_subscribe表）</li>
+    </ul>
+  </div>
+
+  <div class="section"><h2>2026-05-24 上午 · 勒索攻击恢复</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-24AM</th><th>1) MySQL 勒索攻击检测 2) 数据恢复 3) drama_user_subscribe 重建 4) Backend 重启 5) 全链路验证 6) Sprint 6 剩余项确认</th><th><span class="ok">✅</span> MySQL 被勒索软件加密（0.016 BTC，30 天期限）<br><span class="ok">✅</span> ruoyi-fastapi 库被勒索信覆盖（RECOVER_YOUR_DATA_info 表）<br><span class="ok">✅</span> ai_video 库未波及，但勒索表存在 → 已删除<br><span class="ok">✅</span> 03:00 cron 备份完好（ai_drama_20260523_030001.full.sql.gz）<br><span class="ok">✅</span> 从备份恢复 ai_video 库<br><span class="ok">✅</span> drama_user_subscribe 表重建（之前只有 ORM，SQL 文件缺失）<br><span class="ok">✅</span> Backend 重启：DB_DATABASE=ai_video DB_PASSWORD=root123<br><span class="ok">✅</span> 全链路 8/8 端点绿色<br><span class="ok">✅</span> favorites/watch-history/share-button 已验证（已有 onShare 函数）<br><span class="ok">✅</span> 搜索页空状态已存在（"未找到相关短剧"）</th><th>MySQL root 密码强度不足（root123），被外部暴力破解。勒索软件通过外部访问加密了 ruoyi-fastapi 库，在 ai_video 库留下勒索表。ai_video 本身未受损。</th><th>1) MySQL 安全加固（禁止远程 root / 密码强度 / 只允许本地访问）2) 软件著作权申请（立即启动，15-30 天）3) 各应用商店注册占坑</th></tr>
+</tbody></table></div>
+
+  <div class="files">
+    <h2>📁 关键文件路径</h2>
+    <table>
+      <tr><th>文件</th><th>路径</th></tr>
+      <tr><td>WORKLOG.md</td><td>.worklog/WORKLOG.md</td></tr>
+      <tr><td>HTML日志</td><td>.worklog/worklog-2026-05-24.html</td></tr>
+      <tr><td>APK debug</td><td>download-page/ai-interactive-drama.apk (4.3MB)</td></tr>
+      <tr><td>APK release</td><td>download-page/ai-interactive-drama-release.apk (3.3MB)</td></tr>
+      <tr><td>下载页</td><td>http://38.55.146.160:8099/download-page/</td></tr>
+      <tr><td>后端启动命令</td><td>DB_DATABASE=ai_video DB_USERNAME=root DB_PASSWORD=root123 .venv/bin/python -m uvicorn server:create_app --host 0.0.0.0 --port 19199</td></tr>
+      <tr><td>备份文件</td><td>backups/ai_drama_20260523_030001.full.sql.gz</td></tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

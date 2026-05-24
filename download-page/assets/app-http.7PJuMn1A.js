@@ -1,0 +1,1 @@
+import{k as n,Q as t}from"./index-1X5HLsF9.js";function o(t={}){const o=n("drama_token"),e={...t};return e["Content-Type"]||(e["Content-Type"]="application/json"),o&&(e.Authorization="Bearer "+o),e}function e(){return!!n("drama_token")||(t({title:"请先登录",icon:"none"}),!1)}export{o as a,e as n};
