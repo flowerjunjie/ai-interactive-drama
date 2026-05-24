@@ -1,6 +1,14 @@
 from datetime import datetime
+import re
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+
+def _strip_html(s: str | None) -> str | None:
+    """Remove HTML tags to prevent stored XSS in title/description fields."""
+    if s is None:
+        return None
+    return re.sub(r'<[^>]*>', '', s)
 
 
 # --- App auth ---
@@ -116,6 +124,11 @@ class DramaSaveModel(BaseModel):
     tags: str | None = Field(default=None, max_length=512, description='JSON 数组字符串或逗号分隔')
     heat: int = 0
 
+    @field_validator('title', 'description')
+    @classmethod
+    def _sanitize(cls, v: str | None) -> str | None:
+        return _strip_html(v)
+
 
 class VideoNodeSaveModel(BaseModel):
     drama_id: int
@@ -133,6 +146,11 @@ class VideoNodeSaveModel(BaseModel):
     status: str = 'draft'
     review_status: str = 'pending'
     reject_reason: str | None = None
+
+    @field_validator('title', 'reject_reason')
+    @classmethod
+    def _sanitize(cls, v: str | None) -> str | None:
+        return _strip_html(v)
 
 
 class VideoChoiceSaveModel(BaseModel):

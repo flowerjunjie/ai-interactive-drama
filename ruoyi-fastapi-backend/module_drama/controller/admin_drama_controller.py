@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
 from common.aspect.interface_auth import UserInterfaceAuthDependency
 from common.aspect.pre_auth import CurrentUserDependency, PreAuthDependency
@@ -52,6 +53,7 @@ async def admin_drama_list(
 
 
 @admin_drama_controller.post('/dramas', dependencies=[UserInterfaceAuthDependency('sdrama:drama:add')])
+@ApiRateLimit(namespace='drama:admin:drama', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
 async def admin_drama_add(
     body: DramaSaveModel,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -62,6 +64,7 @@ async def admin_drama_add(
 
 
 @admin_drama_controller.put('/dramas/{drama_id}', dependencies=[UserInterfaceAuthDependency('sdrama:drama:edit')])
+@ApiRateLimit(namespace='drama:admin:drama', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
 async def admin_drama_edit(
     drama_id: int,
     body: DramaSaveModel,
@@ -95,6 +98,7 @@ async def admin_node_list(
 
 
 @admin_drama_controller.post('/video-nodes', dependencies=[UserInterfaceAuthDependency('sdrama:node:add')])
+@ApiRateLimit(namespace='drama:admin:node', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
 async def admin_node_add(
     body: VideoNodeSaveModel,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -104,6 +108,7 @@ async def admin_node_add(
 
 
 @admin_drama_controller.put('/video-nodes/{node_id}', dependencies=[UserInterfaceAuthDependency('sdrama:node:edit')])
+@ApiRateLimit(namespace='drama:admin:node', preset=ApiRateLimitPreset.USER_COMMON_MUTATION)
 async def admin_node_edit(
     node_id: int,
     body: VideoNodeSaveModel,

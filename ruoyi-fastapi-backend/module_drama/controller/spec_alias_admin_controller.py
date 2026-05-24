@@ -5,6 +5,7 @@ from typing import Annotated
 from fastapi import Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.annotation.rate_limit_annotation import ApiRateLimit, ApiRateLimitPreset
 from common.aspect.db_seesion import DBSessionDependency
 from common.aspect.interface_auth import UserInterfaceAuthDependency
 from common.aspect.pre_auth import CurrentUserDependency, PreAuthDependency
@@ -25,6 +26,7 @@ spec_admin_alias_controller = APIRouterPro(
 
 
 @spec_admin_alias_controller.post('/upload/sign', dependencies=[UserInterfaceAuthDependency('sdrama:upload:sign')])
+@ApiRateLimit(namespace='drama:admin:upload', preset=ApiRateLimitPreset.COMMON_UPLOAD)
 async def spec_admin_upload_sign_post(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     cu: Annotated[CurrentUserModel, CurrentUserDependency()],
