@@ -1,5 +1,6 @@
 """规格文档路径 /api/app/*（与 /api/* 并存）"""
 
+import asyncio
 from typing import Annotated
 
 from fastapi import Depends, Query, Response
@@ -100,9 +101,11 @@ async def spec_dramas(
 @spec_app_controller.get('/dramas/{drama_id}')
 @ApiRateLimit(namespace='drama:app:drama-detail', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def spec_drama_detail(drama_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
-    d = await DramaAppContentService.get_drama(query_db, drama_id)
-    entry = await DramaAppContentService.entry_node(query_db, drama_id)
-    episodes = await DramaAppContentService.list_episodes(query_db, drama_id)
+    d, entry, episodes = await asyncio.gather(
+        DramaAppContentService.get_drama(query_db, drama_id),
+        DramaAppContentService.entry_node(query_db, drama_id),
+        DramaAppContentService.list_episodes(query_db, drama_id),
+    )
     return ResponseUtil.success(
         data={
             'drama': {

@@ -1,4 +1,5 @@
 from typing import Annotated
+import asyncio
 
 from fastapi import Depends, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -65,9 +66,11 @@ async def list_dramas(
 @app_drama_controller.get('/dramas/{drama_id}')
 @ApiRateLimit(namespace='drama:app:drama-detail', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def drama_detail(drama_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
-    d = await DramaAppContentService.get_drama(query_db, drama_id)
-    entry = await DramaAppContentService.entry_node(query_db, drama_id)
-    episodes = await DramaAppContentService.list_episodes(query_db, drama_id)
+    d, entry, episodes = await asyncio.gather(
+        DramaAppContentService.get_drama(query_db, drama_id),
+        DramaAppContentService.entry_node(query_db, drama_id),
+        DramaAppContentService.list_episodes(query_db, drama_id),
+    )
     return ResponseUtil.success(
         data={
             'drama': {

@@ -469,6 +469,9 @@ function toggleSub() {
         uni.showToast({ title: subscribed.value ? '已追更' : '已取消追更', icon: 'none' })
       }
     },
+    fail: () => {
+      uni.showToast({ title: '网络异常，请重试', icon: 'none' })
+    },
   })
 }
 

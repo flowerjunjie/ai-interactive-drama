@@ -418,7 +418,6 @@ class DramaAppContentService:
         return [
             {
                 'comment_id': c.comment_id,
-                'app_user_id': c.app_user_id,
                 'drama_id': c.drama_id,
                 'node_id': c.node_id,
                 'content': c.content,
