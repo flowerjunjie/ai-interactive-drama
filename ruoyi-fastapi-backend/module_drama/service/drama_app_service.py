@@ -1,7 +1,8 @@
+import asyncio
 import random
 from datetime import datetime
 
-from sqlalchemy import delete, func, or_, select, update
+from sqlalchemy import delete, func, or_, select, union_all, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from common.constant import CommonConstant
@@ -467,12 +468,12 @@ class DramaAppContentService:
     @classmethod
     async def user_dashboard_counts(cls, db: AsyncSession, user_id: int) -> dict:
         """我的页统计：观看记录条数、收藏数、点赞次数、追剧数。零冗余，单次 DB round-trip。"""
-        from sqlalchemy import union_all
-
         w = select(func.count()).select_from(DramaUserWatchHistory).where(DramaUserWatchHistory.app_user_id == user_id)
         f = select(func.count()).select_from(DramaUserFavorite).where(DramaUserFavorite.app_user_id == user_id)
         l = select(func.count()).select_from(DramaUserLike).where(DramaUserLike.app_user_id == user_id)
-        s = select(func.count(func.distinct(DramaUserSubscribe.drama_id))).where(DramaUserSubscribe.app_user_id == user_id)
+        s = select(func.count(func.distinct(DramaUserSubscribe.drama_id))).where(
+            DramaUserSubscribe.app_user_id == user_id
+        )
         r = await db.execute(union_all(w, f, l, s))
         counts = [int(row[0] or 0) for row in r.fetchall()]
         return {
@@ -497,21 +498,22 @@ class DramaAppContentService:
             await db.commit()
             return {'subscribed': False}
         new_sub = DramaUserSubscribe(
-                app_user_id=user_id, drama_id=drama_id,
-                notify_enabled=CommonConstant.DRAMA_SUBSCRIBE_NOTIFY_ENABLED if notify_enabled else CommonConstant.DRAMA_SUBSCRIBE_NOTIFY_DISABLED
-            )
+            app_user_id=user_id,
+            drama_id=drama_id,
+            notify_enabled=CommonConstant.DRAMA_SUBSCRIBE_NOTIFY_ENABLED
+            if notify_enabled
+            else CommonConstant.DRAMA_SUBSCRIBE_NOTIFY_DISABLED,
+        )
         db.add(new_sub)
         await db.commit()
         return {'subscribed': True}
 
     @classmethod
-    async def list_subscriptions(cls, db: AsyncSession, user_id: int, page_num: int = 1, page_size: int = 20) -> tuple[list[dict], int]:
+    async def list_subscriptions(
+        cls, db: AsyncSession, user_id: int, page_num: int = 1, page_size: int = 20
+    ) -> tuple[list[dict], int]:
         """我的追更列表，返回(剧目列表, 总数)"""
-        count_q = (
-            select(func.count())
-            .select_from(DramaUserSubscribe)
-            .where(DramaUserSubscribe.app_user_id == user_id)
-        )
+        count_q = select(func.count()).select_from(DramaUserSubscribe).where(DramaUserSubscribe.app_user_id == user_id)
         total = int((await db.execute(count_q)).scalar() or 0)
         rows = await db.execute(
             select(DramaUserSubscribe, Drama)
@@ -538,7 +540,6 @@ class DramaAppContentService:
     @classmethod
     async def check_new_episodes(cls, db: AsyncSession, user_id: int, drama_id: int) -> dict:
         """检查某剧的追更是否有新集更新"""
-        import asyncio
         sub_result, node_result = await asyncio.gather(
             db.execute(
                 select(DramaUserSubscribe).where(
