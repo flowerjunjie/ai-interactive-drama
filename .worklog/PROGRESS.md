@@ -106,6 +106,7 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ 后端重启验证     │ pagination total=6 ✅ NEW      │
 │  ✅ C端限速注解补齐  │ feed/dramas/drama-detail ✅ NEW │
 │  ✅ Magic strings集中 │ CommonConstant常量替换 ✅ NEW │
+│  ✅ Magic strings全链路 │ admin+app service全覆盖 ✅ NEW│
 └────────────────────────────────────────────────────────────┘
 ```
 
