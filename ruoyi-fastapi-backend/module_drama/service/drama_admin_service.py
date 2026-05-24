@@ -34,6 +34,7 @@ from utils.page_util import PageUtil
 class DramaAdminService:
     _PAD = CommonConstant.DRAMA_AD_STATUS_ACTIVE
     _NA = CommonConstant.DRAMA_NODE_REVIEW_APPROVED
+    _NR = CommonConstant.DRAMA_NODE_REVIEW_REJECTED
     _RVP = CommonConstant.DRAMA_REVIEW_STATUS_PENDING
     _UPP = CommonConstant.DRAMA_UPLOAD_STATUS_PENDING
 
@@ -303,7 +304,7 @@ class DramaAdminService:
         row = r.scalars().first()
         if not row:
             raise ServiceException(data='', message='节点不存在')
-        row.review_status = 'approved'
+        row.review_status = cls._NA
         row.reject_reason = None
         row.update_time = datetime.now()
         await db.commit()
@@ -314,7 +315,7 @@ class DramaAdminService:
         row = r.scalars().first()
         if not row:
             raise ServiceException(data='', message='节点不存在')
-        row.review_status = 'rejected'
+        row.review_status = cls._NR
         row.reject_reason = m.reject_reason
         row.update_time = datetime.now()
         await db.commit()
