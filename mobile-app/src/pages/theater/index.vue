@@ -72,6 +72,20 @@
           <view class="i-mdi-filmstrip-off text-[56px] text-white/20" />
           <text class="mt-4 text-[14px] text-white/40">暂无短剧内容</text>
         </view>
+        <!-- Skeleton Loading -->
+        <view v-if="isLoading" class="grid grid-cols-2 gap-3 pb-8">
+          <view v-for="n in 6" :key="n" class="overflow-hidden rounded-[12px] bg-[#121216]">
+            <view class="aspect-[3/4] w-full animate-pulse bg-[#1e1e28]" />
+            <view class="p-2.5">
+              <view class="mt-2 h-4 w-3/4 rounded bg-[#1e1e28] animate-pulse" />
+              <view class="mt-2 flex gap-1.5">
+                <view class="h-3 w-10 rounded bg-[#1e1e28] animate-pulse" />
+                <view class="h-3 w-10 rounded bg-[#1e1e28] animate-pulse" />
+              </view>
+              <view class="mt-2 h-3 w-12 rounded bg-[#1e1e28] animate-pulse" />
+            </view>
+          </view>
+        </view>
         <!-- Grid -->
         <view v-else class="grid grid-cols-2 gap-3 pb-8">
           <view
@@ -172,6 +186,7 @@ const dramaType = ref<'all' | 'urban' | 'costume' | 'romance' | 'fantasy' | 'sci
 const keyword = ref('')
 const sortType = ref<'recommend' | 'latest' | 'heat'>('recommend')
 const selectedTag = ref<string | null>(null)
+const isLoading = ref(true)
 
 // Type tab labels
 const typeTabs = [
@@ -286,6 +301,7 @@ function switchTab(url: string) {
 }
 
 function loadDramas() {
+  isLoading.value = true
   uni.request({
     url: appApi('/dramas'),
     data: {
@@ -303,6 +319,9 @@ function loadDramas() {
     },
     fail: () => {
       rawDramas.value = []
+    },
+    complete: () => {
+      isLoading.value = false
     },
   })
 }
