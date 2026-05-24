@@ -204,6 +204,17 @@ class UploadCompleteIn(BaseModel):
     cover_url: str | None = None
     tos_key: str | None = None
 
+    @field_validator('video_url', 'cover_url')
+    @classmethod
+    def _validate_cdn_url(cls, v: str | None) -> str | None:
+        if v is None:
+            return v
+        if v.startswith('http://') or v.startswith('https://'):
+            allowed = ['volcengine.com', 'volces.com', 'tos.cn']
+            if not any(domain in v for domain in allowed):
+                raise ValueError(f'URL must be from allowed CDN: {v}')
+        return v
+
 
 class UploadSignQuery(BaseModel):
     drama_id: int | None = None
