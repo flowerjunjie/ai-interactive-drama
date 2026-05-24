@@ -98,6 +98,11 @@ class CommentCreateModel(BaseModel):
     node_id: int | None = None
     content: str = Field(..., min_length=1, max_length=2000)
 
+    @field_validator('content')
+    @classmethod
+    def _sanitize(cls, v: str | None) -> str | None:
+        return _strip_html(v)
+
 
 class ChoiceLogIn(BaseModel):
     drama_id: int
@@ -111,6 +116,11 @@ class ReviewCreateModel(BaseModel):
     node_id: int | None = None
     rating: int | None = Field(default=None, ge=1, le=5)
     content: str | None = Field(default=None, max_length=2000)
+
+    @field_validator('content')
+    @classmethod
+    def _sanitize(cls, v: str | None) -> str | None:
+        return _strip_html(v)
 
 
 # --- Admin ---
@@ -175,6 +185,11 @@ class DramaAdSaveModel(BaseModel):
     start_time: datetime | None = None
     end_time: datetime | None = None
     status: str = '0'
+
+    @field_validator('title', 'media_url', 'image_url', 'cover_url', 'link_url')
+    @classmethod
+    def _sanitize(cls, v: str | None) -> str | None:
+        return _strip_html(v)
 
 
 class UploadCompleteIn(BaseModel):
