@@ -107,6 +107,7 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ C端限速注解补齐  │ feed/dramas/drama-detail ✅ NEW │
 │  ✅ Magic strings集中 │ CommonConstant常量替换 ✅ NEW │
 │  ✅ Magic strings全链路 │ admin+app service全覆盖 ✅ NEW│
+│  ✅ ads response统一     │ data=→rows= 封装一致 ✅ NEW    │
 └────────────────────────────────────────────────────────────┘
 ```
 
