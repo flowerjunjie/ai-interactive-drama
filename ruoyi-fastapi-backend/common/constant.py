@@ -49,6 +49,7 @@ class CommonConstant:
     DRAMA_REVIEW_STATUS_APPROVED = 'approved'
     DRAMA_UPLOAD_STATUS_PENDING = 'pending'
     DRAMA_UPLOAD_STATUS_COMPLETE = 'complete'
+    DRAMA_UPLOAD_STATUS_REJECTED = 'rejected'
     UNIQUE = True
     NOT_UNIQUE = False
 

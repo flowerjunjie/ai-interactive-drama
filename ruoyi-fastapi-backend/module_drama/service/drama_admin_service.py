@@ -37,6 +37,7 @@ class DramaAdminService:
     _NR = CommonConstant.DRAMA_NODE_REVIEW_REJECTED
     _RVP = CommonConstant.DRAMA_REVIEW_STATUS_PENDING
     _UPP = CommonConstant.DRAMA_UPLOAD_STATUS_PENDING
+    _UPC = CommonConstant.DRAMA_UPLOAD_STATUS_COMPLETE
     _CHN = CommonConstant.DRAMA_COMMENT_STATUS_HIDDEN
     _NC0 = CommonConstant.DRAMA_COMMENT_STATUS_NORMAL
 
@@ -274,7 +275,7 @@ class DramaAdminService:
         row = r.scalars().first()
         if not row:
             raise ServiceException(data='', message='文件记录不存在')
-        row.status = 'complete'
+        row.status = cls._UPC
         if body.size_bytes is not None:
             row.size_bytes = body.size_bytes
 
