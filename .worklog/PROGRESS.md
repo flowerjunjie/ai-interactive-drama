@@ -202,4 +202,5 @@ Video Nodes: /api/app/video-nodes/{id}
 ✅ spec_alias重复import：已删除 duplicate import line + unused ApiNamespace
 ✅ C端auth限速：login → ANON_AUTH_LOGIN, register → ANON_AUTH_REGISTER
 ✅ unused import清理：spec_alias ApiNamespace 移除
+✅ upload/sign响应去重：spec_alias_admin 去除重复字段
 ⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
