@@ -102,6 +102,8 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  5/30 天
 │  ✅ 剧场页空状态       │ v-if=!gridItems.length ✅ NEW  │
 │  ✅ 评论点赞数嵌入     │ like_count后端+前端 ✅ NEW     │
 │  ✅ 下载页H5链接修复  │ 8288→5190 dev H5 ✅ NEW        │
+│  ✅ APK rebuild验证  │ SHA256一致(4.3MB) ✅ NEW       │
+│  ✅ 后端重启验证     │ pagination total=6 ✅ NEW      │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -177,5 +179,8 @@ Video Nodes: /api/app/video-nodes/{id}
 ✅ 性能优化：db_pool_size 50→20，DB索引补齐，entry_node/feed优化
 ✅ 审计报告落地：.security/ .performance/ .codereview/ .infrastructure/
 ✅ APK rebuild sync（4.3MB）
-✅ Git: 4 commits (5be16d8/9cec376/07783a9/a1ff528)
+✅ Git: 7 commits (5be16d8→08fb9b6)
+✅ 剧场页分页：total+rows 返回，page_num/page_size 参数
+✅ 索引覆盖：drama(idx_status_sort/heat/create) + drama_ad(idx_status_weight)
+✅ PyMySQL冗余驱动移除（asyncmy全链路覆盖）
 ⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
