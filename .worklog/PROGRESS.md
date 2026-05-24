@@ -121,6 +121,9 @@ Sprint ██░░░░░░░░░░░░░░░░░░░  6/30 天
 │  ✅ 骨架屏+loading │ theater页 6格pulse骨架 ✅ NEW          │
 │  ✅ 分享文案增强   │ theater+index统一文案 ✅ NEW           │
 │  ✅ drama-detail相关推荐│ fetchRelated b.rows ✅ NEW         │
+│  ✅ drama_detail并行查询│ asyncio.gather 3→1 RTT ✅ NEW     │
+│  ✅ list_comments安全修复│ 移除app_user_id泄露 ✅ NEW         │
+│  ✅ toggleSub fail分支  │ player+drama-detail网络提示 ✅ NEW │
 └────────────────────────────────────────────────────────────┘
 ```
 
