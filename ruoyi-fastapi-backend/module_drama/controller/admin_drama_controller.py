@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from common.aspect.db_seesion import DBSessionDependency
 from common.aspect.interface_auth import UserInterfaceAuthDependency
 from common.aspect.pre_auth import CurrentUserDependency, PreAuthDependency
+from common.constant import CommonConstant
 from common.router import APIRouterPro
 from config.env import TosConfig
 from module_admin.entity.vo.user_vo import CurrentUserModel
@@ -30,7 +31,9 @@ admin_drama_controller = APIRouterPro(
 )
 
 
-@admin_drama_controller.get('/dashboard', summary='数据看板', dependencies=[UserInterfaceAuthDependency('sdrama:dashboard:view')])
+@admin_drama_controller.get(
+    '/dashboard', summary='数据看板', dependencies=[UserInterfaceAuthDependency('sdrama:dashboard:view')]
+)
 async def dashboard(query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     data = await DramaAdminService.dashboard(query_db)
     return ResponseUtil.success(data=data)
@@ -110,7 +113,9 @@ async def admin_node_edit(
     return ResponseUtil.success(msg='更新成功')
 
 
-@admin_drama_controller.delete('/video-nodes/{node_id}', dependencies=[UserInterfaceAuthDependency('sdrama:node:remove')])
+@admin_drama_controller.delete(
+    '/video-nodes/{node_id}', dependencies=[UserInterfaceAuthDependency('sdrama:node:remove')]
+)
 async def admin_node_del(
     node_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -123,7 +128,9 @@ async def admin_node_del(
     '/video-nodes/{node_id}/moderation/approve',
     dependencies=[UserInterfaceAuthDependency('sdrama:node:edit')],
 )
-async def admin_node_moderation_approve(node_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
+async def admin_node_moderation_approve(
+    node_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]
+) -> Response:
     await DramaAdminService.node_moderation_approve(query_db, node_id)
     return ResponseUtil.success(msg='已通过')
 
@@ -141,7 +148,9 @@ async def admin_node_moderation_reject(
     return ResponseUtil.success(msg='已拒绝')
 
 
-@admin_drama_controller.get('/video-nodes/pending-moderation', dependencies=[UserInterfaceAuthDependency('sdrama:node:list')])
+@admin_drama_controller.get(
+    '/video-nodes/pending-moderation', dependencies=[UserInterfaceAuthDependency('sdrama:node:list')]
+)
 async def admin_pending_video_nodes(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     page_num: int = Query(default=1, ge=1),
@@ -173,13 +182,17 @@ async def admin_comments(
     return ResponseUtil.success(model_content=page)
 
 
-@admin_drama_controller.delete('/comments/{comment_id}', dependencies=[UserInterfaceAuthDependency('sdrama:drama:list')])
+@admin_drama_controller.delete(
+    '/comments/{comment_id}', dependencies=[UserInterfaceAuthDependency('sdrama:drama:list')]
+)
 async def admin_comment_delete(comment_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     await DramaAdminService.comment_delete(query_db, comment_id)
     return ResponseUtil.success(msg='已删除')
 
 
-@admin_drama_controller.put('/comments/{comment_id}/hide', dependencies=[UserInterfaceAuthDependency('sdrama:drama:list')])
+@admin_drama_controller.put(
+    '/comments/{comment_id}/hide', dependencies=[UserInterfaceAuthDependency('sdrama:drama:list')]
+)
 async def admin_comment_hide(
     comment_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -208,7 +221,9 @@ async def admin_app_user_favs(user_id: int, query_db: Annotated[AsyncSession, DB
 
 
 # --- choices ---
-@admin_drama_controller.get('/video-nodes/{node_id}/choices', dependencies=[UserInterfaceAuthDependency('sdrama:choice:list')])
+@admin_drama_controller.get(
+    '/video-nodes/{node_id}/choices', dependencies=[UserInterfaceAuthDependency('sdrama:choice:list')]
+)
 async def admin_choice_list(node_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     rows = await DramaAdminService.choice_list(query_db, node_id)
     return ResponseUtil.success(
@@ -234,7 +249,9 @@ async def admin_choice_add(
     return ResponseUtil.success(data={'choiceId': cid})
 
 
-@admin_drama_controller.put('/video-choices/{choice_id}', dependencies=[UserInterfaceAuthDependency('sdrama:choice:edit')])
+@admin_drama_controller.put(
+    '/video-choices/{choice_id}', dependencies=[UserInterfaceAuthDependency('sdrama:choice:edit')]
+)
 async def admin_choice_edit(
     choice_id: int,
     body: VideoChoiceSaveModel,
@@ -244,7 +261,9 @@ async def admin_choice_edit(
     return ResponseUtil.success(msg='更新成功')
 
 
-@admin_drama_controller.delete('/video-choices/{choice_id}', dependencies=[UserInterfaceAuthDependency('sdrama:choice:remove')])
+@admin_drama_controller.delete(
+    '/video-choices/{choice_id}', dependencies=[UserInterfaceAuthDependency('sdrama:choice:remove')]
+)
 async def admin_choice_del(
     choice_id: int,
     query_db: Annotated[AsyncSession, DBSessionDependency()],
@@ -257,7 +276,7 @@ async def admin_choice_del(
 @admin_drama_controller.get('/video-reviews', dependencies=[UserInterfaceAuthDependency('sdrama:review:list')])
 async def admin_review_list(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
-    status: str | None = Query(default='pending'),
+    status: str | None = Query(default=CommonConstant.DRAMA_REVIEW_STATUS_PENDING),
     page_num: int = Query(default=1, ge=1),
     page_size: int = Query(default=10, ge=1, le=100),
 ) -> Response:
@@ -265,7 +284,9 @@ async def admin_review_list(
     return ResponseUtil.success(model_content=page)
 
 
-@admin_drama_controller.put('/video-reviews/{review_id}/audit', dependencies=[UserInterfaceAuthDependency('sdrama:review:audit')])
+@admin_drama_controller.put(
+    '/video-reviews/{review_id}/audit', dependencies=[UserInterfaceAuthDependency('sdrama:review:audit')]
+)
 async def admin_review_audit(
     review_id: int,
     body: ReviewAuditModel,
