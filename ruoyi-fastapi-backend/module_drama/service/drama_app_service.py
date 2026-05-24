@@ -467,26 +467,20 @@ class DramaAppContentService:
 
     @classmethod
     async def user_dashboard_counts(cls, db: AsyncSession, user_id: int) -> dict:
-        """我的页统计：观看记录条数、收藏数、点赞次数、追剧（观看中出现过的剧目数）"""
-        r_wh = await db.execute(
-            select(func.count()).select_from(DramaUserWatchHistory).where(DramaUserWatchHistory.app_user_id == user_id)
-        )
-        r_fav = await db.execute(
-            select(func.count()).select_from(DramaUserFavorite).where(DramaUserFavorite.app_user_id == user_id)
-        )
-        r_like = await db.execute(
-            select(func.count()).select_from(DramaUserLike).where(DramaUserLike.app_user_id == user_id)
-        )
-        r_chase = await db.execute(
-            select(func.count(func.distinct(DramaUserSubscribe.drama_id))).where(
-                DramaUserSubscribe.app_user_id == user_id
-            )
-        )
+        """我的页统计：观看记录条数、收藏数、点赞次数、追剧数。零冗余，单次 DB round-trip。"""
+        from sqlalchemy import union_all
+
+        w = select(func.count()).select_from(DramaUserWatchHistory).where(DramaUserWatchHistory.app_user_id == user_id)
+        f = select(func.count()).select_from(DramaUserFavorite).where(DramaUserFavorite.app_user_id == user_id)
+        l = select(func.count()).select_from(DramaUserLike).where(DramaUserLike.app_user_id == user_id)
+        s = select(func.count(func.distinct(DramaUserSubscribe.drama_id))).where(DramaUserSubscribe.app_user_id == user_id)
+        r = await db.execute(union_all(w, f, l, s))
+        counts = [int(row[0] or 0) for row in r.fetchall()]
         return {
-            'watch_history_count': int(r_wh.scalar() or 0),
-            'favorite_count': int(r_fav.scalar() or 0),
-            'like_count': int(r_like.scalar() or 0),
-            'watching_drama_count': int(r_chase.scalar() or 0),
+            'watch_history_count': counts[0],
+            'favorite_count': counts[1],
+            'like_count': counts[2],
+            'watching_drama_count': counts[3],
         }
 
     @classmethod
