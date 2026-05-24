@@ -196,7 +196,7 @@ class DramaAdminService:
         row = r.scalars().first()
         if not row:
             raise ServiceException(data='', message='记录不存在')
-        if m.status not in ('approved', 'rejected'):
+        if m.status not in (CommonConstant.DRAMA_REVIEW_STATUS_APPROVED, CommonConstant.DRAMA_NODE_REVIEW_REJECTED):
             raise ServiceException(data='', message='非法状态')
         row.status = m.status
         row.admin_remark = m.admin_remark
