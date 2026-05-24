@@ -34,6 +34,7 @@ _NP = CommonConstant.DRAMA_NODE_STATUS_PUBLISHED
 _NA = CommonConstant.DRAMA_NODE_REVIEW_APPROVED
 _AD0 = CommonConstant.DRAMA_AD_STATUS_ACTIVE
 _C0 = CommonConstant.DRAMA_COMMENT_STATUS_NORMAL
+_IEY = CommonConstant.DRAMA_NODE_IS_ENTRY_YES
 
 
 def _effective_ad_media(ad: DramaAd) -> str | None:
@@ -193,7 +194,7 @@ class DramaAppContentService:
             select(DramaVideoNode)
             .where(DramaVideoNode.drama_id == drama_id, vis)
             .order_by(
-                (DramaVideoNode.is_entry == '1').desc(),  # entry node first
+                (DramaVideoNode.is_entry == _IEY).desc(),  # entry node first
                 DramaVideoNode.episode_no.is_(None),
                 DramaVideoNode.episode_no,
                 DramaVideoNode.sort,
@@ -516,7 +517,7 @@ class DramaAppContentService:
         rows = await db.execute(
             select(DramaUserSubscribe, Drama)
             .join(Drama, Drama.drama_id == DramaUserSubscribe.drama_id)
-            .where(DramaUserSubscribe.app_user_id == user_id, Drama.status == 'published')
+            .where(DramaUserSubscribe.app_user_id == user_id, Drama.status == _D)
             .order_by(DramaUserSubscribe.create_time.desc())
         )
         return [

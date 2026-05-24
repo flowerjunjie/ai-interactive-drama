@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from common.constant import CommonConstant
 from exceptions.exception import ServiceException
 from module_drama.entity.do.drama_do import (
     Drama,
@@ -31,15 +32,19 @@ from utils.page_util import PageUtil
 
 
 class DramaAdminService:
+    _PAD = CommonConstant.DRAMA_AD_STATUS_ACTIVE
+    _NA = CommonConstant.DRAMA_NODE_REVIEW_APPROVED
+    _RVP = CommonConstant.DRAMA_REVIEW_STATUS_PENDING
+
     @classmethod
     async def dashboard(cls, db: AsyncSession) -> dict:
         c_drama = await db.execute(select(func.count()).select_from(Drama))
         c_node = await db.execute(select(func.count()).select_from(DramaVideoNode))
         c_review = await db.execute(
-            select(func.count()).select_from(DramaVideoReview).where(DramaVideoReview.status == 'pending')
+            select(func.count()).select_from(DramaVideoReview).where(DramaVideoReview.status == cls._RVP)
         )
         c_pending_nodes = await db.execute(
-            select(func.count()).select_from(DramaVideoNode).where(DramaVideoNode.review_status == 'pending')
+            select(func.count()).select_from(DramaVideoNode).where(DramaVideoNode.review_status == cls._RVP)
         )
         c_users = await DramaAppAuthService.count_users(db)
         today = func.curdate()
@@ -388,7 +393,7 @@ class DramaAdminService:
     async def pending_video_nodes_page(cls, db: AsyncSession, page_num: int, page_size: int):
         q = (
             select(DramaVideoNode)
-            .where(DramaVideoNode.review_status == 'pending')
+            .where(DramaVideoNode.review_status == cls._RVP)
             .order_by(DramaVideoNode.create_time.desc())
         )
         return await PageUtil.paginate(db, q, page_num, page_size, is_page=True)
