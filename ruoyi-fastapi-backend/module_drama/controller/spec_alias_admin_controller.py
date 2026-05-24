@@ -51,9 +51,7 @@ async def spec_admin_upload_sign_post(
     return ResponseUtil.success(
         data={
             'uploadUrl': url,
-            'upload_url': url,
             'objectKey': key,
-            'object_key': key,
             'bucket': TosConfig.volcengine_tos_bucket,
             'fileId': fid,
         }
