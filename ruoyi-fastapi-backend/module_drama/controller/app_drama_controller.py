@@ -63,6 +63,7 @@ async def list_dramas(
 
 
 @app_drama_controller.get('/dramas/{drama_id}')
+@ApiRateLimit(namespace='drama:app:drama-detail', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def drama_detail(drama_id: int, query_db: Annotated[AsyncSession, DBSessionDependency()]) -> Response:
     d = await DramaAppContentService.get_drama(query_db, drama_id)
     entry = await DramaAppContentService.entry_node(query_db, drama_id)
@@ -226,6 +227,7 @@ async def post_review(
 
 
 @app_drama_controller.get('/ads')
+@ApiRateLimit(namespace='drama:app:ads', preset=ApiRateLimitPreset.ANON_PUBLIC_METADATA)
 async def list_ads(
     query_db: Annotated[AsyncSession, DBSessionDependency()],
     slot: str | None = Query(default=None),
