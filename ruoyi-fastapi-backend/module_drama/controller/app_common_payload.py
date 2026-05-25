@@ -15,7 +15,6 @@ def node_public(n: DramaVideoNode) -> dict:
         'is_entry': n.is_entry,
         'is_interactive': n.is_interactive,
         'choice_trigger_sec': n.choice_trigger_sec,
-        'tos_key': n.tos_key,
     }
 
 
