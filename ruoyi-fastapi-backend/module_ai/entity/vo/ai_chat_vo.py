@@ -1,8 +1,16 @@
 from datetime import datetime
+import re
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic.alias_generators import to_camel
+
+
+def _strip_html(s: str | None) -> str | None:
+    """Remove HTML tags to prevent stored XSS in user-supplied text fields."""
+    if s is None:
+        return None
+    return re.sub(r'<[^>]*>', '', s)
 
 
 class AiChatRequestModel(BaseModel):
@@ -13,10 +21,15 @@ class AiChatRequestModel(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel)
 
     session_id: str | None = Field(default=None, description='会话ID')
-    model_id: int = Field(description='模型ID')
+    model_id: int = Field(gt=0, description='模型ID')
     message: str = Field(description='用户消息')
     is_reasoning: bool | None = Field(default=None, description='本次是否开启深度思考')
     images: list[str] | None = Field(default=None, description='图片URL列表')
+
+    @field_validator('message')
+    @classmethod
+    def _sanitize(cls, v: str | None) -> str | None:
+        return _strip_html(v)
 
 
 class AiChatConfigModel(BaseModel):
@@ -26,11 +39,16 @@ class AiChatConfigModel(BaseModel):
 
     model_config = ConfigDict(alias_generator=to_camel)
 
-    chat_config_id: int | None = Field(default=None, description='配置主键')
-    user_id: int | None = Field(default=None, description='用户ID')
+    @field_validator('system_prompt')
+    @classmethod
+    def _sanitize_system_prompt(cls, v: str | None) -> str | None:
+        return _strip_html(v)
+
+    chat_config_id: int | None = Field(default=None, gt=0, description='配置主键')
+    user_id: int | None = Field(default=None, gt=0, description='用户ID')
     temperature: float | None = Field(default=None, description='默认温度')
     add_history_to_context: Literal['0', '1'] | None = Field(default=None, description='是否添加历史记录')
-    num_history_runs: int | None = Field(default=3, description='历史记录条数')
+    num_history_runs: int | None = Field(default=None, ge=0, description='历史记录条数')
     system_prompt: str | None = Field(default=None, description='系统提示词')
     metrics_default_visible: Literal['0', '1'] | None = Field(default=None, description='默认显示指标')
     vision_enabled: Literal['0', '1'] | None = Field(default=None, description='是否开启视觉')
