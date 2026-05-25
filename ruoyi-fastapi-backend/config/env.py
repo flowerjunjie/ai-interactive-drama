@@ -204,7 +204,6 @@ class UploadSettings:
         'pptx',
         'txt',
         # 压缩文件
-        'rar',
         'zip',
         'gz',
         'bz2',
