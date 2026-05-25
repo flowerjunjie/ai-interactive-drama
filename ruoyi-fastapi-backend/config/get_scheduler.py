@@ -38,6 +38,13 @@ from utils.log_util import logger
 from utils.server_util import StartupUtil, WorkerIdUtil
 
 
+# RCE 防护白名单：仅允许注册过的定时任务函数
+ALLOWED_JOB_FUNCTIONS: set[str] = {
+    'module_task.scheduler_test.job',
+    'module_task.scheduler_test.async_job',
+}
+
+
 # 重写Cron定时
 class MyCronTrigger(CronTrigger):
     CRON_EXPRESSION_LENGTH_MIN = 6
@@ -776,11 +783,17 @@ class SchedulerUtil:
     @classmethod
     def _import_function(cls, func_path: str) -> Callable[..., Any]:
         """
-        动态导入函数
+        动态导入函数（白名单模式）
 
         :param func_path: 函数字符串，如module_task.scheduler_test.job
         :return: 导入的函数对象
+        :raises ServiceException: 函数不在白名单中时拒绝执行
         """
+        # RCE 防护：白名单模式，未注册函数禁止执行
+        if func_path not in ALLOWED_JOB_FUNCTIONS:
+            raise ServiceException(
+                data='', message=f'定时任务函数未注册，禁止执行: {func_path}'
+            )
         module_path, func_name = func_path.rsplit('.', 1)
         module = importlib.import_module(module_path)
         return getattr(module, func_name)
