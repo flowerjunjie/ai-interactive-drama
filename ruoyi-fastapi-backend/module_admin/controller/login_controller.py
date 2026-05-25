@@ -54,12 +54,14 @@ async def login(
     result = await LoginService.authenticate_user(request, query_db, user)
     access_token_expires = timedelta(minutes=JwtConfig.jwt_expire_minutes)
     session_id = str(uuid.uuid4())
+    jti = str(uuid.uuid4())
     access_token = await LoginService.create_access_token(
         data={
             'user_id': str(result[0].user_id),
             'user_name': result[0].user_name,
             'dept_name': result[1].dept_name if result[1] else None,
             'session_id': session_id,
+            'jti': jti,
             'login_info': user.login_info,
         },
         expires_delta=access_token_expires,
@@ -186,7 +188,8 @@ async def logout(request: Request, token: Annotated[str | None, Depends(oauth2_s
         token_id: str = payload.get('session_id')
     else:
         token_id: str = payload.get('user_id')
-    await LoginService.logout_services(request, token_id)
+    jti: str = payload.get('jti', '')
+    await LoginService.logout_services(request, token_id, jti)
     logger.info('退出成功')
 
     return ResponseUtil.success(msg='退出成功')

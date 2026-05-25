@@ -211,9 +211,18 @@ class LoginService:
             payload = jwt.decode(token, JwtConfig.jwt_secret_key, algorithms=[JwtConfig.jwt_algorithm])
             user_id: str = payload.get('user_id')
             session_id: str = payload.get('session_id')
+            jti: str = payload.get('jti')
             if not user_id:
                 logger.warning('用户token不合法')
                 raise AuthException(data='', message='用户token不合法')
+            # JWT replay protection: check jti blacklist
+            if jti:
+                jti_blacklist = await request.app.state.redis.get(
+                    f'{RedisInitKeyConfig.ACCESS_TOKEN.key}:jti_blacklist:{jti}'
+                )
+                if jti_blacklist:
+                    logger.warning('用户token已失效，请重新登录')
+                    raise AuthException(data='', message='用户token已失效，请重新登录')
             token_data = TokenData(user_id=int(user_id))
         except InvalidTokenError as e:
             logger.warning('用户token已失效，请重新登录')
@@ -516,15 +525,23 @@ class LoginService:
         return CrudResponseModel(**result)
 
     @classmethod
-    async def logout_services(cls, request: Request, token_id: str) -> bool:
+    async def logout_services(cls, request: Request, token_id: str, jti: str = '') -> bool:
         """
         退出登录services
 
         :param request: Request对象
         :param token_id: 令牌编号
+        :param jti: JWT ID，用于加入黑名单
         :return: 退出登录结果
         """
         await request.app.state.redis.delete(f'{RedisInitKeyConfig.ACCESS_TOKEN.key}:{token_id}')
+        # JWT replay protection: add jti to blacklist with same TTL as token expiry
+        if jti:
+            await request.app.state.redis.set(
+                f'{RedisInitKeyConfig.ACCESS_TOKEN.key}:jti_blacklist:{jti}',
+                '1',
+                ex=timedelta(minutes=JwtConfig.jwt_expire_minutes),
+            )
         # await request.app.state.redis.delete(f'{current_user.user.user_id}_access_token')
         # await request.app.state.redis.delete(f'{current_user.user.user_id}_session_id')
 
