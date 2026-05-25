@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
-from pydantic_validation_decorator import NotBlank, Size
+from pydantic_validation_decorator import NotBlank, Size, Xss
 
 
 class JobModel(BaseModel):
@@ -32,6 +32,11 @@ class JobModel(BaseModel):
     update_time: datetime | None = Field(default=None, description='更新时间')
     remark: str | None = Field(default=None, description='备注信息')
 
+    @Xss(field_name='job_name', message='任务名称不能包含脚本字符')
+    @Size(field_name='job_name', min_length=0, max_length=64, message='任务名称长度不能超过64个字符')
+    def get_job_name(self) -> str | None:
+        return self.job_name
+
     @NotBlank(field_name='invoke_target', message='调用目标字符串不能为空')
     @Size(field_name='invoke_target', min_length=0, max_length=500, message='调用目标字符串长度不能超过500个字符')
     def get_invoke_target(self) -> str | None:
@@ -43,6 +48,7 @@ class JobModel(BaseModel):
         return self.cron_expression
 
     def validate_fields(self) -> None:
+        self.get_job_name()
         self.get_invoke_target()
         self.get_cron_expression()
 

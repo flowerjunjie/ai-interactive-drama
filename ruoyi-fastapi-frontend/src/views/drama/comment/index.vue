@@ -4,6 +4,7 @@
       <el-form-item label="短剧ID"><el-input-number v-model="query.dramaId" :min="1" controls-position="right" /></el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList" v-hasPermi="['sdrama:comment:list']">搜索</el-button>
+        <el-button plain @click="() => { query.dramaId = undefined; getList() }" v-hasPermi="['sdrama:comment:list']">重置</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="loading" :data="list" border>

@@ -3,7 +3,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic.alias_generators import to_camel
-from pydantic_validation_decorator import NotBlank
+from pydantic_validation_decorator import NotBlank, Size, Xss
 
 from common.constant import GenConstant
 from utils.string_util import StringUtil
@@ -38,14 +38,17 @@ class GenTableBaseModel(BaseModel):
     update_time: datetime | None = Field(default=None, description='更新时间')
     remark: str | None = Field(default=None, description='备注')
 
+    @Xss(field_name='table_name', message='表名称不能包含脚本字符')
     @NotBlank(field_name='table_name', message='表名称不能为空')
     def get_table_name(self) -> str | None:
         return self.table_name
 
+    @Xss(field_name='table_comment', message='表描述不能包含脚本字符')
     @NotBlank(field_name='table_comment', message='表描述不能为空')
     def get_table_comment(self) -> str | None:
         return self.table_comment
 
+    @Xss(field_name='class_name', message='实体类名称不能包含脚本字符')
     @NotBlank(field_name='class_name', message='实体类名称不能为空')
     def get_class_name(self) -> str | None:
         return self.class_name
@@ -58,14 +61,17 @@ class GenTableBaseModel(BaseModel):
     def get_module_name(self) -> str | None:
         return self.module_name
 
+    @Xss(field_name='business_name', message='生成业务名不能包含脚本字符')
     @NotBlank(field_name='business_name', message='生成业务名不能为空')
     def get_business_name(self) -> str | None:
         return self.business_name
 
+    @Xss(field_name='function_name', message='生成功能名不能包含脚本字符')
     @NotBlank(field_name='function_name', message='生成功能名不能为空')
     def get_function_name(self) -> str | None:
         return self.function_name
 
+    @Xss(field_name='function_author', message='功能作者不能包含脚本字符')
     @NotBlank(field_name='function_author', message='生成功能作者不能为空')
     def get_function_author(self) -> str | None:
         return self.function_author
@@ -221,11 +227,18 @@ class GenTableColumnBaseModel(BaseModel):
     update_by: str | None = Field(default=None, description='更新者')
     update_time: datetime | None = Field(default=None, description='更新时间')
 
+    @Xss(field_name='column_name', message='列名称不能包含脚本字符')
+    @Xss(field_name='column_comment', message='列描述不能包含脚本字符')
+    def get_column_info(self) -> tuple[str | None, str | None]:
+        return self.column_name, self.column_comment
+
+    @Xss(field_name='python_field', message='Python属性不能包含脚本字符')
     @NotBlank(field_name='python_field', message='Python属性不能为空')
     def get_python_field(self) -> str | None:
         return self.python_field
 
     def validate_fields(self) -> None:
+        self.get_column_info()
         self.get_python_field()
 
 

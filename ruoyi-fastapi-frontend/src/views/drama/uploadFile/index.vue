@@ -4,6 +4,7 @@
       <el-form-item label="短剧ID"><el-input-number v-model="query.dramaId" :min="1" /></el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList">搜索</el-button>
+        <el-button plain @click="() => { query.dramaId = undefined; getList() }">重置</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="loading" :data="list" border>

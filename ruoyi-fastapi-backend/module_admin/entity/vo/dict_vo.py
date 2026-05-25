@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
-from pydantic_validation_decorator import NotBlank, Pattern, Size
+from pydantic_validation_decorator import NotBlank, Pattern, Size, Xss
 
 
 class DictTypeModel(BaseModel):
@@ -23,6 +23,7 @@ class DictTypeModel(BaseModel):
     update_time: datetime | None = Field(default=None, description='更新时间')
     remark: str | None = Field(default=None, description='备注')
 
+    @Xss(field_name='dict_name', message='字典名称不能包含脚本字符')
     @NotBlank(field_name='dict_name', message='字典名称不能为空')
     @Size(field_name='dict_name', min_length=0, max_length=100, message='字典类型名称长度不能超过100个字符')
     def get_dict_name(self) -> str | None:
@@ -65,6 +66,7 @@ class DictDataModel(BaseModel):
     update_time: datetime | None = Field(default=None, description='更新时间')
     remark: str | None = Field(default=None, description='备注')
 
+    @Xss(field_name='dict_label', message='字典标签不能包含脚本字符')
     @NotBlank(field_name='dict_label', message='字典标签不能为空')
     @Size(field_name='dict_label', min_length=0, max_length=100, message='字典标签长度不能超过100个字符')
     def get_dict_label(self) -> str | None:

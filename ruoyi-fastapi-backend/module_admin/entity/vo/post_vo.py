@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
-from pydantic_validation_decorator import NotBlank, Size
+from pydantic_validation_decorator import NotBlank, Size, Xss
 
 
 class PostModel(BaseModel):
@@ -29,6 +29,7 @@ class PostModel(BaseModel):
     def get_post_code(self) -> str | None:
         return self.post_code
 
+    @Xss(field_name='post_name', message='岗位名称不能包含脚本字符')
     @NotBlank(field_name='post_name', message='岗位名称不能为空')
     @Size(field_name='post_name', min_length=0, max_length=50, message='岗位名称长度不能超过50个字符')
     def get_post_name(self) -> str | None:

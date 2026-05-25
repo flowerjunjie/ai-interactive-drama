@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from pydantic.alias_generators import to_camel
-from pydantic_validation_decorator import NotBlank, Size
+from pydantic_validation_decorator import NotBlank, Size, Xss
 
 
 class RoleModel(BaseModel):
@@ -53,6 +53,7 @@ class RoleModel(BaseModel):
             self.admin = False
         return self
 
+    @Xss(field_name='role_name', message='角色名称不能包含脚本字符')
     @NotBlank(field_name='role_name', message='角色名称不能为空')
     @Size(field_name='role_name', min_length=0, max_length=30, message='角色名称长度不能超过30个字符')
     def get_role_name(self) -> str | None:

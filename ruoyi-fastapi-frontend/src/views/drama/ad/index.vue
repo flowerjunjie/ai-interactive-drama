@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
     <el-button type="primary" class="mb" @click="openForm()" v-hasPermi="['sdrama:ad:add']">新增广告</el-button>
+    <el-form :inline="true" class="mb">
+      <el-form-item>
+        <el-button plain @click="getList">刷新</el-button>
+      </el-form-item>
+    </el-form>
     <el-table v-loading="loading" :data="list" border>
       <el-table-column label="ID" prop="adId" width="80" />
       <el-table-column label="标题" prop="title" min-width="140" />

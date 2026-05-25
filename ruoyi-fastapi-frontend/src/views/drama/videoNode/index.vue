@@ -12,6 +12,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList" v-hasPermi="['sdrama:node:list']">搜索</el-button>
+        <el-button plain @click="() => { query.dramaId = undefined; query.reviewStatus = ''; getList() }" v-hasPermi="['sdrama:node:list']">重置</el-button>
         <el-button type="success" plain @click="openForm()" v-hasPermi="['sdrama:node:add']">新增节点</el-button>
       </el-form-item>
     </el-form>
@@ -20,12 +21,24 @@
       <el-table-column label="短剧ID" prop="dramaId" width="90" />
       <el-table-column label="集" prop="episodeNo" width="70" />
       <el-table-column label="标题" prop="title" min-width="120" />
-      <el-table-column label="入口" prop="isEntry" width="70" />
-      <el-table-column label="互动" prop="isInteractive" width="70" />
+      <el-table-column label="入口" prop="isEntry" width="70">
+        <template #default="{ row }">{{ row.isEntry === '1' ? '是' : '否' }}</template>
+      </el-table-column>
+      <el-table-column label="互动" prop="isInteractive" width="70">
+        <template #default="{ row }">{{ row.isInteractive === '1' ? '是' : '否' }}</template>
+      </el-table-column>
       <el-table-column label="触发秒" prop="choiceTriggerSec" width="90" />
       <el-table-column label="审核" prop="reviewStatus" width="100" />
       <el-table-column label="状态" prop="status" width="100" />
-      <el-table-column label="视频" min-width="160" show-overflow-tooltip prop="videoUrl" />
+      <el-table-column label="视频" min-width="200">
+        <template #default="{ row }">
+          <div class="flex flex-col gap-1">
+            <el-link v-if="row.videoUrl" type="primary" :href="row.videoUrl" target="_blank" class="text-xs">预览视频</el-link>
+            <span v-if="row.videoUrl" class="text-xs text-gray-400 truncate">{{ row.videoUrl }}</span>
+            <span v-else class="text-xs text-gray-400">未上传</span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="{ row }">
           <el-button link type="primary" @click="openBranch(row)" v-hasPermi="['sdrama:choice:list']">分支</el-button>
@@ -51,7 +64,6 @@
             :drama-id="form.dramaId"
             :node-id="form.nodeId"
             btn-label="上传视频"
-            @success="(payload) => { form.tosKey = payload.objectKey }"
           />
         </el-form-item>
         <el-form-item label="封面">
@@ -64,7 +76,6 @@
             :drama-id="form.dramaId"
             :node-id="form.nodeId"
             btn-label="上传封面"
-            @success="(payload) => { form.tosKey = payload.objectKey }"
           />
         </el-form-item>
         <el-form-item label="时长(秒)"><el-input-number v-model="form.durationSec" :min="0" /></el-form-item>
@@ -88,6 +99,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="拒绝原因"><el-input v-model="form.rejectReason" /></el-form-item>
+        <el-alert type="warning" :closable="false" title="审核状态请在「视频审核」页面操作，避免绕过审批流程。" class="mt-2" />
       </el-form>
       <template #footer>
         <el-button @click="open = false">取消</el-button>

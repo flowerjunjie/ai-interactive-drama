@@ -54,7 +54,6 @@ const query = reactive({ pageNum: 1, pageSize: 10 })
 const drawer = ref(false)
 const watchRows = ref([])
 const favRows = ref([])
-const curUserId = ref(null)
 
 function getList() {
   loading.value = true

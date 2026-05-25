@@ -5,7 +5,15 @@
       <el-table-column label="节点ID" prop="nodeId" width="90" />
       <el-table-column label="短剧ID" prop="dramaId" width="90" />
       <el-table-column label="标题" prop="title" min-width="140" />
-      <el-table-column label="视频" min-width="220" show-overflow-tooltip prop="videoUrl" />
+      <el-table-column label="视频" min-width="200">
+        <template #default="{ row }">
+          <div class="flex flex-col gap-1">
+            <el-link v-if="row.videoUrl" type="primary" :href="row.videoUrl" target="_blank" class="text-xs">预览视频</el-link>
+            <span v-if="row.videoUrl" class="text-xs text-gray-400 truncate">{{ row.videoUrl }}</span>
+            <span v-else class="text-xs text-gray-400">无视频</span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="审核" prop="reviewStatus" width="100" />
       <el-table-column label="操作" width="220" align="center">
         <template #default="{ row }">

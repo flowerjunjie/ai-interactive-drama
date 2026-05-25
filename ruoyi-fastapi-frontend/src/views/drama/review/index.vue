@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
     <el-alert type="info" :closable="false" title="用户评价（影评）审核，与「视频审核」中的节点上架审核不同。" class="mb2" />
+    <el-form :inline="true" class="mb">
+      <el-form-item>
+        <el-button plain @click="getList">刷新</el-button>
+      </el-form-item>
+    </el-form>
     <el-table v-loading="loading" :data="list" border>
       <el-table-column label="ID" prop="reviewId" width="80" />
       <el-table-column label="用户" prop="appUserId" width="90" />

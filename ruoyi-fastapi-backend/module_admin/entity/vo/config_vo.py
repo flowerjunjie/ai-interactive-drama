@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
-from pydantic_validation_decorator import NotBlank, Size
+from pydantic_validation_decorator import NotBlank, Size, Xss
 
 
 class ConfigModel(BaseModel):
@@ -24,11 +24,13 @@ class ConfigModel(BaseModel):
     update_time: datetime | None = Field(default=None, description='更新时间')
     remark: str | None = Field(default=None, description='备注')
 
+    @Xss(field_name='config_name', message='参数名称不能包含脚本字符')
     @NotBlank(field_name='config_key', message='参数名称不能为空')
     @Size(field_name='config_key', min_length=0, max_length=100, message='参数名称长度不能超过100个字符')
     def get_config_key(self) -> str | None:
         return self.config_key
 
+    @Xss(field_name='config_name', message='参数键名不能包含脚本字符')
     @NotBlank(field_name='config_name', message='参数键名不能为空')
     @Size(field_name='config_name', min_length=0, max_length=100, message='参数键名长度不能超过100个字符')
     def get_config_name(self) -> str | None:

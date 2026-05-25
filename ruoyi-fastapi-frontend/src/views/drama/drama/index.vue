@@ -1,9 +1,17 @@
 <template>
   <div class="app-container">
     <el-form :inline="true">
-      <el-form-item label="标题"><el-input v-model="query.title" clearable placeholder="模糊" style="width:180px" /></el-form-item>
+      <el-form-item label="标题"><el-input v-model="query.title" clearable placeholder="模糊搜索" style="width:180px" /></el-form-item>
+      <el-form-item label="状态">
+        <el-select v-model="query.status" clearable placeholder="全部" style="width:140px">
+          <el-option label="草稿" value="draft" />
+          <el-option label="已发布" value="published" />
+          <el-option label="下架" value="offline" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList" v-hasPermi="['sdrama:drama:list']">搜索</el-button>
+        <el-button plain @click="() => { query.title = ''; getList() }" v-hasPermi="['sdrama:drama:list']">重置</el-button>
         <el-button type="primary" plain @click="openForm()" v-hasPermi="['sdrama:drama:add']">新增</el-button>
       </el-form-item>
     </el-form>
@@ -71,7 +79,7 @@ const loading = ref(false)
 const list = ref([])
 const total = ref(0)
 const open = ref(false)
-const query = reactive({ pageNum: 1, pageSize: 10, title: '' })
+const query = reactive({ pageNum: 1, pageSize: 10, title: '', status: '' })
 const form = reactive({
   dramaId: undefined,
   title: '',
