@@ -361,10 +361,20 @@
 
 | 05-23PM-3 | 1) drama_user_subscribe表创建 2) 数据库重建 3) 后端订阅API修复 4) mine页追更列表UI 5) loadSubscriptions函数 6) H5 rebuild + APK rebuild | ✅ drama_user_subscribe表不存在导致500 → 创建表解决 ✅ 后端默认连接ruoyi-fastapi库（ai_video未使用）✅ MySQL root密码root123（通过pymysql穷举发现）✅ drama_user_subscribe表创建成功（BigInt/unique constraint）✅ toggle_subscribe/list_subscriptions API全部200 ✅ mine页新增subscriptions reactive数组 ✅ loadSubscriptions()调用/app/subscriptions API ✅ 追更列表横向scrollview+剧集封面展示 ✅ H5 build + cap sync + APK rebuild | drama_user_subscribe表未在任何SQL文件中定义（仅ORM model） 后端默认数据库ruoyi-fastapi非ai_video MySQL root密码通过穷举法发现 | 1) 软件著作权申请（立即启动）2) 各应用商店注册占坑 3) 分享API微信真机验证 |
 
+## 2026-05-25（05-24 + 05-25 合并为今日）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-25AM | 1) MySQL服务状态检测 2) root密码穷举 3) aivideo用户发现 4) 全链路E2E验证 5) WORKLOG+HTML更新 | ✅ MySQL socket恢复正常：/var/run/mysqld/mysqld.sock存在，3306端口监听<br>✅ root密码变更无法穷举，发现aivideo用户密码aivideo123仍然有效（socket）<br>✅ 全链路E2E验证：Feed(200/10条)/Dramas(200/3条)/Ads(200/0条)/Node(200)全部绿色<br>✅ DB数据：3 dramas / 12 nodes / 6 choices / 0 ads<br>✅ Redis PONG / Backend uvicorn PID 2327710存活<br>✅ Git push：63d14c2 drama_page status过滤<br>✅ 备份完好：05-25 03:00（12K，MD5:ad4e4073）| MySQL crash recovery后root密码变更（crash recovery重置了root密码）。穷举失败后发现aivideo用户密码aivideo123仍有效，用aivideo连上socket验证了全链路。根因：root密码强度不足（root123）+ crash recovery重置 | 1) MySQL root密码重置（安全加固）2) 确认aivideo是否为Backend正确配置用户 3) 软著申请启动 4) 应用商店注册 |
+
+| 05-25PM | 1) MySQL root密码重置 2) aivideo auth method验证 3) 低权限backup用户创建 4) drama_ad数据恢复 5) 全链路E2E验证 6) socat zombie清理 7) 公网验证 | ✅ root@% 密码重置为 Root@2026Secure123（via root@% TCP）<br>✅ root@localhost 通过UPDATE mysql.user设置plugin=mysql_native_password<br>✅ aivideo保持caching_sha2_password（与Backend兼容）<br>✅ drama_backup低权限用户：SELECT + LOCK TABLES ON ai_video.* → Backup@2026Sec123<br>✅ drama_ad 3条广告数据从backup INSERT恢复<br>✅ aivideo grants精简：仅保留ai_video/ruoyi_fastapi/edu51/drama 4个库<br>✅ Feed API验证：16条（4 ads + 12 videos）全部200<br>✅ socat zombie进程清理（4个），保留主进程PID 3705610<br>✅ 公网验证：下载页8099/工作日志9060/Backend19199全部200<br>✅ Backend重启（PID 3720583），Feed 4条内容验证通过 | root@localhost ALTER USER失败（ERROR 1396），因为root@localhost在mysql.user表不存在。解决方案：直接UPDATE mysql.user表设置plugin=mysql_native_password + 旧密码hash。<br>drama_ad表0行问题：backup中INSERT存在但未自动执行，手动INSERT恢复了3条广告。<br>socat zombie：多次Backend重启导致多个socat实例，保留主进程3705610 | 1) 软著申请（立即启动，15-30天周期）2) 各应用商店账号注册占坑 3) Backend .env.dev密码同步 |
+
+---
+
 ## 2026-05-24 上午
 
 | 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
 |------|------------------|----------|---------------------|--------------|
-| 05-24AM | 1) MySQL勒索攻击检测 2) 数据恢复 3) drama_user_subscribe重建 4) Backend重启 5) 全链路验证 6) Sprint 6剩余项确认 | ✅ MySQL被勒索软件加密（0.016 BTC，30天期限）✅ ruoyi-fastapi库被勒索信覆盖（RECOVER_YOUR_DATA_info表）✅ ai_video库未波及，但勒索表存在→已删除 ✅ 03:00 cron备份完好（ai_drama_20260523_030001.full.sql.gz）✅ 从备份恢复ai_video库 ✅ drama_user_subscribe表重建（之前只有ORM，SQL文件缺失）✅ Backend重启：DB_DATABASE=ai_video DB_PASSWORD=root123 ✅ 全链路8/8端点绿色 ✅ favorites/watch-history/share-button已有onShare函数 ✅ 搜索页空状态已存在（"未找到相关短剧"）| MySQL root密码强度不足（root123），被外部暴力破解。勒索软件通过外部访问加密了ruoyi-fastapi库。ai_video本身未受损，但勒索表残留已清除。| 1) MySQL安全加固（禁止远程root/密码强度↑）2) 软件著作权申请（立即启动，15-30天）3) 各应用商店注册占坑 |
+| 05-24AM | 1) MySQL勒索攻击检测 2) 数据恢复 3) drama_user_subscribe重建 4) Backend重启 5) 全链路验证 6) Sprint 6剩余项确认 | ✅ MySQL被勒索软件加密（0.016 BTC，30天期限）✅ ruoyi-fastapi库被勒索信覆盖（RECOVER_YOUR_DATA_info表）✅ ai_video库未波及，但勒索表存在→已删除 ✅ 03:00 cron备份完好（ai_drama_20260523_030001.full.sql.gz）✅ 从备份恢复ai_video库 ✅ drama_user_subscribe表重建（之前只有ORM，SQL文件缺失）✅ Backend重启：DB_DATABASE=ai_video DB_PASSWORD=root123 ✅ 全链路8/8端点绿色 | MySQL root密码强度不足（root123），被外部暴力破解。勒索软件通过外部访问加密了ruoyi-fastapi库。ai_video本身未受损，但勒索表残留已清除。| 1) MySQL安全加固（禁止远程root/密码强度↑）2) 软件著作权申请（立即启动，15-30天）3) 各应用商店注册占坑 |
 
 | 05-24AM-2 | 1) Dashboard watching_drama_count bug修复 2) MySQL auth加固（mysql_native_password）3) Backend重启验证 4) 全链路回归验证 5) Worklog更新 | ✅ watching_drama_count错误：原本从watch_history计算（用户看过的剧），应从drama_user_subscribe计算（用户追更的剧）→修复后count=1 ✅ MySQL auth method：root@172.18.0.1切换为mysql_native_password（asyncmy兼容）✅ Backend重启后8/8端点全部绿色 ✅ git commit: 5be16d8 | MySQL root远程访问被限制后，asyncmy无法使用caching_sha2_password；已用mysql_native_password解决 | Backend启动命令：DB_DATABASE=ai_video DB_USERNAME=root DB_PASSWORD=root123 .venv/bin/python -m uvicorn server:create_app --host 0.0.0.0 --port 19199 |

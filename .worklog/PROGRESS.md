@@ -201,31 +201,9 @@ Video Nodes: /api/app/video-nodes/{id}
 - `.worklog/PROGRESS.md` — Sprint 进度追踪（本文档）
 
 ## 当前状态
-✅ Sprint 6 完整交付（2026-05-24）
-✅ MySQL 勒索攻击恢复，ai_video 从备份恢复
-✅ 全链路 8/8 端点绿色
-✅ 安全修复：login页密码明文存储移除
-✅ 质量修复：player页硬编码内容移除，mine页API fail callback补齐
-✅ 性能优化：db_pool_size 50→20，DB索引补齐，entry_node/feed优化
-✅ 审计报告落地：.security/ .performance/ .codereview/ .infrastructure/
-✅ APK rebuild sync（4.3MB）
-✅ Git: 15 commits (5be16d8→5c96ee7)
-✅ 剧场页分页：total+rows 返回，page_num/page_size 参数
-✅ 索引覆盖：drama(idx_status_sort/heat/create) + drama_ad(idx_status_weight)
-✅ PyMySQL冗余驱动移除（asyncmy全链路覆盖）
-✅ Magic strings全链路清零：module_drama service/controller/aspect 层 0 magic strings
-✅ user_dashboard_counts：union_all 单次 DB round-trip
-✅ ads response envelope：rows= 列表封装统一
-✅ admin review list：Query default → CommonConstant
-✅ check_new_episodes并发：asyncio.gather 并行查询
-✅ spec_alias重复import：已删除 duplicate import line + unused ApiNamespace
-✅ C端auth限速：login → ANON_AUTH_LOGIN, register → ANON_AUTH_REGISTER
-✅ unused import清理：spec_alias ApiNamespace 移除
-✅ upload/sign响应去重：spec_alias_admin 去除重复字段
-✅ CommonConstant缺失import：app_auth_service + app_user_dependency 修复
-✅ mine页API路径修复：/app/subscriptions → /subscriptions（真bug）
-✅ asyncio.gather重构：check_new_episodes 查询结构优化
-✅ Git LFS追踪：.gitattributes track "*.apk" → commit 67e394d
-✅ 前端audit完成：magic strings/duplicate maps/unused ref 均已扫过
-✅ 搜索增强：分类标签tabs + 实时搜索 + b.rows修复
-⏳ 待人工：MySQL安全加固、软著申请、应用商店注册
+⏸️ Sprint 6 收尾阶段（2026-05-25 MySQL crash recovery）
+⚠️ MySQL 05-25 11:40 crash recovery后重启中，ai_video暂时不可用
+🔄 Backend进程存活但API返回500（DB连接丢失）
+✅ MySQL勒索攻击恢复已完成（05-24）
+✅ 全链路恢复：需等MySQL恢复后验证
+🔧 待办：MySQL crash根因分析、安全加固、软著申请
