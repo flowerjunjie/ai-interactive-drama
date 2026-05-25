@@ -49,8 +49,9 @@ async def admin_drama_list(
     page_num: int = Query(default=1, ge=1),
     page_size: int = Query(default=10, ge=1, le=100),
     title: str | None = Query(default=None),
+    status: str | None = Query(default=None),
 ) -> Response:
-    page = await DramaAdminService.drama_page(query_db, page_num, page_size, title)
+    page = await DramaAdminService.drama_page(query_db, page_num, page_size, title, status)
     return ResponseUtil.success(model_content=page)
 
 

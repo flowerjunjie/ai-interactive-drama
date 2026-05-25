@@ -13,6 +13,7 @@ export function listDrama(query) {
       page_num: query.pageNum,
       page_size: query.pageSize,
       title: query.title || undefined,
+      status: query.status || undefined,
     },
   })
 }

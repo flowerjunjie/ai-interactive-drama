@@ -77,10 +77,12 @@ class DramaAdminService:
 
     # --- drama ---
     @classmethod
-    async def drama_page(cls, db: AsyncSession, page_num: int, page_size: int, title: str | None = None):
+    async def drama_page(cls, db: AsyncSession, page_num: int, page_size: int, title: str | None = None, status: str | None = None):
         q = select(Drama).order_by(Drama.sort.desc(), Drama.drama_id.desc())
         if title:
             q = q.where(Drama.title.contains(title))
+        if status:
+            q = q.where(Drama.status == status)
         return await PageUtil.paginate(db, q, page_num, page_size, is_page=True)
 
     @classmethod
