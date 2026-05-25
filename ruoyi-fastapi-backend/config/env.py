@@ -202,8 +202,6 @@ class UploadSettings:
         'xlsx',
         'ppt',
         'pptx',
-        'html',
-        'htm',
         'txt',
         # 压缩文件
         'rar',

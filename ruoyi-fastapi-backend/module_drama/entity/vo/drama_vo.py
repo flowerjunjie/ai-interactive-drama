@@ -198,11 +198,20 @@ class DramaAdSaveModel(BaseModel):
 
 
 class UploadCompleteIn(BaseModel):
-    file_id: int
+    file_id: int = Field(..., gt=0)
     size_bytes: int | None = None
     video_url: str | None = None
     cover_url: str | None = None
     tos_key: str | None = None
+
+    @field_validator('tos_key')
+    @classmethod
+    def _validate_tos_key(cls, v: str | None) -> str | None:
+        if v is None:
+            return v
+        if '..' in v or v.startswith('/') or v.startswith('\\'):
+            raise ValueError('Invalid tos_key path')
+        return v
 
     @field_validator('video_url', 'cover_url')
     @classmethod
