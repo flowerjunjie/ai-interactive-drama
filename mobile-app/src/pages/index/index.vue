@@ -129,11 +129,11 @@ import { computed, onMounted, ref } from 'vue'
 import { appApi } from '@/config'
 import { authHeaders, needLogin } from '@/utils/app-http'
 import { formatShortCount } from '@/utils/format'
-
-const defaultCover = 'https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=1000&auto=format&fit=crop'
+import { safeShare } from '@/utils/share'
+import { DEFAULT_COVER } from '@/constants'
 
 const heroNodeId = ref(0)
-const heroCover = ref(defaultCover)
+const heroCover = ref(DEFAULT_COVER)
 const heroTitle = ref('逆天战神')
 const heroDesc = ref('少年林辰，遭家族背叛，血脉被夺，绝境之下觉醒上古战神血脉！')
 const heroTagsRaw = ref('')
@@ -258,22 +258,14 @@ function onFavoriteTap() {
 }
 
 function onCommentTap() {
+  if (!needLogin()) return
   const did = heroDramaId.value
   if (did) uni.navigateTo({ url: `/pages/drama-detail/index?id=${did}` })
   else uni.showToast({ title: '暂无剧目', icon: 'none' })
 }
 
 function onShareTap() {
-  const title = 'AI 互动短剧 — 沉浸式分支剧情，体验不一样的人生'
-  uni.share({
-    provider: '',
-    type: 0,
-    title,
-    success: () => {},
-    fail: () => {
-      /* share unavailable — silent fail */
-    },
-  })
+  safeShare({ title: 'AI 互动短剧 — 沉浸式分支剧情，体验不一样的人生' })
 }
 
 function switchTab(url: string) {

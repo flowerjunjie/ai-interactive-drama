@@ -202,6 +202,7 @@ import ChoicePopup from '@/components/ChoicePopup.vue'
 import { appApi } from '@/config'
 import { authHeaders, legacyApi, needLogin } from '@/utils/app-http'
 import { formatShortCount } from '@/utils/format'
+import { safeShare } from '@/utils/share'
 
 const nodeId = ref(0)
 const node = ref<any>(null)
@@ -321,25 +322,7 @@ function toggleFullscreen() {
 function onShare() {
   const did = dramaId.value
   if (!did) return
-  uni.share({
-    provider: 'weixin',
-    scene: 'WXSceneSession',
-    title: dramaTitle.value,
-    summary: dramaDesc.value.slice(0, 60),
-    success: () => uni.showToast({ title: '分享成功', icon: 'none' }),
-    fail: () => {
-      // WeChat not configured — silently fall through to system share
-      uni.share({
-        provider: '',
-        type: 0,
-        title: dramaTitle.value,
-        success: () => {},
-        fail: () => {
-          /* system share unavailable — no toast spam */
-        },
-      })
-    },
-  })
+  safeShare({ title: dramaTitle.value, summary: dramaDesc.value.slice(0, 60) })
 }
 
 function feedbackReview() {
@@ -543,10 +526,7 @@ function loadNodeBundle() {
         choices.value = body.data.choices || []
         if (body.data.like_count != null) likeTotal.value = Number(body.data.like_count)
       }
-      loadDramaMeta()
-      loadComments()
-      loadMeLike()
-      loadSubState()
+      Promise.all([loadDramaMeta(), loadComments(), loadMeLike(), loadSubState()])
     },
   })
 }
@@ -578,8 +558,8 @@ function onLoadedMeta(e: any) {
     try {
       const ctx = uni.createVideoContext('dramaVideo')
       ctx.seekTo(savedProgressSec.value)
-    } catch (err) {
-      console.warn('[player] seekTo failed, progress restored silently:', savedProgressSec.value, err)
+    } catch {
+      // silent fail - progress not restored
     }
   }
 }

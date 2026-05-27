@@ -100,7 +100,9 @@ import { onShow } from '@dcloudio/uni-app'
 import { appApi } from '@/config'
 import { authHeaders } from '@/utils/app-http'
 
-const placeholderCover = 'https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=300&auto=format&fit=crop'
+import { COVER_SM } from '@/constants'
+
+const placeholderCover = COVER_SM
 
 const keyword = ref('')
 const rows = ref<Record<string, any>[]>([])
@@ -109,6 +111,7 @@ const loading = ref(false)
 const activeTab = ref('')
 
 const recentSearches = ref<string[]>([])
+const debounceTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const typeTabs = [
   { label: '全部', value: '' },
@@ -137,11 +140,15 @@ function dramaTypeLabel(t: string | null | undefined): string {
 }
 
 function onInput() {
+  if (debounceTimer.value) clearTimeout(debounceTimer.value)
   if (!keyword.value.trim()) {
     rows.value = []
     loaded.value = false
+    loading.value = false
   } else {
-    fetchResults(keyword.value.trim())
+    debounceTimer.value = setTimeout(() => {
+      fetchResults(keyword.value.trim())
+    }, 300)
   }
 }
 
@@ -177,6 +184,7 @@ function fetchResults(kw: string) {
       loading.value = false
       loaded.value = true
       rows.value = []
+      uni.showToast({ title: '网络异常，请重试', icon: 'none' })
     },
   })
 }

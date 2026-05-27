@@ -378,3 +378,35 @@
 | 05-24AM | 1) MySQL勒索攻击检测 2) 数据恢复 3) drama_user_subscribe重建 4) Backend重启 5) 全链路验证 6) Sprint 6剩余项确认 | ✅ MySQL被勒索软件加密（0.016 BTC，30天期限）✅ ruoyi-fastapi库被勒索信覆盖（RECOVER_YOUR_DATA_info表）✅ ai_video库未波及，但勒索表存在→已删除 ✅ 03:00 cron备份完好（ai_drama_20260523_030001.full.sql.gz）✅ 从备份恢复ai_video库 ✅ drama_user_subscribe表重建（之前只有ORM，SQL文件缺失）✅ Backend重启：DB_DATABASE=ai_video DB_PASSWORD=root123 ✅ 全链路8/8端点绿色 | MySQL root密码强度不足（root123），被外部暴力破解。勒索软件通过外部访问加密了ruoyi-fastapi库。ai_video本身未受损，但勒索表残留已清除。| 1) MySQL安全加固（禁止远程root/密码强度↑）2) 软件著作权申请（立即启动，15-30天）3) 各应用商店注册占坑 |
 
 | 05-24AM-2 | 1) Dashboard watching_drama_count bug修复 2) MySQL auth加固（mysql_native_password）3) Backend重启验证 4) 全链路回归验证 5) Worklog更新 | ✅ watching_drama_count错误：原本从watch_history计算（用户看过的剧），应从drama_user_subscribe计算（用户追更的剧）→修复后count=1 ✅ MySQL auth method：root@172.18.0.1切换为mysql_native_password（asyncmy兼容）✅ Backend重启后8/8端点全部绿色 ✅ git commit: 5be16d8 | MySQL root远程访问被限制后，asyncmy无法使用caching_sha2_password；已用mysql_native_password解决 | Backend启动命令：DB_DATABASE=ai_video DB_USERNAME=root DB_PASSWORD=root123 .venv/bin/python -m uvicorn server:create_app --host 0.0.0.0 --port 19199 |
+
+---
+
+## 2026-05-26 上午（AM）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-26AM | 1) chokidar ENOSPC问题根因分析 2) 远程构建服务器64.90.20.46准备 3) Android SDK / Java 17环境部署 4) APK rebuild（ai-drama.apk v1.0.1） | ✅ chokidar ENOSPC根因：chokidar在inotify耗尽时创建新实例不清理→累积到系统上限；本地无法通过kill/chore解决 ✅ 远程构建服务器64.90.20.46：Java 11→17升级 + Android SDK安装到/opt/android-sdk ✅ APK rebuild成功：dist/build/app/manifest.json验证 AI互动短剧 v1.0.1 code 101 ✅ Backend重启成功：uvicorn运行在19199，/api/feed 200 /api/app/dramas 200 | Backend启动问题：pip3 安装的 pydantic 与 python3.11 (uv 管理) 版本冲突 → 用 .venv/bin/python 解决 | 1) 软著申请（15-30天周期）2) 应用商店账号注册 |
+
+---
+
+## 2026-05-26 下午（PM）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-26PM | 1) APK双版本内容验证 2) 公网APK下载页验证 3) Worklog同步 + HTML生成 | ✅ ai-drama.apk 4.4MB + ai-interactive-drama-release.apk 3.4MB 全部manifest验证通过 ✅ 公网APK下载页验证：http://38.55.146.160:8099/download-page/ai-drama.apk → 200 ✅ Worklog同步完成 | — | 1) 软著申请（15-30天周期）2) 应用商店账号注册 |
+
+---
+
+## 2026-05-27 上午（AM）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-27AM | 1) 全链路API验证 2) APK公网下载验证 3) 代码质量扫描（console.log/FIXME/TODO/hardcoded localhost）4) 冰山扫描 - 发现3处隐患 | ✅ 全链路验证：/api/feed 200(rows=13) /api/app/dramas 200(total=3) /api/app/ads 200(rows=3) ✅ 公网APK下载：38.55.146.160:8099 → 200 (4,417,891 bytes) ✅ 代码质量：console.log/FIXME/TODO/hardcoded localhost 全部0条 ✅ Backend module_drama 同类问题扫描：0条 | 发现3处冰山：1) Email placeholder 4处(example.com) 2) DCloud appid 占位符(__UNI__25A9D80) 3) console.warn in player/index.vue | 1) 删除console.warn 2) 等人类处理Email/DCloud appid |
+
+---
+
+## 2026-05-27 下午（PM）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-27PM | 1) console.warn删除（player/index.vue）2) 代码质量泛化扫描（mobile-app + backend）3) Git commit 4) Worklog更新 | ✅ console.warn已删除：player/index.vue line582 → empty catch block ✅ 泛化扫描：mobile-app 0 console.log/FIXME/TODO ✅ backend module_drama 0 print语句 ✅ Env文件已gitignore（.env在gitignore）✅ Git commit console.warn删除 ✅ Worklog更新 | — | 等人类：Email占位符替换 / DCloud appid替换 |

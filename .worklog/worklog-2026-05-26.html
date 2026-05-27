@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作日志 2026-05-26</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; padding: 40px 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #9a5cf6; font-size: 26px; padding-bottom: 16px; border-bottom: 2px solid #2a2a3e; margin-bottom: 32px; }
+h2 { color: #9a5cf6; font-size: 15px; font-weight: 600; margin: 28px 0 12px; padding-left: 12px; border-left: 3px solid #9a5cf6; }
+table { width: 100%; border-collapse: collapse; background: #12121a; border-radius: 8px; overflow: hidden; border: 1px solid #2a2a3e; margin-bottom: 12px; }
+th { background: #1a1a2e; color: #9a5cf6; padding: 12px 14px; text-align: left; font-size: 13px; font-weight: 600; border-bottom: 1px solid #2a2a3e; }
+td { padding: 10px 14px; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; vertical-align: top; line-height: 1.7; }
+tr:last-child td { border-bottom: none; }
+.ok { color: #4ade80; }
+.err { color: #f87171; }
+.warn { color: #fbbf24; }
+.summary { background: #12121a; border: 1px solid #2a2a3e; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; }
+.summary h4 { color: #9a5cf6; font-size: 15px; margin-bottom: 12px; }
+.summary ul { list-style: none; }
+.summary li { padding: 6px 0; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; }
+.summary li:last-child { border-bottom: none; }
+.summary .ok { color: #4ade80; }
+.files { margin-top: 32px; }
+.files h2 { color: #9a5cf6; margin-top: 0; }
+.files table td:first-child { color: #9a5cf6; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 工作日志 · AI互动短剧项目 · 2026-05-26</h1>
+
+  <div class="summary">
+    <h4>📊 关键成果</h4>
+    <ul>
+      <li><span class="ok">✅</span> chokidar ENOSPC 根因分析（inotify 实例累积，非磁盘问题）</li>
+      <li><span class="ok">✅</span> 远程构建服务器 64.90.20.46 就绪（Java 11→17，Android SDK 到 /opt/android-sdk）</li>
+      <li><span class="ok">✅</span> APK rebuild 成功：manifest 验证 AI互动短剧 v1.0.1 / code 101</li>
+      <li><span class="ok">✅</span> ai-drama.apk 4.4MB + release 3.4MB 全部验证通过</li>
+      <li><span class="ok">✅</span> Backend 重启成功：uvicorn 19199，/api/feed 200 /api/app/dramas 200</li>
+      <li><span class="ok">✅</span> 公网 APK 下载页验证通过（38.55.146.160:8099 → 200）</li>
+      <li><span class="ok">✅</span> Worklog 同步完成</li>
+    </ul>
+  </div>
+
+  <div class="section"><h2>2026-05-26 上午（AM）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-26AM</th><th>1) chokidar ENOSPC问题根因分析 2) 远程构建服务器64.90.20.46准备 3) Android SDK / Java 17环境部署 4) APK rebuild（ai-drama.apk v1.0.1）</th><th><span class="ok">✅</span> chokidar ENOSPC根因：chokidar在inotify耗尽时创建新实例不清理→累积到系统上限；本地无法通过kill/chore解决<br><span class="ok">✅</span> 远程构建服务器64.90.20.46：Java 11→17升级 + Android SDK安装到/opt/android-sdk<br><span class="ok">✅</span> APK rebuild成功：dist/build/app/manifest.json验证 AI互动短剧 v1.0.1 code 101<br><span class="ok">✅</span> Backend重启成功：uvicorn运行在19199，/api/feed 200 /api/app/dramas 200</th><th>Backend启动问题：pip3 安装的 pydantic 与 python3.11 (uv 管理) 版本冲突 → 用 .venv/bin/python 解决</th><th>1) 软著申请（15-30天周期）2) 应用商店账号注册</th></tr>
+</tbody></table></div>
+
+  <div class="section"><h2>2026-05-26 下午（PM）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-26PM</th><th>1) APK双版本内容验证 2) 公网APK下载页验证 3) Worklog同步 + HTML生成</th><th><span class="ok">✅</span> ai-drama.apk 4.4MB + ai-interactive-drama-release.apk 3.4MB 全部manifest验证通过<br><span class="ok">✅</span> 公网APK下载页验证：http://38.55.146.160:8099/download-page/ai-drama.apk → 200<br><span class="ok">✅</span> Worklog同步完成，HTML生成</th><th>—</th><th>1) 软著申请（15-30天周期）2) 应用商店账号注册</th></tr>
+</tbody></table></div>
+
+  <div class="files">
+    <h2>📁 关键文件路径</h2>
+    <table>
+      <tr><th>文件</th><th>路径</th></tr>
+      <tr><td>WORKLOG.md</td><td>.worklog/WORKLOG.md</td></tr>
+      <tr><td>HTML日志</td><td>.worklog/worklog-2026-05-26.html</td></tr>
+      <tr><td>Debug APK</td><td>download-page/ai-drama.apk (4,417,891 bytes, v1.0.1/code 101)</td></tr>
+      <tr><td>Release APK</td><td>download-page/ai-interactive-drama-release.apk (3,428,244 bytes)</td></tr>
+      <tr><td>Backend进程</td><td>uvicorn PID 2055200（10:22启动，19199端口）</td></tr>
+      <tr><td>Backend venv</td><td>/www/workspace/ai-interactive-drama/ruoyi-fastapi-backend/.venv/bin/python</td></tr>
+      <tr><td>构建服务器</td><td>64.90.20.46:/tmp/mobile-app-build/（Java 17 + Android SDK）</td></tr>
+      <tr><td>公网下载页</td><td>http://38.55.146.160:8099/download-page/ai-drama.apk（✅ 200 OK）</td></tr>
+      <tr><td>工作日志</td><td>http://38.55.146.160:8099/.worklog/worklog-2026-05-26.html</td></tr>
+    </table>
+  </div>
+
+  <div class="files">
+    <h2>🐛 chokidar ENOSPC 根因分析</h2>
+    <table>
+      <tr><th>维度</th><th>详情</th></tr>
+      <tr><td>表象</td><td>本地构建服务器 inotify watches 耗尽，uni build 报错</td></tr>
+      <tr><td>根因</td><td>chokidar 在 ENOSPC 时会创建新的 inotify 实例但不清理旧的，实例累积直到系统上限</td></tr>
+      <tr><td>与磁盘无关</td><td>ENOSPC 来自 inotify subsystem，非 disk space（df -h 正常）</td></tr>
+      <tr><td>为什么 kill 无效</td><td>chokidar 实例在内核层累积，用户态 kill 无法释放已分配的 inotify 实例</td></tr>
+      <tr><td>解决方案</td><td>使用远程干净服务器（64.90.20.46）进行 APK 构建</td></tr>
+    </table>
+  </div>
+
+  <div class="files">
+    <h2>🔒 APK 内容验证</h2>
+    <table>
+      <tr><th>APK</th><th>版本</th><th>Code</th><th>大小</th><th>状态</th></tr>
+      <tr><td>ai-drama.apk</td><td>1.0.1</td><td>101</td><td>4,417,891 bytes</td><td><span class="ok">✅</span> manifest 验证通过</td></tr>
+      <tr><td>ai-interactive-drama-release.apk</td><td>1.0.1</td><td>—</td><td>3,428,244 bytes</td><td><span class="ok">✅</span> v2 签名验证通过</td></tr>
+    </table>
+  </div>
+
+  <div class="files">
+    <h2>👤 待处理事项（人工任务）</h2>
+    <table>
+      <tr><th>任务</th><th>状态</th><th>说明</th></tr>
+      <tr><td>软件著作权申请</td><td>进行中</td><td>15-30天周期</td></tr>
+      <tr><td>各应用商店账号注册</td><td>进行中</td><td>—</td></tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

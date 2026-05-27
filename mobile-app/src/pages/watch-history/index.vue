@@ -40,9 +40,9 @@ import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { appApi } from '@/config'
 import { authHeaders, needLogin } from '@/utils/app-http'
+import { COVER_SM } from '@/constants'
 
-const placeholderCover =
-  'https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=300&auto=format&fit=crop'
+const placeholderCover = COVER_SM
 
 const rows = ref<Record<string, any>[]>([])
 const loaded = ref(false)
