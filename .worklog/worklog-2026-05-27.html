@@ -36,13 +36,13 @@ tr:last-child td { border-bottom: none; }
     <h4>📊 关键成果</h4>
     <ul>
       <li><span class="ok">✅</span> 全链路API验证：Feed(rows=13)/Dramas(total=3)/Ads(rows=3) 全部200</li>
-      <li><span class="ok">✅</span> 公网APK下载验证：38.55.146.160:8099 → 200 (4,417,891 bytes)</li>
-      <li><span class="ok">✅</span> 代码质量扫描：console.log/FIXME/TODO/hardcoded localhost 全部0条</li>
+      <li><span class="ok">✅</span> App Sprint1/2/3系统性优化全部落地（含60s缓存/XSS扫描/node-forge/401拦截）</li>
+      <li><span class="ok">✅</span> APK远程打包：4.3MB同步到download-page，HTTP 200验证通过</li>
+      <li><span class="ok">✅</span> nginx统一入口：端口8099，/ + /api/ + /download/ 全链路200</li>
+      <li><span class="ok">✅</span> 下载页端口修正：4处5190→8099（H5主按钮+隐私政策+用户协议+关于我们）</li>
+      <li><span class="ok">✅</span> 全链路端到端验证：38.55.146.160:8099 全部端点200</li>
       <li><span class="ok">✅</span> console.warn删除（player/index.vue line582）</li>
-      <li><span class="ok">✅</span> Backend module_drama泛化扫描：0条同类问题</li>
-      <li><span class="ok">✅</span> Env文件安全确认：.env已在.gitignore</li>
-      <li><span class="ok">✅</span> Git commit已执行</li>
-      <li><span class="ok">✅</span> Worklog更新完成</li>
+      <li><span class="ok">✅</span> Git push: f17ff6d（下载页端口修正）</li>
       <li><span class="warn">⚠️</span> Email placeholder 4处（等域名，人类任务）</li>
       <li><span class="warn">⚠️</span> DCloud appid 占位符（等控制台，人类任务）</li>
     </ul>
@@ -54,6 +54,14 @@ tr:last-child td { border-bottom: none; }
 
   <div class="section"><h2>2026-05-27 下午（PM）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
 <tr><th>05-27PM</th><th>1) App Sprint1 2) App Sprint2 3) App Sprint3 4) theater needLogin验证 5) drama-detail status过滤</th><th><span class="ok">✅</span> Sprint1: constants.ts/share.ts/search debounce/player Promise.all/safeShare/needLogin<br><span class="ok">✅</span> Sprint2: 401拦截器/视频重试overlay/骨架屏/dramaTypeLabel DRY<br><span class="ok">✅</span> Sprint3: P1-6 Mine 60s缓存TTL / P2-5 XSS扫描 / P1-7 node-forge审计<br><span class="ok">✅</span> theater needLogin验证： theaters页面无登录拦截banner（PASS，无需修改）<br><span class="ok">✅</span> drama-detail fetchRelated：+data:{status:1}后端过滤参数对齐<br><span class="ok">✅</span> Build: pnpm build:h5 → ✅ DONE<br><span class="ok">✅</span> Git: 071e528 + 61cd7b9 + 2b08b48 + 4046564</th><th>theater needLogin：扫描确认无需修复（该页面无登录拦截banner）<br>drama-detail：+data:{status:1}与后端 drama_page status参数拉通</th><th>App系统性优化主体完成。公网部署验证 next。</th></tr>
+</tbody></table></div>
+
+  <div class="section"><h2>2026-05-27 傍晚（Evening）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-27Evening</th><th>1) nginx反向代理配置 2) H5构建产物部署 3) API代理调试 4) 全链路最终验证</th><th><span class="ok">✅</span> nginx站点配置：/etc/nginx/sites-enabled/ai-drama-static，端口统一为8099<br><span class="ok">✅</span> H5构建产物复制到/var/www/ai-drama-static/<br><span class="ok">✅</span> API代理：location /api/ → proxy_pass http://127.0.0.1:19199（无rewrite，直接透传）<br><span class="ok">✅</span> nginx reload后：H5根路径200 / API feed 200 / APK下载200<br><span class="ok">✅</span> 全链路验证：GET /api/feed 200 / GET / 200 / APK 200 (4,419,019 bytes)</th><th>API代理早期404：proxy_pass加了rewrite规则将/api/feed重写为/feed，但backend期望原始路径 → 去掉rewrite后解决</th><th>全链路压测验证 next。</th></tr>
+</tbody></table></div>
+
+  <div class="section"><h2>2026-05-27 晚间（Night）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-27Night</th><th>1) 全链路端到端最终验证 2) 下载页端口修正 3) 冰山扫描收尾 4) Git commit & push 5) Worklog更新</th><th><span class="ok">✅</span> 全链路验证：GET /api/feed 200 / GET / 200 / APK下载200 (4,419,019 bytes)<br><span class="ok">✅</span> 公网：38.55.146.160:8099 全部端点200<br><span class="ok">✅</span> 下载页端口修正：index.html 4处5190→8099（H5主按钮+隐私政策+用户协议+关于我们）<br><span class="ok">✅</span> 冰山扫描：console.log 0条 / manifest.json端口5190为dev配置可忽略<br><span class="ok">✅</span> Git commit: f17ff6d fix(download-page): 下载页端口5190→8099统一修复<br><span class="ok">✅</span> Git push → origin/main</th><th>端口修正根因：nginx部署后H5从5190切换到8099，download-page链接未同步更新 → 全部修正为8099</th><th>软著申请（人类任务）；应用商店上架准备</th></tr>
 </tbody></table></div>
 
   <div class="files">
