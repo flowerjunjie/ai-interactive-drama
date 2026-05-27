@@ -478,6 +478,7 @@ function toggleSub() {
 function fetchRelated(curId: number) {
   uni.request({
     url: appApi('/dramas'),
+    data: { status: 1 },
     success: (res: any) => {
       const body = res.data as any
       if (body.code !== 200 || !Array.isArray(body.rows)) return
