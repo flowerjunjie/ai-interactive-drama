@@ -242,6 +242,10 @@ function logout() {
   uni.showToast({ title: '已退出', icon: 'none' })
 }
 
+function saveCache() {
+  uni.setStorageSync('mine_cache', { ts: Date.now(), dash: { ...dash }, subscriptions: [...subscriptions] })
+}
+
 function loadDashboard() {
   if (!user.token) {
     dash.watch_history_count = 0
@@ -261,6 +265,7 @@ function loadDashboard() {
       dash.favorite_count = Number(d.favorite_count ?? 0)
       dash.like_count = Number(d.like_count ?? 0)
       dash.watching_drama_count = Number(d.watching_drama_count ?? 0)
+      saveCache()
     },
     fail: () => { /* non-blocking: dashboard is non-critical */ },
   })
@@ -275,6 +280,7 @@ function loadSubscriptions() {
       const b = res.data as any
       if (b.code !== 200 || !b.rows) return
       subscriptions.splice(0, subscriptions.length, ...b.rows)
+      saveCache()
     },
     fail: () => { /* non-blocking: subscription list is non-critical */ },
   })
@@ -311,6 +317,13 @@ function goDrama(dramaId: number) {
 }
 
 onShow(() => {
+  const CACHE_TTL = 60000 // 60s
+  const cached = uni.getStorageSync('mine_cache') as any
+  const now = Date.now()
+  if (cached && cached.ts && now - cached.ts < CACHE_TTL) {
+    if (cached.dash) Object.assign(dash, cached.dash)
+    if (cached.subscriptions) subscriptions.splice(0, subscriptions.length, ...cached.subscriptions)
+  }
   user.fetchMe()
   loadDashboard()
   loadSubscriptions()
