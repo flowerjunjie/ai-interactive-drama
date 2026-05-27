@@ -44,20 +44,12 @@ import { onShow } from '@dcloudio/uni-app'
 import { appApi } from '@/config'
 import { authHeaders, needLogin } from '@/utils/app-http'
 import { COVER_SM } from '@/constants'
+import { dramaTypeLabel } from '@/utils/format'
 
 const placeholderCover = COVER_SM
 
 const rows = ref<Record<string, any>[]>([])
 const loaded = ref(false)
-
-function dramaTypeLabel(t: string | null | undefined): string {
-  const map: Record<string, string> = {
-    urban: '都市', fantasy: '玄幻', romance: '言情',
-    horror: '悬疑', comedy: '喜剧', sci_fi: '科幻',
-    costume: '古风',
-  }
-  return map[t ?? ''] || '短剧'
-}
 
 function fetchList() {
   if (!needLogin()) {

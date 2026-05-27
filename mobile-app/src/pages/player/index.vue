@@ -15,6 +15,7 @@
         @timeupdate="onTimeUpdate"
         @ended="onEnded"
         @loadedmetadata="onLoadedMeta"
+        @error="onVideoError"
       />
       <image
         v-else
@@ -22,6 +23,19 @@
         class="h-full w-full object-cover"
         mode="aspectFill"
       />
+
+      <!-- Video Error Overlay -->
+      <view v-if="videoSrcError && videoSrc" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80">
+        <view class="i-mdi-refresh text-[48px] text-white/60 mb-4" />
+        <text class="text-[14px] text-white/80 mb-1">视频加载失败</text>
+        <view
+          class="mt-3 rounded-full px-6 py-2 active:opacity-80"
+          style="background: linear-gradient(90deg, #8b5cf6, #f97316)"
+          @click="reloadNode"
+        >
+          <text class="text-[13px] font-medium text-white">重新播放</text>
+        </view>
+      </view>
 
       <view
         class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent pointer-events-none"
@@ -224,6 +238,7 @@ const lastReportAt = ref(0)
 const showBranchTip = ref(false)
 const descExpanded = ref(false)
 const savedProgressSec = ref(0)
+const videoSrcError = ref(false)
 
 const videoSrc = computed(() => node.value?.video_url || node.value?.videoUrl || '')
 
@@ -562,6 +577,15 @@ function onLoadedMeta(e: any) {
       // silent fail - progress not restored
     }
   }
+}
+
+function onVideoError() {
+  videoSrcError.value = true
+}
+
+function reloadNode() {
+  videoSrcError.value = false
+  loadNodeBundle()
 }
 
 function onTimeUpdate(e: any) {

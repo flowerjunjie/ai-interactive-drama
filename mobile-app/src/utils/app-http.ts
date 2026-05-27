@@ -16,6 +16,33 @@ export function needLogin(): boolean {
   return false
 }
 
+// 401 拦截：注册一次，全局生效
+let _401registered = false
+function register401Interceptor() {
+  if (_401registered) return
+  _401registered = true
+  uni.addInterceptor('Request', {
+    invoke(args) {
+      // no-op
+    },
+    success(args) {
+      // no-op
+    },
+    fail(err) {
+      // no-op
+    },
+    complete(res) {
+      if (res.statusCode === 401) {
+        uni.removeStorageSync('drama_token')
+        uni.removeStorageSync('user_info')
+        uni.reLaunch({ url: '/pages/login/index' })
+      }
+    },
+  })
+}
+
+register401Interceptor()
+
 /** 审核反馈等走 `/api` 前缀的接口 */
 export function legacyApi(path: string): string {
   const p = path.startsWith('/') ? path : `/${path}`

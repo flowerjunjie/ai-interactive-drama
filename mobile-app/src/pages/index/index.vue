@@ -12,6 +12,12 @@
       <image :src="heroCover" class="h-full w-full object-cover" mode="aspectFill" />
     </navigator>
 
+    <!-- Hero Skeleton Loading -->
+    <view v-if="!heroLoaded" class="absolute inset-0 z-0 flex flex-col items-center justify-center bg-[#050505]">
+      <view class="i-mdi-loading animate-spin text-[48px] text-white/30 mb-4" />
+      <text class="text-[13px] text-white/30">加载中...</text>
+    </view>
+
     <!-- Gradient Overlay for better text readability and dark theme -->
     <view class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/80"></view>
 
@@ -189,6 +195,7 @@ function parseTags(raw: string): string[] {
 const likeTotal = ref(286000)
 const commentTotal = ref(3689)
 const heroHeat = ref(9865000)
+const heroLoaded = ref(false)
 
 const heatLabel = computed(() => formatShortCount(heroHeat.value))
 
@@ -296,6 +303,7 @@ onMounted(() => {
     success: (res: any) => {
       const body = res.data as any
       if (body.code === 200 && Array.isArray(body.rows)) {
+        heroLoaded.value = true
         applyFirstVideoRow(body.rows)
         const dId = heroDramaId.value
         if (dId) {

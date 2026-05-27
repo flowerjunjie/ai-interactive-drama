@@ -6,3 +6,13 @@ export function formatShortCount(n: number): string {
   if (n >= 1000) return `${(n / 1000).toFixed(1)}千`
   return String(Math.floor(n))
 }
+
+/** 剧目类型标签 */
+export function dramaTypeLabel(t: string | null | undefined): string {
+  const map: Record<string, string> = {
+    urban: '都市', fantasy: '玄幻', romance: '言情',
+    horror: '悬疑', comedy: '喜剧', sci_fi: '科幻',
+    costume: '古风',
+  }
+  return map[t ?? ''] || '短剧'
+}
