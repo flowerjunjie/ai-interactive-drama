@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作日志 2026-05-28</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; padding: 40px 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #9a5cf6; font-size: 26px; padding-bottom: 16px; border-bottom: 2px solid #2a2a3e; margin-bottom: 32px; }
+h2 { color: #9a5cf6; font-size: 15px; font-weight: 600; margin: 28px 0 12px; padding-left: 12px; border-left: 3px solid #9a5cf6; }
+table { width: 100%; border-collapse: collapse; background: #12121a; border-radius: 8px; overflow: hidden; border: 1px solid #2a2a3e; margin-bottom: 12px; }
+th { background: #1a1a2e; color: #9a5cf6; padding: 12px 14px; text-align: left; font-size: 13px; font-weight: 600; border-bottom: 1px solid #2a2a3e; }
+td { padding: 10px 14px; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; vertical-align: top; line-height: 1.7; }
+tr:last-child td { border-bottom: none; }
+.ok { color: #4ade80; }
+.err { color: #f87171; }
+.warn { color: #fbbf24; }
+.summary { background: #12121a; border: 1px solid #2a2a3e; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; }
+.summary h4 { color: #9a5cf6; font-size: 15px; margin-bottom: 12px; }
+.summary ul { list-style: none; }
+.summary li { padding: 6px 0; font-size: 13px; color: #c0c0c0; border-bottom: 1px solid #1e1e2a; }
+.summary li:last-child { border-bottom: none; }
+.summary .ok { color: #4ade80; }
+.files { margin-top: 32px; }
+.files h2 { color: #9a5cf6; margin-top: 0; }
+.files table td:first-child { color: #9a5cf6; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 工作日志 · AI互动短剧项目 · 2026-05-28</h1>
+
+  <div class="summary">
+    <h4>📊 关键成果</h4>
+    <ul>
+      <li><span class="ok">✅</span> 全链路公网验证：/ 200 / /api/feed 200 / /download-page/ 200 / APK 200 (4,419,019 bytes)</li>
+      <li><span class="ok">✅</span> download-page目录清理：assets/旧文件37个删除 + worklog.html/worklog-source.md删除</li>
+      <li><span class="ok">✅</span> nginx worklog路由修复：/.worklog/ alias新增，修复try_files fallback覆盖问题</li>
+      <li><span class="ok">✅</span> 全链路健康检查：Backend uvicorn存活(PID 2055200)，/api/feed 200</li>
+      <li><span class="ok">✅</span> Git push：efe78ef + 3c86952 + a2e2545</li>
+      <li><span class="ok">✅</span> download-page目录只保留：index.html + ai-drama.apk + ai-interactive-drama-release.apk + drama_user_subscribe.sql</li>
+      <li><span class="warn">⚠️</span> Email placeholder 4处（等真实域名）</li>
+      <li><span class="warn">⚠️</span> DCloud appid 占位符（等控制台获取）</li>
+    </ul>
+  </div>
+
+  <div class="section"><h2>2026-05-28 上午（AM）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-28AM</th><th>1) 全链路公网验证 2) download-page目录清理 3) nginx worklog路由修复 4) Git push 5) Worklog更新</th><th><span class="ok">✅</span> 公网验证：GET / 200 / GET /api/feed 200 / GET /download-page/ai-drama.apk 200 (4,419,019 bytes) / GET /.worklog/worklog-2026-05-27.html 200<br><span class="ok">✅</span> download-page/assets/（37个H5构建旧文件，端口8288时期产物）→ git delete → efe78ef<br><span class="ok">✅</span> download-page/worklog.html + worklog-source.md（遗留页面文件）→ git delete → 3c86952<br><span class="ok">✅</span> nginx路由：新增 /.worklog/ alias指向目录，绕过try_files fallback覆盖问题<br><span class="ok">✅</span> Git push：efe78ef + 3c86952 + a2e2545<br><span class="ok">✅</span> Backend uvicorn PID 2055200存活，/api/feed 200</th><th>worklog 404根因：nginx try_files将所有未匹配路径fallback到H5 index.html，包括/.worklog/路径 → 新增/.worklog/ alias直接指向目录，完全绕过try_files规则</th><th>软著申请；应用商店上架准备</th></tr>
+</tbody></table></div>
+
+  <div class="files">
+    <h2>📁 关键文件路径</h2>
+    <table>
+      <tr><th>文件</th><th>路径</th></tr>
+      <tr><td>WORKLOG.md</td><td>.worklog/WORKLOG.md</td></tr>
+      <tr><td>HTML日志</td><td>.worklog/worklog-2026-05-28.html</td></tr>
+      <tr><td>Debug APK</td><td>download-page/ai-drama.apk (4,419,019 bytes, v1.0.1/code 101)</td></tr>
+      <tr><td>Release APK</td><td>download-page/ai-interactive-drama-release.apk (3,428,244 bytes)</td></tr>
+      <tr><td>Backend进程</td><td>uvicorn PID 2055200（19199端口）</td></tr>
+      <tr><td>公网下载页</td><td>http://38.55.146.160:8099/download-page/ai-drama.apk（✅ 200 OK）</td></tr>
+      <tr><td>工作日志</td><td>http://38.55.146.160:8099/.worklog/worklog-2026-05-28.html</td></tr>
+    </table>
+  </div>
+
+  <div class="files">
+    <h2>🔒 代码质量扫描结果</h2>
+    <table>
+      <tr><th>检查项</th><th>结果</th></tr>
+      <tr><td>console.log/warn/error</td><td><span class="ok">✅ 0条</span></td></tr>
+      <tr><td>FIXME/TODO/XXX/HACK</td><td><span class="ok">✅ 0条</span></td></tr>
+      <tr><td>hardcoded localhost</td><td><span class="ok">✅ 0条</span></td></tr>
+      <tr><td>Backend print语句</td><td><span class="ok">✅ 0条</span></td></tr>
+      <tr><td>Env文件gitignore</td><td><span class="ok">✅ 已确认</span></td></tr>
+    </table>
+  </div>
+
+  <div class="files">
+    <h2>⚠️ 待处理事项</h2>
+    <table>
+      <tr><th>任务</th><th>风险</th><th>说明</th></tr>
+      <tr><td>Email placeholder替换</td><td>上架审核</td><td>4处 example.com → 等真实域名</td></tr>
+      <tr><td>DCloud appid替换</td><td>上架必须</td><td>__UNI__25A9D80 → 去DCloud控制台获取</td></tr>
+      <tr><td>软件著作权申请</td><td>进行中</td><td>15-30天周期</td></tr>
+      <tr><td>应用商店注册</td><td>进行中</td><td>—</td></tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>
