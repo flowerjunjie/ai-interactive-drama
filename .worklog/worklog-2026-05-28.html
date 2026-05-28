@@ -46,6 +46,10 @@ tr:last-child td { border-bottom: none; }
     </ul>
   </div>
 
+  <div class="section"><h2>2026-05-28 下午（PM）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
+<tr><th>05-28PM</th><th>—（本日AM已完成全部工作，无额外PM任务）</th><th>—</th><th>—</th><th>—</th></tr>
+</tbody></table></div>
+
   <div class="section"><h2>2026-05-28 上午（AM）</h2><table><thead><tr><th>日期</th><th>当日研发工作内容</th><th>工作进度</th><th>遇到的问题及解决方案</th><th>次日工作计划</th></tr></thead><tbody>
 <tr><th>05-28AM</th><th>1) 全链路公网验证 2) download-page目录清理 3) nginx worklog路由修复 4) Git push 5) Worklog更新</th><th><span class="ok">✅</span> 公网验证：GET / 200 / GET /api/feed 200 / GET /download-page/ai-drama.apk 200 (4,419,019 bytes) / GET /.worklog/worklog-2026-05-27.html 200<br><span class="ok">✅</span> download-page/assets/（37个H5构建旧文件，端口8288时期产物）→ git delete → efe78ef<br><span class="ok">✅</span> download-page/worklog.html + worklog-source.md（遗留页面文件）→ git delete → 3c86952<br><span class="ok">✅</span> nginx路由：新增 /.worklog/ alias指向目录，绕过try_files fallback覆盖问题<br><span class="ok">✅</span> Git push：efe78ef + 3c86952 + a2e2545<br><span class="ok">✅</span> Backend uvicorn PID 2055200存活，/api/feed 200</th><th>worklog 404根因：nginx try_files将所有未匹配路径fallback到H5 index.html，包括/.worklog/路径 → 新增/.worklog/ alias直接指向目录，完全绕过try_files规则</th><th>软著申请；应用商店上架准备</th></tr>
 </tbody></table></div>
