@@ -46,3 +46,11 @@
 | 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
 |------|------------------|----------|---------------------|--------------|
 | 05-27 全天 | 1) Sprint1/2/3 App优化 2) APK打包+公网部署 3) nginx反向代理统一入口 4) 下载页端口修正 5) 全链路E2E验证 6) Git push 7) Worklog | ✅ **Sprint1**: constants.ts提取/share封装/search防抖/Promise.all/needLogin ✅ **Sprint2**: 401拦截/视频重试/骨架屏/DramaTypeLabel DRY ✅ **Sprint3**: Mine 60s缓存/XSS扫描/node-forge/drama-detail status=1 ✅ APK打包：远程构建服务器64.90.20.46，4.3MB同步到download-page ✅ nginx统一入口：端口8099，/ + /api/ + /download/ 全部200 ✅ 下载页：4处5190→8099 ✅ 公网验证：38.55.146.160:8099 全部端点200 ✅ Git push: f17ff6d | 冰山3处（Email/DCloud appid/console.warn已处理1处）| Email域名替换 / DCloud appid获取 / 软著申请 / 应用商店注册 |
+
+---
+
+## 2026-05-28 上午（AM）
+
+| 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
+|------|------------------|----------|---------------------|--------------|
+| 05-28AM | 1) 公网全链路最终验证 2) download-page目录清理（删除遗留assets/37文件）3) download-page残留文件清理（worklog.html+worklog-source.md）4) worklog nginx路由修复 5) Git push 6) 全链路健康检查 | ✅ 公网验证：/ 200 / /api/feed 200 / /download-page/ai-drama.apk 200 (4,419,019) / /.worklog/worklog-2026-05-27.html 200 ✅ download-page/assets/（37个H5构建旧文件，端口8288时期产物）→ 已删除 ✅ download-page/worklog.html + worklog-source.md → 已删除 ✅ worklog路由：nginx /.worklog/ alias新增，修复try_files fallback覆盖问题 ✅ Git push：efe78ef删除assets + 3c86952删除worklog文件 ✅ Backend uvicorn PID 2055200存活，/api/feed 200 | worklog 404根因：nginx try_files将所有未匹配路径fallback到H5 index.html，包括/.worklog/路径 → 新增/.worklog/ alias直接指向目录，绕过try_files | 软著申请；应用商店上架准备 |
