@@ -53,7 +53,7 @@
 
 | 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
 |------|------------------|----------|---------------------|--------------|
-| 05-28PM | —（本日AM已完成全部工作，无额外PM任务） | — | — | — |
+| 05-28PM | 1) nginx worklog路由修复 2) 全链路端到端验证 3) Backend健康检查 4) Git push汇总 | ✅ nginx路由修复：新增 /.worklog/ alias直接指向目录，完全绕过try_files fallback规则 ✅ worklog 404根因：nginx try_files将所有未匹配路径fallback到H5 index.html → alias绕过 ✅ 全链路验证：GET / 200 / GET /api/feed 200 / GET /.worklog/worklog-2026-05-28.html 200 ✅ Backend uvicorn PID 2055200存活，/api/feed 200 OK ✅ Git push：a2e2545 + d4ef24f + 5ba1349 | worklog 404根因：nginx try_files将所有未匹配路径fallback到H5 index.html，包括/.worklog/路径 → 新增/.worklog/ alias直接指向目录，完全绕过try_files规则 | 软著申请；应用商店上架准备 |
 
 ---
 
@@ -61,4 +61,4 @@
 
 | 日期 | 当日研发工作内容 | 工作进度 | 遇到的问题及解决方案 | 次日工作计划 |
 |------|------------------|----------|---------------------|--------------|
-| 05-28AM | 1) 公网全链路最终验证 2) download-page目录清理（删除遗留assets/37文件）3) download-page残留文件清理（worklog.html+worklog-source.md）4) worklog nginx路由修复 5) Git push 6) 全链路健康检查 | ✅ 公网验证：/ 200 / /api/feed 200 / /download-page/ai-drama.apk 200 (4,419,019) / /.worklog/worklog-2026-05-27.html 200 ✅ download-page/assets/（37个H5构建旧文件，端口8288时期产物）→ 已删除 ✅ download-page/worklog.html + worklog-source.md → 已删除 ✅ worklog路由：nginx /.worklog/ alias新增，修复try_files fallback覆盖问题 ✅ Git push：efe78ef删除assets + 3c86952删除worklog文件 ✅ Backend uvicorn PID 2055200存活，/api/feed 200 | worklog 404根因：nginx try_files将所有未匹配路径fallback到H5 index.html，包括/.worklog/路径 → 新增/.worklog/ alias直接指向目录，绕过try_files | 软著申请；应用商店上架准备 |
+| 05-28AM | 1) download-page目录清理 2) Git push推送 3) 公网APK下载验证 4) Worklog HTML生成 | ✅ download-page/assets/（37个H5构建旧文件，端口8288时期产物）→ git delete → efe78ef ✅ download-page/worklog.html + worklog-source.md（遗留页面文件）→ git delete → 3c86952 ✅ download-page目录只保留：index.html + ai-drama.apk + ai-interactive-drama-release.apk + drama_user_subscribe.sql ✅ 公网APK下载验证：GET /download-page/ai-drama.apk 200 (4,419,019 bytes) ✅ Git push：efe78ef删除assets + 3c86952删除worklog文件 ✅ Worklog HTML生成：worklog-2026-05-28.html | 无（本次上午任务均正常完成，无阻塞问题） | 软著申请；应用商店上架准备 |
