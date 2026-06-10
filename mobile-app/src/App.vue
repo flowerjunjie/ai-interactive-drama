@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onLaunch } from '@dcloudio/uni-app'
+import { initLicense } from './services/licenseService'
 
-onLaunch(() => {
-  // MVP：不做强制登录
+onLaunch(async () => {
+  await initLicense()
 })
 </script>
 
