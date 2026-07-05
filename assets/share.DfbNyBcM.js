@@ -1,0 +1,1 @@
+function e(e={}){const{title:s="AI 互动短剧",summary:i="沉浸式分支剧情，体验不一样的人生",href:r="",imageUrl:a=""}=e;uni.share({provider:"weixin",scene:"WXSceneSession",title:s,summary:i,href:r,imageUrl:a,success:()=>{},fail:()=>{uni.share({provider:"",type:0,title:s,summary:i,href:r,imageUrl:a,success:()=>{},fail:()=>{}})}})}export{e as s};

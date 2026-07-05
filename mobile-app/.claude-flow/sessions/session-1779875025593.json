@@ -1,0 +1,14 @@
+{
+  "id": "session-1779875025593",
+  "startedAt": "2026-05-27T09:43:45.593Z",
+  "cwd": "/www/workspace/ai-interactive-drama/mobile-app",
+  "context": {},
+  "metrics": {
+    "edits": 2,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "endedAt": "2026-05-27T09:56:15.543Z",
+  "duration": 749950
+}

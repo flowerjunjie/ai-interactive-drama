@@ -1,0 +1,1 @@
+function e(e){return!Number.isFinite(e)||e<0?"0":e>=1e8?`${(e/1e8).toFixed(1)}亿`:e>=1e4?`${(e/1e4).toFixed(1)}万`:e>=1e3?`${(e/1e3).toFixed(1)}千`:String(Math.floor(e))}function o(e){return{urban:"都市",fantasy:"玄幻",romance:"言情",horror:"悬疑",comedy:"喜剧",sci_fi:"科幻",costume:"古风"}[e??""]||"短剧"}export{o as d,e as f};

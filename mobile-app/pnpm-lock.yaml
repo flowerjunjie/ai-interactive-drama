@@ -68,6 +68,9 @@ importers:
       '@dcloudio/uni-ui':
         specifier: ^1.5.7
         version: 1.5.12
+      '@flowerjunjie/license-manager':
+        specifier: ^1.0.1039
+        version: 1.0.1039
       '@vue/shared':
         specifier: 3.4.21
         version: 3.4.21
@@ -1551,6 +1554,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@flowerjunjie/license-manager@1.0.1039':
+    resolution: {integrity: sha512-zOW6OqMmDWXUlDpUgqJMomnpG/iCah4OtCHIGwqSxIpTKwi1bsVRihtPPRnm04ldmnScwghSu2LKChkA7KykYw==}
+    engines: {node: '>=16.0.0'}
+    hasBin: true
+
   '@icebreakers/stylelint-config@1.2.6':
     resolution: {integrity: sha512-k5JWMnA0mfi83matf6HrJMu7fG2wQJVtPjITV0Dm1TfG6JIob3oo51HFlb2jhNMZg275aUB2sKjidaHfRGcQRg==}
     hasBin: true
@@ -2585,6 +2593,9 @@ packages:
 
   array-timsort@1.0.3:
     resolution: {integrity: sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==}
+
+  asn1@0.2.6:
+    resolution: {integrity: sha512-ix/FxPn0MDjeyJ7i/yoHGFt/EX6LyNbxSEhPPXODPL+KB0VPk86UYfL0lMdy+KCnv+fmvIzySwaK5COwqVbWTQ==}
 
   astral-regex@2.0.0:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
@@ -4217,6 +4228,9 @@ packages:
 
   node-releases@2.0.44:
     resolution: {integrity: sha512-5WUyunoPMsvvEhS8AxHtRzP+oA8UCkJ7YRxatWKjngndhDGLiqEVAQKWjFAiAiuL8zMRGzGSJxFnLetoa43qGQ==}
+
+  node-rsa@1.1.1:
+    resolution: {integrity: sha512-Jd4cvbJMryN21r5HgxQOpMEqv+ooke/korixNNK3mGqfGJmy0M77WDDzo/05969+OkMy3XW1UuZsSmW9KQm7Fw==}
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -7669,6 +7683,10 @@ snapshots:
   '@esbuild/win32-x64@0.21.5':
     optional: true
 
+  '@flowerjunjie/license-manager@1.0.1039':
+    dependencies:
+      node-rsa: 1.1.1
+
   '@icebreakers/stylelint-config@1.2.6(postcss@8.5.14)(stylelint-order@8.1.1(stylelint@17.11.1(typescript@5.9.3)))(stylelint@17.11.1(typescript@5.9.3))':
     dependencies:
       comment-json: 4.6.2
@@ -8966,6 +8984,10 @@ snapshots:
   array-flatten@1.1.1: {}
 
   array-timsort@1.0.3: {}
+
+  asn1@0.2.6:
+    dependencies:
+      safer-buffer: 2.1.2
 
   astral-regex@2.0.0: {}
 
@@ -10796,6 +10818,10 @@ snapshots:
   node-int64@0.4.0: {}
 
   node-releases@2.0.44: {}
+
+  node-rsa@1.1.1:
+    dependencies:
+      asn1: 0.2.6
 
   normalize-path@3.0.0: {}
 

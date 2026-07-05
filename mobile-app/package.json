@@ -1,6 +1,6 @@
 {
   "name": "drama-mobile",
-  "version": "1.9.0",
+  "version": "1.0.1",
   "packageManager": "pnpm@10.28.1",
   "scripts": {
     "dev": "uni -p mp-weixin",
@@ -63,6 +63,7 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4080720251210001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4080720251210001",
     "@dcloudio/uni-ui": "^1.5.7",
+    "@flowerjunjie/license-manager": "^1.0.1039",
     "@vue/shared": "3.4.21",
     "@weapp-tailwindcss/merge-v3": "^0.1.5",
     "node-forge": "^1.4.0",
