@@ -1,0 +1,74 @@
+# CODEOWNERS · 自动审查路由
+# GitHub 会在打开 PR 时自动 @ 这些 owner 请求 review
+# 文档：https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# 顺序很重要 —— 后面的规则会覆盖前面的（针对同一文件）
+# 一个文件只会被最后一次匹配的规则路由
+
+# ─── 默认 owner：仓库主维护者 ───────────────────────
+*                                       @flowerjunjie
+
+# ─── 后端 ────────────────────────────────────────────
+/ruoyi-fastapi-backend/                 @flowerjunjie
+/ruoyi-fastapi-backend/module_drama/    @flowerjunjie
+/ruoyi-fastapi-backend/module_ai/       @flowerjunjie
+/ruoyi-fastapi-backend/sql/             @flowerjunjie
+/ruoyi-fastapi-backend/alembic/         @flowerjunjie
+/ruoyi-fastapi-backend/.env.example     @flowerjunjie
+
+# ─── 管理后台 ─────────────────────────────────────────
+/ruoyi-fastapi-frontend/                @flowerjunjie
+/ruoyi-fastapi-frontend/src/views/drama/ @flowerjunjie
+/ruoyi-fastapi-frontend/src/api/drama/  @flowerjunjie
+
+# ─── 移动端 ───────────────────────────────────────────
+/mobile-app/                            @flowerjunjie
+/mobile-app/src/pages/                  @flowerjunjie
+
+# ─── Docker / 部署 ─────────────────────────────────────
+/docker-compose*.yml                    @flowerjunjie
+/Dockerfile*                            @flowerjunjie
+/.dockerignore                          @flowerjunjie
+/docker/                                @flowerjunjie
+
+# ─── CI / 自动化 ──────────────────────────────────────
+/.github/workflows/                     @flowerjunjie
+/.github/workflows/release.yml          @flowerjunjie
+/.github/workflows/codeql.yml           @flowerjunjie
+/.github/dependabot.yml                 @flowerjunjie
+
+# ─── 安全策略 ─────────────────────────────────────────
+/SECURITY.md                            @flowerjunjie
+/docs/risks.md                          @flowerjunjie
+
+# ─── 治理 / 文档 ──────────────────────────────────────
+/CONTRIBUTING.md                        @flowerjunjie
+/CODE_OF_CONDUCT.md                     @flowerjunjie
+/ROADMAP.md                             @flowerjunjie
+/CHANGES.md                             @flowerjunjie
+/README.md                              @flowerjunjie
+/README.en.md                           @flowerjunjie
+/docs/                                  @flowerjunjie
+/docs/adr/                              @flowerjunjie
+/scripts/                               @flowerjunjie
+
+# ─── 引用 / 法务 ───────────────────────────────────────
+/LICENSE                                @flowerjunjie
+/CITATION.cff                           @flowerjunjie
+/.github/FUNDING.yml                    @flowerjunjie
+
+# ─── 后缀级规则（兜底）────────────────────────────────
+*.md                                    @flowerjunjie
+*.yml                                   @flowerjunjie
+*.yaml                                  @flowerjunjie
+*.toml                                  @flowerjunjie
+
+# ─────────────────────────────────────────────────────
+# 维护者邀请：
+# 1. 在 GitHub 仓库 Settings → Collaborators 添加新 maintainer
+# 2. 在上面规则里加他们的 GitHub username（如 @newmaintainer）
+# 3. 每个 owner 必须：
+#    - 在 SECURITY.md 接收漏洞披露
+#    - 能 review 1 个 PR / 天
+#    - 季度回顾 ROADMAP.md
+# ─────────────────────────────────────────────────────

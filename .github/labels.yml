@@ -1,0 +1,119 @@
+# GitHub Issue Labels · 程序化同步定义
+# 工作流 .github/workflows/labels.yml 调用 github-actions/labeler 同步到仓库
+# 新增/修改后会自动创建/更新 label
+
+- name: bug
+  color: "d73a4a"
+  description: Something isn't working
+- name: enhancement
+  color: "a2eeef"
+  description: New feature or request
+- name: documentation
+  color: "0075ca"
+  description: Improvements or additions to documentation
+- name: question
+  color: "d876e3"
+  description: Further information is requested
+- name: help wanted
+  color: "008672"
+  description: Extra attention is needed
+- name: good first issue
+  color: "7057ff"
+  description: Good for newcomers
+- name: invalid
+  color: "e4e669"
+  description: This doesn't seem right
+- name: wontfix
+  color: "ffffff"
+  description: This will not be worked on
+- name: duplicate
+  color: "cfd3d7"
+  description: This issue or pull request already exists
+- name: pinned
+  color: "fbca04"
+  description: Pinned issue (exempt from stale bot)
+- name: security
+  color: "b60205"
+  description: Security-related issue (use SECURITY.md for disclosure)
+
+# ─── 优先级 ────────────────────────────────────────
+- name: priority: critical
+  color: "b60205"
+  description: Drop everything, ship today
+- name: priority: high
+  color: "d93f0b"
+  description: Important, address soon
+- name: priority: medium
+  color: "fbca04"
+  description: Normal priority
+- name: priority: low
+  color: "0e8a16"
+  description: Nice to have
+
+# ─── 状态 ──────────────────────────────────────────
+- name: status: in progress
+  color: "1d76db"
+  description: Someone is working on it
+- name: status: blocked
+  color: "b60205"
+  description: Blocked by external factor
+- name: status: needs info
+  color: "fef2c0"
+  description: Waiting for reporter clarification
+- name: status: stale
+  color: "ededed"
+  description: No activity for 30+ days
+
+# ─── 区域 ──────────────────────────────────────────
+- name: area: backend
+  color: "0e8a16"
+  description: Backend (FastAPI / Python)
+- name: area: admin
+  color: "5319e7"
+  description: Admin web (Vue3)
+- name: area: mobile
+  color: "1d76db"
+  description: Mobile (uni-app)
+- name: area: docs
+  color: "0075ca"
+  description: Documentation
+- name: area: ci
+  color: "fbca04"
+  description: CI / DevOps
+- name: area: security
+  color: "b60205"
+  description: Security
+
+# ─── 组件 ──────────────────────────────────────────
+- name: component: api
+  color: "bfd4f2"
+  description: API endpoints
+- name: component: auth
+  color: "bfd4f2"
+  description: Authentication / authorization
+- name: component: upload
+  color: "bfd4f2"
+  description: File upload (TOS / S3)
+- name: component: drama
+  color: "bfd4f2"
+  description: Drama domain logic
+- name: component: node
+  color: "bfd4f2"
+  description: Interactive node engine
+- name: component: ai
+  color: "bfd4f2"
+  description: AI module
+
+# ─── 依赖更新 ──────────────────────────────────────
+- name: dependencies
+  color: "0366d6"
+  description: Dependency updates (Dependabot)
+- name: backend
+  color: "0e8a16"
+  description: Backend-specific
+- name: frontend
+  color: "5319e7"
+  description: Frontend-specific
+- name: mobile
+  color: "1d76db"
+  description: Mobile-specific

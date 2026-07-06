@@ -2,6 +2,10 @@
 <h4 align="center">AI 互动短剧平台 · 基于 RuoYi-Vue3 + FastAPI · 管理后台 + 移动端 C 端 + 后端 API</h4>
 
 <p align="center">
+  🇨🇳 <b>中文</b> · <a href="./README.en.md">🇬🇧 English</a>
+</p>
+
+<p align="center">
     <a href="https://github.com/flowerjunjie/ai-interactive-drama/stargazers">
         <img alt="GitHub stars" src="https://img.shields.io/github/stars/flowerjunjie/ai-interactive-drama?style=social">
     </a>

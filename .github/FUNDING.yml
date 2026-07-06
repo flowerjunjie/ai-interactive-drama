@@ -1,0 +1,45 @@
+# GitHub 赞助渠道声明
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/display-a-sponsor-button-in-your-repository
+
+# 启用 GitHub Sponsors 赞助按钮
+# GitHub Sponsors: 替换 <USERNAME> 为你的 username
+github: flowerjunjie
+
+# Open Collective（可选，海外平台）
+# open_collective: ai-interactive-drama
+
+# Patreon（可选）
+# patreon: username
+
+# Ko-fi（可选，小额赞助）
+# ko_fi: username
+
+# Liberapay（可选）
+# liberapay: username
+
+# IssueHunt（可选，按 issue 悬赏）
+# issuehunt: username
+
+# 比特币（可选）
+# custom: ['https://example.com/donate']
+# bitcoin: bc1q...
+
+# 微信赞赏码 / 支付宝（推荐：托管图片到仓库内）
+# custom:
+#   - https://github.com/flowerjunjie/ai-interactive-drama/blob/main/assets/sponsor/wechat.jpg
+#   - https://github.com/flowerjunjie/ai-interactive-drama/blob/main/assets/sponsor/alipay.jpg
+
+# ─────────────────────────────────────────────────
+# 赞助资金用途（项目侧）
+# - 域名 / CDN 流量
+# - 演示站服务器
+# - 设计素材外包
+# - 安全审计（如需）
+#
+# 不接受：
+# - 插入跟踪代码
+# - 改变核心架构以适配特定厂商
+# - 在 README 顶部强制露出赞助商 logo
+#
+# 详细治理：见 ROADMAP.md / GOVERNANCE.md（待补）
+# ─────────────────────────────────────────────────

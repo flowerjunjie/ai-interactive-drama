@@ -1,0 +1,49 @@
+name: Welcome
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  welcome:
+    name: Greet first-time contributor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greet issue opener
+        if: github.event_name == 'issues'
+        uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            👋 欢迎第一次参与 **AI Interactive Drama**！
+
+            感谢你提 Issue —— 你的反馈让项目变得更好。
+
+            📚 **下一步**：
+            - 阅读 [Contributing Guide](../../blob/main/CONTRIBUTING.md)
+            - 看看 [good first issue](../../issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 找点简单的入手
+            - 问题不紧急？去 [Discussions Q&A](../../discussions/categories/q-a) 可能更快得到回答
+
+            🛡 **安全提示**：如有安全漏洞，**请勿**在本 Issue 公开，请走 [SECURITY.md](../../blob/main/SECURITY.md) 流程。
+          pr-message: |
+            👋 欢迎第一次提 PR 到 **AI Interactive Drama**！
+
+            感谢你的贡献！
+
+            📋 **review 前自检**：
+            - [ ] commit 信息符合 [Conventional Commits](https://www.conventionalcommits.org/)
+            - [ ] 后端跑了 `ruoyi dev lint`
+            - [ ] 前端跑了 `npm run build:prod`
+            - [ ] 文档已同步更新
+            - [ ] 没动与本 PR 无关的代码
+
+            📚 详细流程见 [Contributing Guide](../../blob/main/CONTRIBUTING.md)。
+            CI 会自动跑 lint + build，有失败请查看详情。
+
+            期待 review 🤝

@@ -1,0 +1,57 @@
+name: Stale
+
+on:
+  schedule:
+    # 每天 UTC 02:00 跑（避开高峰期）
+    - cron: "0 2 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Mark / close stale issues & PRs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          # ─── Issues ──────────────────────────────────
+          days-before-issue-stale: 30        # 30 天无活动 → stale
+          days-before-issue-close: 7         # stale 后 7 天 → 关闭
+          stale-issue-message: |
+            👋 看起来这条 Issue 一段时间没动静了。是不是忘了它？
+
+            如果还在处理，去掉 `stale` 标签即可"复活"。
+            如果已解决，请关闭。
+
+            💡 参考：[Contributing Guide](../../blob/main/CONTRIBUTING.md)
+          close-issue-message: |
+            🔒 这条 Issue 因长期无活动被自动关闭。如仍需讨论，请重新打开或在 Discussion 板块开新帖。
+
+          # ─── PRs ────────────────────────────────────
+          days-before-pr-stale: 14           # PR 14 天无活动 → stale（比 Issue 短，PR 容易飘）
+          days-before-pr-close: 7
+          stale-pr-message: |
+            👋 这个 PR 长时间没活动。是不是还在改？
+
+            如果还在处理，去掉 `stale` 标签即可。
+            如果不再需要，请关闭 PR。
+          close-pr-message: |
+            🔒 因长期无活动被关闭。如仍要合并，请 push 新 commit 自动激活。
+
+          # ─── 豁免规则（这些永远不会被 stale）────────
+          exempt-issue-labels: |
+            pinned
+            security
+            enhancement
+            good first issue
+            help wanted
+            priority: high
+            priority: critical
+          exempt-pr-labels: |
+            pinned
+            security
+            work in progress
+            do-not-close
