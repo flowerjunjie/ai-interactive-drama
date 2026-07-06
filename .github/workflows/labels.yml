@@ -16,7 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run labeler
-        uses: github-actions/labeler@v5
+      - name: Sync issue labels
+        uses: EndBug/label-sync@v2
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: .github/labels.yml
+          delete-existing: false
+          strict: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
