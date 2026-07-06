@@ -1,0 +1,91 @@
+# Pre-commit hook configuration
+# 安装：pip install pre-commit && pre-commit install
+# 手动跑：pre-commit run --all-files
+# docs: https://pre-commit.com/
+
+repos:
+  # ── 通用 hygiene ─────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.md$'   # Markdown 行尾双空格是有意的（换行）
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+        exclude: '\.codegraph/.*'
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+        args: [--maxkb=2048]   # 2MB 阈值；APK 等大文件会被拒
+        exclude: 'download-page/.*'
+      - id: detect-private-key
+      - id: no-commit-to-branch
+        args: [--branch=main, --branch=master]
+
+  # ── Python 后端 ───────────────────────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        files: ^ruoyi-fastapi-backend/
+
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        language_version: python3.10
+        files: ^ruoyi-fastapi-backend/
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=120]
+        files: ^ruoyi-fastapi-backend/
+
+  # ── 前端 / 移动端 ─────────────────────────────────────
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.3.3
+    hooks:
+      - id: prettier
+        files: ^ruoyi-fastapi-frontend/src/.*\.(js|vue|css|scss)$
+        additional_dependencies:
+          - prettier@3.3.3
+
+  # ── Markdown 文档 ─────────────────────────────────────
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.42.0
+    hooks:
+      - id: markdownlint
+        args: [--fix, --disable=MD013, --disable=MD033, --disable=MD041]
+        files: '\.(md|markdown)$'
+
+  # ── 仓库根 .editorconfig 一致性 ───────────────────────
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 3.0.3
+    hooks:
+      - id: editorconfig-checker
+        alias: ec
+        args: [-exclude, '\.codegraph/.*']
+
+# ── 跳过条件 ───────────────────────────────────────────
+# 大型 backend vendor 目录 / 已编译 dist / node_modules 跳过
+exclude: |
+  (?x)^(
+      .*\.min\.(js|css)|
+      node_modules/.*|
+      .*\.po$|
+      .*\.mo$|
+      dist/.*|
+      build/.*|
+      .codegraph/.*|
+      .claude-flow/.*|
+      .agents/.*|
+      .+\.lock
+  )$
+
+# 默认失败即拒绝提交；CI 端跑 `pre-commit run --all-files` 全量校验
+fail_fast: false

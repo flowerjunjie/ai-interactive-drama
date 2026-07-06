@@ -1,0 +1,51 @@
+cff-version: 1.2.0
+message: |
+  If you use this software in academic work, please cite it using the
+  metadata below.
+type: software
+title: "AI Interactive Drama"
+abstract: |
+  Open-source AI interactive short-drama platform built on RuoYi-Vue3-FastAPI:
+  FastAPI backend with SQLAlchemy 2.0 (async) + MySQL/PostgreSQL + Redis,
+  Vue3 admin panel, uni-app mobile client (H5 / mini-program), interactive
+  node-based drama narrative engine, TOS/S3 multipart upload, OAuth2 + JWT
+  auth, Alembic migrations, ruoyi CLI.
+authors:
+  - family-names: insistence
+    given-names: RuoYi Maintainer
+  - family-names: flowerjunjie
+    given-names: AI Interactive Drama
+    alias: flowerjunjie
+keywords:
+  - fastapi
+  - vue3
+  - uni-app
+  - short-drama
+  - ai-interactive
+  - ruoyi
+  - sqlalchemy
+  - mysql
+  - redis
+  - oss
+license: MIT
+license-url: https://opensource.org/licenses/MIT
+repository-code: https://github.com/flowerjunjie/ai-interactive-drama
+repository: https://github.com/flowerjunjie/ai-interactive-drama
+url: https://github.com/flowerjunjie/ai-interactive-drama
+version: 1.0.0
+date-released: 2026-07-06
+references:
+  - type: software
+    title: "RuoYi-Vue3-FastAPI"
+    authors:
+      - family-names: insistence
+    url: https://gitee.com/insistence2022/RuoYi-Vue3-FastAPI
+    relation: "is derived from"
+  - type: software
+    title: "RuoYi-Vue3"
+    url: https://github.com/yangzongzhuan/RuoYi-Vue3
+    relation: "is derived from"
+  - type: software
+    title: "RuoYi-App"
+    url: https://github.com/yangzongzhuan/RuoYi-App
+    relation: "is derived from"
