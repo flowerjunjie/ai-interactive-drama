@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions Q&A
+    url: https://github.com/flowerjunjie/ai-interactive-drama/discussions/categories/q-a
+    about: 使用问题、配置求助、最佳实践
+  - name: 📖 README
+    url: https://github.com/flowerjunjie/ai-interactive-drama#readme
+    about: 先读一遍 README，9 成问题都解了
+  - name: 🩺 Troubleshooting
+    url: https://github.com/flowerjunjie/ai-interactive-drama/blob/main/README.md#-故障排查troubleshooting
+    about: 11 条常见症状对照
