@@ -339,6 +339,8 @@ ruoyi dev lint
 
 完整贡献指南：[CONTRIBUTING.md](./CONTRIBUTING.md) · 行为准则：[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) · 路线图：[ROADMAP.md](./ROADMAP.md) · 本版本说明：[docs/releases/v1.0.0.md](./docs/releases/v1.0.0.md)
 
+安全漏洞披露：[SECURITY.md](./SECURITY.md) · **请勿在公开 Issue 披露安全问题**
+
 GitHub 仓库配置清单（Topics / Social Preview / Discussions / Release）：[docs/github-setup-todo.md](./docs/github-setup-todo.md)
 
 ## 📄 许可证

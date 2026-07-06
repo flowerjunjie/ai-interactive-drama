@@ -1,0 +1,74 @@
+# Dependabot · 自动依赖更新
+# https://docs.github.com/en/code-security/dependabot
+
+version: 2
+
+updates:
+  # Python 后端
+  - package-ecosystem: "pip"
+    directory: "/ruoyi-fastapi-backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels: ["dependencies", "backend"]
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(backend)"
+    # 自动分组：所有 patch 合并为一个 PR，minor 分组
+    groups:
+      python-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+      python-major:
+        applies-to: version-updates
+        update-types:
+          - "major"
+
+  # 管理后台 · npm
+  - package-ecosystem: "npm"
+    directory: "/ruoyi-fastapi-frontend"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels: ["dependencies", "frontend"]
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(frontend)"
+    groups:
+      npm-patch:
+        update-types: ["minor", "patch"]
+      npm-major:
+        update-types: ["major"]
+
+  # 移动端 · pnpm
+  - package-ecosystem: "npm"
+    directory: "/mobile-app"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels: ["dependencies", "mobile"]
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(mobile)"
+    groups:
+      mobile-patch:
+        update-types: ["minor", "patch"]
+      mobile-major:
+        update-types: ["major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "ci"]
+    commit-message:
+      prefix: "deps(ci)"

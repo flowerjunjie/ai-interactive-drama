@@ -1,0 +1,34 @@
+# EditorConfig — https://EditorConfig.org
+# 跨 IDE / 编辑器 代码风格基线
+# 与 Prettier / Black / Ruff 等 formatter 互补，处理缩进/换行/EOL 等基础设置
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 120
+
+[*.{py,pyi}]
+indent_size = 4
+max_line_length = 120
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+
+[*.{bat,cmd}]
+end_of_line = crlf
+
+[*.go]
+indent_style = tab
+indent_size = 4
