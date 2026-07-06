@@ -1,8 +1,8 @@
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">AI Interactive Drama</h1>
 <h4 align="center">AI 互动短剧平台 · 基于 RuoYi-Vue3 + FastAPI</h4>
 <p align="center">
-    <a href="https://gitee.com/min1314/ai-interactive-drama">
-        <img alt="Gitee" src="https://gitee.com/min1314/ai-interactive-drama/badge/star.svg?theme=dark">
+    <a href="https://github.com/flowerjunjie/ai-interactive-drama">
+        <img alt="GitHub stars" src="https://img.shields.io/github/stars/flowerjunjie/ai-interactive-drama?style=social">
     </a>
     <img alt="project version" src="https://img.shields.io/badge/version-1.9.0-brightgreen.svg">
     <img alt="LICENSE" src="https://img.shields.io/github/license/mashape/apistatus.svg">
@@ -56,7 +56,7 @@ AI Interactive Drama 是一套 **AI 互动短剧** 业务平台，在 [RuoYi-Vue
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/min1314/ai-interactive-drama.git
+git clone https://github.com/flowerjunjie/ai-interactive-drama.git
 
 # 进入项目根目录
 cd ai-interactive-drama
